@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/layout/container';
 import { Button } from '@/components/ui/button';
 
@@ -26,6 +26,33 @@ const categories = [
   { name: 'Charging', description: 'Power that fits your routine.', href: '/products/charging', image: '/images/categories/charging.jpg' },
   { name: 'Storage', description: 'Space designed around real life.', href: '/products/storage', image: '/images/categories/storage.jpg' },
   { name: 'Lifestyle', description: 'The details that travel with you.', href: '/products/lifestyle', image: '/images/categories/lifestyle.jpg' },
+];
+
+const essentials = [
+  {
+    name: 'All-Weather Floor Mats',
+    description: 'Protect your interior from dirt, water and daily wear.',
+    href: '/products/all-weather-floor-mats',
+    image: '/images/essentials/floor-mats.jpg',
+  },
+  {
+    name: 'Tempered Screen Protector',
+    description: 'Protect the display while preserving clarity and touch response.',
+    href: '/products/tempered-screen-protector',
+    image: '/images/essentials/screen-protector.jpg',
+  },
+  {
+    name: 'Rear Trunk Organizer',
+    description: 'Keep everyday essentials secure and organized.',
+    href: '/products/rear-trunk-organizer',
+    image: '/images/essentials/trunk-organizer.jpg',
+  },
+  {
+    name: 'Fast Charging Cable',
+    description: 'Reliable charging built for everyday use.',
+    href: '/products/fast-charging-cable',
+    image: '/images/essentials/charging-cable.jpg',
+  },
 ];
 
 export default function Home() {
@@ -177,6 +204,45 @@ export default function Home() {
                   <div className="pt-5">
                     <h3 className="text-2xl font-medium tracking-[-0.035em]">{category.name}</h3>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">{category.description}</p>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="essentials" className="scroll-mt-[4.5rem] bg-muted/35 section-space" aria-labelledby="essentials-heading">
+        <Container>
+          <div className="max-w-2xl animate-hero-rise">
+            <h2 id="essentials-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Start with the Essentials
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              The upgrades most owners choose first to protect, organize and enhance their vehicle.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
+            {essentials.map((product) => (
+              <article key={product.name} className="group animate-hero-rise [animation-delay:140ms]">
+                <Link href={product.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                  <div className="relative aspect-square overflow-hidden bg-background">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <div className="pt-5">
+                    <h3 className="text-xl font-medium tracking-[-0.03em]">{product.name}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{product.description}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-foreground">
+                      Learn More
+                      <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                    </span>
                   </div>
                 </Link>
               </article>
