@@ -11,7 +11,7 @@ export function ResourceCard({ title, description, href }: ResourceCardProps) {
   return (
     <Link
       href={href}
-      className="group flex min-h-44 flex-col justify-between border-t border-border py-6 transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 motion-reduce:transform-none sm:py-7"
+      className="group flex h-full min-h-44 flex-col justify-between border-t border-border py-6 transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 motion-reduce:transform-none sm:py-7"
     >
       <div>
         <h3 className="text-2xl font-medium tracking-[-0.035em]">{title}</h3>
