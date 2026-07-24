@@ -4,6 +4,21 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/layout/container';
 import { Button } from '@/components/ui/button';
 
+const vehicles = [
+  {
+    name: 'VF6',
+    description: 'Designed for everyday electric mobility.',
+    href: '/vehicles/vf6',
+    imagePosition: 'object-[20%_center]',
+  },
+  {
+    name: 'VF7',
+    description: 'Designed for drivers who expect more.',
+    href: '/vehicles/vf7',
+    imagePosition: 'object-[80%_center]',
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -79,6 +94,51 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+          </div>
+        </Container>
+      </section>
+
+      <section id="vehicle-selector" className="scroll-mt-[4.5rem] bg-background section-space" aria-labelledby="vehicle-selector-heading">
+        <Container>
+          <div className="mx-auto max-w-2xl text-center animate-hero-rise">
+            <h2 id="vehicle-selector-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Which vehicle do you drive?
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              Select your vehicle to explore products engineered specifically for it.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-12">
+            {vehicles.map((vehicle) => (
+              <article key={vehicle.name} className="group animate-hero-rise [animation-delay:140ms]">
+                <Link href={vehicle.href} className="block overflow-hidden transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    <Image
+                      src="/images/hero-suv.jpg"
+                      alt={`${vehicle.name} electric vehicle`}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className={`object-cover ${vehicle.imagePosition} transition-transform duration-700 ease-out group-hover:scale-[1.03]`}
+                    />
+                  </div>
+                  <div className="flex items-end justify-between gap-6 pt-6">
+                    <div>
+                      <h3 className="text-3xl font-semibold tracking-[-0.04em]">{vehicle.name}</h3>
+                      <p className="mt-2 text-base text-muted-foreground">{vehicle.description}</p>
+                    </div>
+                    <Button asChild className="shrink-0 rounded-full px-5">
+                      <span>Explore {vehicle.name}</span>
+                    </Button>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-16 text-center sm:mt-20">
+            <p className="text-sm font-medium text-muted-foreground">Coming Soon</p>
+            <p className="mt-3 text-sm tracking-[0.12em] text-foreground/70">Tesla&nbsp;&nbsp;&nbsp; BYD&nbsp;&nbsp;&nbsp; Toyota</p>
           </div>
         </Container>
       </section>
