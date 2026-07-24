@@ -6,9 +6,9 @@ This file governs all work performed by Codex and other AI engineering agents in
 
 Before changing code, read and obey the following sources in order:
 
-1. `docs/os/foundation/README.md`
-2. `docs/os/foundation/CONSTITUTION.md`
-3. `docs/os/foundation/REPOSITORY-INDEX.md`
+1. `docs/os/foundation/00-Governance/0001-README.md`
+2. `docs/os/foundation/00-Governance/0002-Constitution.md`
+3. `docs/os/foundation/02-Repository/0017-Repository-Index.md`
 4. `docs/os/foundation/ai/reading-order.md`
 5. `docs/05-specifications/spec-000.md`
 6. The active task file in `docs/06-execution/tasks/`
@@ -46,7 +46,8 @@ Do not add a new dependency when the requirement can be met cleanly with the exi
 ## 4. Repository Discovery
 
 Repository discovery is mandatory before every implementation task. Before
-writing code, inspect and record the current:
+planning or writing code, publish a concise Repository Discovery Report that
+records the current:
 
 - routes and public destinations,
 - components and shared layout primitives,
@@ -61,22 +62,62 @@ assumptions from a task description or prior conversation. If the task assumes
 an unavailable route, component, or service, use the smallest truthful
 behaviour permitted by the task and record the deviation in the handoff.
 
-## 5. Required workflow
+The report must identify the branch and baseline, relevant routes, components,
+configuration, tests, dependency state, reusable code, conflicts, assumptions,
+proposed adaptations, and any clarification required.
+
+## 5. Mission Brief and planning
+
+Before implementation, add a concise Mission Brief to the task or pull-request
+handoff. It answers intent and boundaries without repeating the full task:
+
+- **Mission** — why the work matters and the user or product outcome.
+- **Success Criteria** — observable conditions that prove success.
+- **Constraints** — out-of-scope work and architectural boundaries.
+- **Canonical References** — governing repository documents.
+
+Then write an implementation plan based on the Repository Discovery Report.
+When requirements are ambiguous, prefer the current architecture and canonical
+documents, avoid inventing functionality, and stop for clarification when the
+intended outcome cannot be preserved safely. An adaptation may proceed only
+when it remains in scope, preserves the intended outcome, avoids product
+decisions, and does not alter unrelated behaviour.
+
+## 6. Governance artifacts
+
+Use one artifact for each distinct question; do not duplicate canonical
+knowledge or create process for its own sake.
+
+- **Mission Brief** — Why are we building this?
+- **Repository Discovery** — What already exists?
+- **Specification or Task** — What exactly must be built?
+- **Architecture Decision Record (ADR)** — Why did we choose this approach?
+- **Review** — Is it good enough to merge?
+- **Implementation Handoff** — What changed and how was it validated?
+
+Create or update an ADR only for a durable architectural decision. Create or
+update an artifact only when it answers a distinct question not already
+answered canonically elsewhere.
+
+## 7. Required workflow
 
 For every task:
 
 1. Read the governing documents and the complete task file.
-2. Complete Repository Discovery before planning or editing.
-3. State assumptions in the task handoff; do not encode uncertain assumptions as permanent architecture.
-4. Implement the smallest complete vertical slice satisfying the acceptance criteria.
-5. Add or update tests for behaviour that can regress.
-6. Run all required checks.
-7. Update the task file's implementation record when requested.
-8. Submit a focused pull request with no unrelated refactors.
+2. Publish a Mission Brief.
+3. Complete and record Repository Discovery before planning or editing.
+4. Resolve conflicts or request clarification before proceeding.
+5. Publish an implementation plan.
+6. Implement the smallest complete vertical slice satisfying the acceptance criteria.
+7. Add or update tests for behaviour that can regress.
+8. Run all required checks before opening a pull request.
+9. Update the task file, queue, and ADRs when a durable decision is introduced.
+10. Submit a focused pull request with a structured implementation handoff.
+11. Ensure the change is ready for engineering review before merge.
 
 Do not begin a second task while the active task remains incomplete.
 
-## 6. Required checks
+## 8. Required checks
 
 Run from the repository root:
 
@@ -90,7 +131,7 @@ pnpm format:check
 
 A task is not complete while any required command fails. If an environment limitation prevents a command from running, document the exact command, output, and limitation.
 
-## 7. Code standards
+## 9. Code standards
 
 - Use TypeScript strictness; do not use `any` unless an external boundary makes it unavoidable and the reason is documented.
 - Prefer Server Components. Add `"use client"` only where browser state, effects, or event handlers are required.
@@ -104,7 +145,7 @@ A task is not complete while any required command fails. If an environment limit
 - Do not leave dead code, commented-out implementations, placeholder lorem ipsum, or untracked TODOs.
 - Do not expose secrets or commit environment files containing credentials.
 
-## 8. Design implementation rules
+## 10. Design implementation rules
 
 - Reuse existing tokens and components before creating new ones.
 - Do not hard-code arbitrary colours, spacing, radii, or shadows when a repository token exists.
@@ -114,7 +155,7 @@ A task is not complete while any required command fails. If an environment limit
 - Motion must communicate state or hierarchy; decorative motion is prohibited.
 - Prevent avoidable layout shift.
 
-## 9. Accessibility baseline
+## 11. Accessibility baseline
 
 Every completed task must satisfy:
 
@@ -128,7 +169,7 @@ Every completed task must satisfy:
 - reduced-motion support,
 - screen-reader-compatible status and error feedback.
 
-## 10. Performance baseline
+## 12. Performance baseline
 
 - Do not ship unnecessary client JavaScript.
 - Use Next.js image and font optimisation where applicable.
@@ -137,7 +178,7 @@ Every completed task must satisfy:
 - Keep route transitions and primary interactions responsive.
 - Do not add large media assets without explicit approval and optimisation.
 
-## 11. Scope control
+## 13. Scope control
 
 The active task's `In scope`, `Out of scope`, and acceptance criteria are binding.
 
@@ -148,10 +189,11 @@ Do not:
 - introduce future services or integrations,
 - replace the approved stack,
 - invent product requirements absent from governing documents.
+- invent routes, APIs, entities, dependencies, or product decisions.
 
 When a missing decision blocks implementation, stop at the smallest safe boundary and report the decision needed.
 
-## 12. Pull-request handoff
+## 14. Pull-request handoff
 
 Every pull request must include:
 
@@ -165,7 +207,10 @@ Every pull request must include:
 - known limitations,
 - explicit confirmation that no unrelated scope was added.
 
-## 13. Definition of complete
+The handoff must also include the Mission Brief, Repository Discovery Report,
+implementation plan, and any ADR or review record required by the task.
+
+## 15. Definition of complete
 
 Work is complete only when:
 
