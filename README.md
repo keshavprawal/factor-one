@@ -24,6 +24,9 @@ pnpm typecheck
 pnpm format:check
 ```
 
+See [the local development workflow](docs/04-engineering/DEVELOPMENT-WORKFLOW.md)
+for branch and pull-request expectations.
+
 ## Project Operating System
 
 - [Table of Contents](docs/os/foundation/TABLE-OF-CONTENTS.md)

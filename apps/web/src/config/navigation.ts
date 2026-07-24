@@ -11,7 +11,8 @@ export interface UnavailableNavigationItem {
 }
 
 export type NavigationItem =
-  AvailableNavigationItem | UnavailableNavigationItem;
+  | AvailableNavigationItem
+  | UnavailableNavigationItem;
 
 export interface FooterNavigationGroup {
   items: AvailableNavigationItem[];

@@ -2,3 +2,6 @@ node_modules
 .next
 coverage
 pnpm-lock.yaml
+docs/os/
+docs/04-engineering/CONSTITUTION.md
+docs/05-specifications/spec-000.md

@@ -45,12 +45,42 @@ const featuredProducts = [
 ];
 
 const vehicleCategories = [
-  { name: 'Interior', description: 'Refined details for the cabin.', href: '/vehicles/vf7/categories/interior', image: '/images/categories/interior.jpg' },
-  { name: 'Exterior', description: 'Considered protection from every angle.', href: '/vehicles/vf7/categories/exterior', image: '/images/categories/exterior.jpg' },
-  { name: 'Protection', description: 'Made to preserve what matters.', href: '/vehicles/vf7/categories/protection', image: '/images/categories/protection.jpg' },
-  { name: 'Storage', description: 'Space designed around real life.', href: '/vehicles/vf7/categories/storage', image: '/images/categories/storage.jpg' },
-  { name: 'Electronics', description: 'Technology that integrates cleanly.', href: '/vehicles/vf7/categories/electronics', image: '/images/categories/lifestyle.jpg' },
-  { name: 'Charging', description: 'Power for your everyday routine.', href: '/vehicles/vf7/categories/charging', image: '/images/categories/charging.jpg' },
+  {
+    name: 'Interior',
+    description: 'Refined details for the cabin.',
+    href: '/vehicles/vf7/categories/interior',
+    image: '/images/categories/interior.jpg',
+  },
+  {
+    name: 'Exterior',
+    description: 'Considered protection from every angle.',
+    href: '/vehicles/vf7/categories/exterior',
+    image: '/images/categories/exterior.jpg',
+  },
+  {
+    name: 'Protection',
+    description: 'Made to preserve what matters.',
+    href: '/vehicles/vf7/categories/protection',
+    image: '/images/categories/protection.jpg',
+  },
+  {
+    name: 'Storage',
+    description: 'Space designed around real life.',
+    href: '/vehicles/vf7/categories/storage',
+    image: '/images/categories/storage.jpg',
+  },
+  {
+    name: 'Electronics',
+    description: 'Technology that integrates cleanly.',
+    href: '/vehicles/vf7/categories/electronics',
+    image: '/images/categories/lifestyle.jpg',
+  },
+  {
+    name: 'Charging',
+    description: 'Power for your everyday routine.',
+    href: '/vehicles/vf7/categories/charging',
+    image: '/images/categories/charging.jpg',
+  },
 ];
 
 const overviewHighlights = [
@@ -60,38 +90,77 @@ const overviewHighlights = [
 ];
 
 const ownershipResources = [
-  { title: 'Installation Guides', description: 'View step-by-step installation instructions.', href: '/support/installation-guides' },
-  { title: 'Warranty', description: 'Understand coverage and claims.', href: '/support/warranty' },
-  { title: 'Care & Maintenance', description: 'Learn how to maximise product life.', href: '/support/care-and-maintenance' },
-  { title: 'Frequently Asked Questions', description: 'Quick answers to common questions.', href: '/support/faq' },
+  {
+    title: 'Installation Guides',
+    description: 'View step-by-step installation instructions.',
+    href: '/support/installation-guides',
+  },
+  {
+    title: 'Warranty',
+    description: 'Understand coverage and claims.',
+    href: '/support/warranty',
+  },
+  {
+    title: 'Care & Maintenance',
+    description: 'Learn how to maximise product life.',
+    href: '/support/care-and-maintenance',
+  },
+  {
+    title: 'Frequently Asked Questions',
+    description: 'Quick answers to common questions.',
+    href: '/support/faq',
+  },
 ];
 
 export default function VF7Page() {
   return (
     <>
-      <section id="vehicle-hero" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-hero-heading">
+      <section
+        id="vehicle-hero"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="vehicle-hero-heading"
+      >
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20 xl:gap-28">
             <div className="order-2 max-w-xl lg:order-1">
-              <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground">VINFAST</p>
-              <h1 id="vehicle-hero-heading" className="mt-5 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+              <p className="text-muted-foreground text-xs font-medium tracking-[0.18em]">
+                VINFAST
+              </p>
+              <h1
+                id="vehicle-hero-heading"
+                className="mt-5 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
+              >
                 VF7
               </h1>
-              <p className="mt-6 text-xl leading-8 text-foreground sm:text-2xl">Premium electric SUV engineered for everyday confidence.</p>
-              <p className="mt-6 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                Discover accessories engineered specifically for the VinFast VF7. Every product is designed to integrate seamlessly with your vehicle while maintaining its design language and everyday practicality.
+              <p className="text-foreground mt-6 text-xl leading-8 sm:text-2xl">
+                Premium electric SUV engineered for everyday confidence.
+              </p>
+              <p className="text-muted-foreground mt-6 text-base leading-7 sm:text-lg sm:leading-8">
+                Discover accessories engineered specifically for the VinFast
+                VF7. Every product is designed to integrate seamlessly with your
+                vehicle while maintaining its design language and everyday
+                practicality.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button asChild size="lg" className="rounded-full px-6">
-                  <ScrollLink href="#featured-products">Explore Products</ScrollLink>
+                  <ScrollLink href="#featured-products">
+                    Explore Products
+                  </ScrollLink>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-full px-6">
-                  <ScrollLink href="#vehicle-categories">Browse Categories</ScrollLink>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-6"
+                >
+                  <ScrollLink href="#vehicle-categories">
+                    Browse Categories
+                  </ScrollLink>
                 </Button>
               </div>
             </div>
 
-            <div className="order-1 relative aspect-[4/3] overflow-hidden bg-muted lg:order-2">
+            <div className="bg-muted relative order-1 aspect-[4/3] overflow-hidden lg:order-2">
               <Image
                 src="/images/hero-suv.jpg"
                 alt="Graphite VinFast VF7 electric SUV outside a minimalist contemporary residence"
@@ -105,10 +174,14 @@ export default function VF7Page() {
         </Container>
       </section>
 
-      <section id="vehicle-overview" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-overview-heading">
+      <section
+        id="vehicle-overview"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="vehicle-overview-heading"
+      >
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20 xl:gap-28">
-            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+            <div className="bg-muted relative aspect-[4/3] overflow-hidden">
               <Image
                 src="/images/hero-suv.jpg"
                 alt="Graphite VinFast VF7 electric SUV with minimalist contemporary architecture"
@@ -119,18 +192,32 @@ export default function VF7Page() {
             </div>
 
             <div className="max-w-xl">
-              <h2 id="vehicle-overview-heading" className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              <h2
+                id="vehicle-overview-heading"
+                className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl"
+              >
                 Designed Around the Way You Drive.
               </h2>
-              <p className="mt-7 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                The VinFast VF7 combines electric performance, intelligent technology and everyday practicality. Factor One develops accessories specifically for the VF7, ensuring every product complements the vehicle&apos;s design while solving real ownership needs.
+              <p className="text-muted-foreground mt-7 text-base leading-7 sm:text-lg sm:leading-8">
+                The VinFast VF7 combines electric performance, intelligent
+                technology and everyday practicality. Factor One develops
+                accessories specifically for the VF7, ensuring every product
+                complements the vehicle&apos;s design while solving real
+                ownership needs.
               </p>
 
-              <dl className="mt-10 border-t border-border">
+              <dl className="border-border mt-10 border-t">
                 {overviewHighlights.map(([term, description]) => (
-                  <div key={term} className="border-b border-border py-5 sm:py-6">
-                    <dt className="text-lg font-medium tracking-[-0.025em]">{term}</dt>
-                    <dd className="mt-1.5 text-sm leading-6 text-muted-foreground sm:text-base">{description}</dd>
+                  <div
+                    key={term}
+                    className="border-border border-b py-5 sm:py-6"
+                  >
+                    <dt className="text-lg font-medium tracking-[-0.025em]">
+                      {term}
+                    </dt>
+                    <dd className="text-muted-foreground mt-1.5 text-sm leading-6 sm:text-base">
+                      {description}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -139,13 +226,23 @@ export default function VF7Page() {
         </Container>
       </section>
 
-      <section id="featured-products" className="scroll-mt-[4.5rem] section-space" aria-labelledby="featured-products-heading">
+      <section
+        id="featured-products"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="featured-products-heading"
+      >
         <Container>
           <div className="max-w-2xl">
-            <h2 id="featured-products-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+            <h2
+              id="featured-products-heading"
+              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
+            >
               Featured Accessories
             </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">Carefully selected accessories engineered specifically for the VinFast VF7.</p>
+            <p className="text-muted-foreground mt-5 text-lg leading-8">
+              Carefully selected accessories engineered specifically for the
+              VinFast VF7.
+            </p>
           </div>
 
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
@@ -156,13 +253,22 @@ export default function VF7Page() {
         </Container>
       </section>
 
-      <section id="vehicle-categories" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-categories-heading">
+      <section
+        id="vehicle-categories"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="vehicle-categories-heading"
+      >
         <Container>
           <div className="max-w-2xl">
-            <h2 id="vehicle-categories-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+            <h2
+              id="vehicle-categories-heading"
+              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
+            >
               Browse by Category
             </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">Find accessories designed for every part of your VF7.</p>
+            <p className="text-muted-foreground mt-5 text-lg leading-8">
+              Find accessories designed for every part of your VF7.
+            </p>
           </div>
 
           <nav className="mt-14 lg:mt-16" aria-label="VF7 accessory categories">
@@ -177,14 +283,22 @@ export default function VF7Page() {
         </Container>
       </section>
 
-      <section id="ownership-resources" className="scroll-mt-[4.5rem] section-space" aria-labelledby="ownership-resources-heading">
+      <section
+        id="ownership-resources"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="ownership-resources-heading"
+      >
         <Container>
           <div className="max-w-2xl">
-            <h2 id="ownership-resources-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+            <h2
+              id="ownership-resources-heading"
+              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
+            >
               Ownership Resources
             </h2>
-            <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              Everything you need to install, maintain and get the most from your VinFast VF7 accessories.
+            <p className="text-muted-foreground mt-5 text-lg leading-8">
+              Everything you need to install, maintain and get the most from
+              your VinFast VF7 accessories.
             </p>
           </div>
 
@@ -196,20 +310,35 @@ export default function VF7Page() {
         </Container>
       </section>
 
-      <section id="vehicle-cta" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-cta-heading">
+      <section
+        id="vehicle-cta"
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="vehicle-cta-heading"
+      >
         <Container>
           <div className="mx-auto max-w-[44rem] text-center">
-            <h2 id="vehicle-cta-heading" className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+            <h2
+              id="vehicle-cta-heading"
+              className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl"
+            >
               Ready to Personalise Your VF7?
             </h2>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Explore accessories engineered specifically for your vehicle and designed to enhance every journey.
+            <p className="text-muted-foreground mt-6 text-lg leading-8">
+              Explore accessories engineered specifically for your vehicle and
+              designed to enhance every journey.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="lg" className="rounded-full px-6">
-                <ScrollLink href="#featured-products">Explore All Accessories</ScrollLink>
+                <ScrollLink href="#featured-products">
+                  Explore All Accessories
+                </ScrollLink>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-6">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full px-6"
+              >
                 <Link href="/support">Contact Factor One</Link>
               </Button>
             </div>
