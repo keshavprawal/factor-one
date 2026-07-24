@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Container } from '@/components/layout/container';
 import { CategoryCard } from '@/components/product/category-card';
 import { ProductCard } from '@/components/product/product-card';
+import { ResourceCard } from '@/components/resource/resource-card';
 import { Button } from '@/components/ui/button';
 import { ScrollLink } from '@/components/ui/scroll-link';
 
@@ -49,6 +50,13 @@ const vehicleCategories = [
   { name: 'Storage', description: 'Space designed around real life.', href: '/vehicles/vf7/categories/storage', image: '/images/categories/storage.jpg' },
   { name: 'Electronics', description: 'Technology that integrates cleanly.', href: '/vehicles/vf7/categories/electronics', image: '/images/categories/lifestyle.jpg' },
   { name: 'Charging', description: 'Power for your everyday routine.', href: '/vehicles/vf7/categories/charging', image: '/images/categories/charging.jpg' },
+];
+
+const ownershipResources = [
+  { title: 'Installation Guides', description: 'View step-by-step installation instructions.', href: '/support/installation-guides' },
+  { title: 'Warranty', description: 'Understand coverage and claims.', href: '/support/warranty' },
+  { title: 'Care & Maintenance', description: 'Learn how to maximise product life.', href: '/support/care-and-maintenance' },
+  { title: 'Frequently Asked Questions', description: 'Quick answers to common questions.', href: '/support/faq' },
 ];
 
 export default function VF7Page() {
@@ -168,9 +176,20 @@ export default function VF7Page() {
 
       <section id="ownership-resources" className="scroll-mt-[4.5rem] section-space" aria-labelledby="ownership-resources-heading">
         <Container>
-          <h2 id="ownership-resources-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-            Ownership Resources
-          </h2>
+          <div className="max-w-2xl">
+            <h2 id="ownership-resources-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Ownership Resources
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              Everything you need to install, maintain and get the most from your VinFast VF7 accessories.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-x-16 gap-y-0 md:grid-cols-2 lg:mt-16 lg:gap-x-24">
+            {ownershipResources.map((resource) => (
+              <ResourceCard key={resource.title} {...resource} />
+            ))}
+          </div>
         </Container>
       </section>
 
