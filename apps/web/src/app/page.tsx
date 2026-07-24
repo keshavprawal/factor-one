@@ -13,22 +13,22 @@ export default function Home() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[64%_center]"
+        className="object-cover object-center"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white/45 via-white/15 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.32),rgba(255,255,255,0)_62%)]" aria-hidden="true" />
 
-      <Container className="relative z-10 flex flex-1 items-center py-20 sm:py-24 lg:py-28">
-        <div className="max-w-2xl">
+      <Container className="relative z-10 flex flex-1 items-center justify-center py-20 sm:py-24 lg:py-28">
+        <div className="max-w-3xl text-center">
           <h1
             id="hero-heading"
             className="animate-hero-rise text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
           >
             Designed to Belong.
           </h1>
-          <p className="mt-6 max-w-xl animate-hero-fade text-lg leading-8 text-foreground/80 [animation-delay:140ms] sm:text-xl">
+          <p className="mx-auto mt-6 max-w-xl animate-hero-fade text-lg leading-8 text-foreground/80 [animation-delay:140ms] sm:text-xl">
             Premium automotive products engineered specifically for your vehicle.
           </p>
-          <div className="mt-9 flex animate-hero-fade flex-col gap-3 [animation-delay:280ms] sm:flex-row">
+          <div className="mt-9 flex animate-hero-fade flex-col justify-center gap-3 [animation-delay:280ms] sm:flex-row">
             <Button asChild size="lg" className="rounded-full px-6">
               <Link href="/vehicles">
                 Explore Your Vehicle
