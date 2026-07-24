@@ -50,9 +50,39 @@ export default function VF7Page() {
 
       <section id="vehicle-overview" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-overview-heading">
         <Container>
-          <h2 id="vehicle-overview-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-            Vehicle Overview
-          </h2>
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20 xl:gap-28">
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+              <Image
+                src="/images/hero-suv.jpg"
+                alt="Graphite VinFast VF7 electric SUV with minimalist contemporary architecture"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover object-[78%_center]"
+              />
+            </div>
+
+            <div className="max-w-xl">
+              <h2 id="vehicle-overview-heading" className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                Designed Around the Way You Drive.
+              </h2>
+              <p className="mt-7 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                The VinFast VF7 combines electric performance, intelligent technology and everyday practicality. Factor One develops accessories specifically for the VF7, ensuring every product complements the vehicle&apos;s design while solving real ownership needs.
+              </p>
+
+              <dl className="mt-10 border-t border-border">
+                {[
+                  ['Precision Fit', 'Designed specifically for the VF7.'],
+                  ['Daily Practicality', 'Accessories created around real ownership.'],
+                  ['Premium Quality', 'Materials selected for long-term durability.'],
+                ].map(([term, description]) => (
+                  <div key={term} className="border-b border-border py-5 sm:py-6">
+                    <dt className="text-lg font-medium tracking-[-0.025em]">{term}</dt>
+                    <dd className="mt-1.5 text-sm leading-6 text-muted-foreground sm:text-base">{description}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
         </Container>
       </section>
 
