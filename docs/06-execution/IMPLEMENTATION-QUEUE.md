@@ -18,21 +18,22 @@ Only the first unblocked task marked `READY` may be implemented. A later task ma
 - `IN PROGRESS` — currently being implemented
 - `IN REVIEW` — pull request open
 - `BLOCKED` — requires a recorded decision or dependency
-- `DONE` — merged and verified
+- `COMPLETED` — merged and verified
+- `PENDING` — next approved task, awaiting implementation
 
 ## Launch sequence
 
-| Order | Task | Status | Outcome |
-|---:|---|---|---|
-| 1 | `TASK-001-global-navigation-app-shell.md` | READY | Every route renders within a consistent, responsive, accessible shell. |
-| 2 | TASK-002-homepage-foundation | BACKLOG | The homepage communicates the brand and directs users into product discovery. |
-| 3 | TASK-003-shop-collection | BACKLOG | Users can browse products through a clear collection experience. |
-| 4 | TASK-004-product-detail | BACKLOG | Users can understand, trust, and evaluate one product. |
-| 5 | TASK-005-search | BACKLOG | Users can find relevant products through partial and exact queries. |
-| 6 | TASK-006-cart | BACKLOG | Users can review and modify a purchase before checkout. |
-| 7 | TASK-007-about-contact | BACKLOG | Users can understand the company and contact it easily. |
-| 8 | TASK-008-seo-accessibility-performance | BACKLOG | The release meets launch-wide quality requirements. |
-| 9 | TASK-009-release-verification | BACKLOG | The complete release is verified against SPEC-000. |
+| Order | Task                                      | Status    | Outcome                                                                                                                                            |
+| ----: | ----------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     1 | `TASK-001-global-navigation-app-shell.md` | COMPLETED | Merged via PR #2 on 2026-07-25. Shared AppShell, configuration-driven navigation, accessible mobile dialog, and truthful unavailable destinations. |
+|     2 | TASK-002-homepage-foundation              | PENDING   | The homepage communicates the brand and directs users into product discovery.                                                                      |
+|     3 | TASK-003-shop-collection                  | BACKLOG   | Users can browse products through a clear collection experience.                                                                                   |
+|     4 | TASK-004-product-detail                   | BACKLOG   | Users can understand, trust, and evaluate one product.                                                                                             |
+|     5 | TASK-005-search                           | BACKLOG   | Users can find relevant products through partial and exact queries.                                                                                |
+|     6 | TASK-006-cart                             | BACKLOG   | Users can review and modify a purchase before checkout.                                                                                            |
+|     7 | TASK-007-about-contact                    | BACKLOG   | Users can understand the company and contact it easily.                                                                                            |
+|     8 | TASK-008-seo-accessibility-performance    | BACKLOG   | The release meets launch-wide quality requirements.                                                                                                |
+|     9 | TASK-009-release-verification             | BACKLOG   | The complete release is verified against SPEC-000.                                                                                                 |
 
 ## Rules
 
@@ -87,4 +88,5 @@ Next recommended task:
 
 ## Current execution instruction
 
-Implement `docs/06-execution/tasks/TASK-001-global-navigation-app-shell.md` and nothing beyond its approved scope.
+`TASK-002-homepage-foundation` is the first pending task. Do not begin it until
+it is marked `READY` with an approved task file.

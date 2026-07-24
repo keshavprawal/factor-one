@@ -1,11 +1,15 @@
 'use client';
 
-import { forwardRef, type ComponentPropsWithoutRef, type MouseEvent } from 'react';
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  type MouseEvent,
+} from 'react';
 
-export const ScrollLink = forwardRef<HTMLAnchorElement, ComponentPropsWithoutRef<'a'>>(function ScrollLink(
-  { href, onClick, ...props },
-  ref,
-) {
+export const ScrollLink = forwardRef<
+  HTMLAnchorElement,
+  ComponentPropsWithoutRef<'a'>
+>(function ScrollLink({ href, onClick, ...props }, ref) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     onClick?.(event);
 
@@ -21,7 +25,9 @@ export const ScrollLink = forwardRef<HTMLAnchorElement, ComponentPropsWithoutRef
 
     event.preventDefault();
     target.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
       block: 'start',
     });
     window.history.replaceState(null, '', href);

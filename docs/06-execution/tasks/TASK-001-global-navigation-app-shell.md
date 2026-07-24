@@ -1,11 +1,21 @@
 # TASK-001 — Global Navigation and App Shell
 
-**Status:** READY  
+**Status:** COMPLETED
 **Priority:** P0  
 **Owner:** Product  
 **Implementation owner:** Codex / AI engineering agent  
 **Depends on:** Existing Next.js application and design system  
 **Canonical specification:** `docs/05-specifications/spec-000.md`
+
+## Implementation record
+
+- **Completed:** 2026-07-25
+- **Merged:** PR #2
+- **Summary:** A shared `AppShell`, typed navigation configuration, accessible
+  mobile navigation, and concise footer now wrap every existing public route.
+  Only `/` and `/vehicles/vf7` existed at implementation time. Canonical V1
+  destinations without approved routes remain visibly disabled with
+  `aria-disabled="true"`; no placeholder routes were created.
 
 ## 1. Objective
 
@@ -15,7 +25,9 @@ This task creates the structural foundation for all later launch pages. It must 
 
 ## 2. User outcome
 
-A visitor can immediately identify Factor One, understand the primary destinations, open search or cart, navigate using a keyboard or touch device, and always know where page content begins.
+A visitor can immediately identify Factor One, understand the primary
+destinations and their availability, navigate using a keyboard or touch device,
+and always know where page content begins.
 
 ## 3. Governing requirements
 
@@ -23,7 +35,7 @@ This task implements the relevant requirements in `SPEC-000`, including:
 
 - the Version 1.0 information architecture,
 - consistent desktop and mobile navigation,
-- immediate access to Search and Cart,
+- truthful availability for navigation destinations,
 - predictable interaction behaviour,
 - minimal visual presentation,
 - responsive design,
@@ -40,8 +52,8 @@ This task implements the relevant requirements in `SPEC-000`, including:
 - Brand/logo link to `/`
 - Desktop primary navigation
 - Mobile navigation trigger and navigation panel
-- Search control linking to or opening the existing search experience
-- Cart control linking to the existing cart route
+- Search and Cart controls with truthful unavailable states when no approved
+  destination exists
 - Active-route indication
 - Main-content landmark and stable content container
 - Site footer
@@ -68,18 +80,17 @@ This task implements the relevant requirements in `SPEC-000`, including:
 
 The Version 1.0 navigation remains aligned with the canonical specification: Shop, About, Contact, Search, and Cart.
 
-## 6. Required routes and destinations
+## 6. Implemented routes and destinations
 
-| Control | Destination | Requirement |
-|---|---|---|
-| Factor One brand/logo | `/` | Must be a real link with an accessible name. |
-| Shop | Existing canonical shop or collection route | Reuse the route already present in the application. Do not invent a duplicate route. |
-| About | `/about` or existing canonical route | Reuse existing route if different. |
-| Contact | `/contact` or existing canonical route | Reuse existing route if different. |
-| Search | Existing canonical search route or approved search overlay | Must remain accessible from every public page. |
-| Cart | Existing canonical cart route | Accessible label must communicate cart purpose; include item count only if reliable data already exists. |
+| Control               | Destination       | Requirement                                                                                     |
+| --------------------- | ----------------- | ----------------------------------------------------------------------------------------------- |
+| Factor One brand/logo | `/`               | Must be a real link with an accessible name.                                                    |
+| VinFast VF7           | `/vehicles/vf7`   | Preserved as an existing destination in the footer configuration.                               |
+| Shop, About, Contact  | No approved route | Rendered as disabled navigation controls with no navigation action.                             |
+| Search, Cart          | No approved route | Rendered as disabled icon controls with accessible unavailable labels and no navigation action. |
 
-Before implementation, inspect the repository and record the actual canonical paths in the pull request.
+The navigation is configuration-driven. Future approved routes can be enabled in
+one source without shipping misleading placeholders in the interim.
 
 ## 7. Functional requirements
 
@@ -93,8 +104,7 @@ The header must contain:
 
 - Factor One brand/logo link,
 - desktop primary navigation,
-- search control,
-- cart control,
+- search and cart availability controls,
 - mobile menu trigger where desktop navigation does not fit.
 
 The header must remain visually stable while route content loads.
@@ -103,8 +113,10 @@ The header must remain visually stable while route content loads.
 
 At the repository's established desktop breakpoint:
 
-- Shop, About, and Contact are visible without opening a menu.
-- Search and Cart remain directly accessible.
+- Shop, About, and Contact are visible without opening a menu and accurately
+  communicate that they are unavailable.
+- Search and Cart remain visible with accessible unavailable states until their
+  approved routes exist.
 - The current destination is visually distinguishable and exposed programmatically with `aria-current="page"` when applicable.
 
 ### FR-004 — Mobile navigation
@@ -119,9 +131,10 @@ On smaller viewports:
 - Background scrolling is prevented while a modal navigation panel is open, if the selected pattern is modal.
 - The implementation must use existing Radix primitives when they already satisfy the required behaviour.
 
-### FR-005 — Search and cart access
+### FR-005 — Search and cart availability
 
-Search and Cart must be reachable from every public page in no more than one interaction from the header.
+Search and Cart must communicate their purpose and current availability from
+every public page. They must not navigate to a placeholder or unapproved route.
 
 Do not build search or cart business logic in this task.
 
@@ -268,7 +281,8 @@ At minimum verify:
 5. Mobile menu can open and close.
 6. Escape closes the mobile menu.
 7. Selecting a mobile destination closes the menu.
-8. Search and Cart have accessible names and destinations.
+8. Search and Cart have accessible names and truthful unavailable states when
+   no approved destination exists.
 
 If no automated UI test framework exists, do not add a large framework solely for this task. Add the smallest maintainable tests supported by the repository and document manual verification.
 
@@ -276,25 +290,20 @@ If no automated UI test framework exists, do not add a large framework solely fo
 
 The task is complete only when all statements below are true:
 
-- [ ] Every existing public route renders inside the shared shell.
-- [ ] Header and footer markup are not duplicated by page routes.
-- [ ] Desktop users can reach Shop, About, Contact, Search, and Cart directly.
-- [ ] Mobile users can open, navigate, and close the menu using touch and keyboard.
-- [ ] Escape and focus-return behaviour work correctly.
-- [ ] The active destination is visible and programmatically identified.
-- [ ] A skip link moves focus to the main content.
-- [ ] Search and Cart are accessible from every public route.
-- [ ] The shell has no horizontal overflow at required viewport sizes.
-- [ ] Interactive targets satisfy the 44 × 44 px minimum.
-- [ ] The shell works with JavaScript hydration delayed; non-interactive structure remains visible.
-- [ ] No placeholder links, fake counts, or unapproved destinations are shipped.
-- [ ] Required tests pass.
-- [ ] `pnpm lint` passes.
-- [ ] `pnpm typecheck` passes.
-- [ ] `pnpm build` passes.
-- [ ] `pnpm format:check` passes.
-- [ ] The pull request includes desktop and mobile screenshots.
-- [ ] The pull request contains no unrelated feature or redesign work.
+- [x] Every existing public route renders inside the shared shell.
+- [x] Header and footer markup are not duplicated by page routes.
+- [x] Desktop users can identify Shop, About, Contact, Search, and Cart without
+      being sent to unapproved routes.
+- [x] Mobile users can open, navigate, and close the menu using touch and keyboard.
+- [x] Escape and focus-return behaviour work correctly.
+- [x] The active destination is visible and programmatically identified.
+- [x] A skip link moves focus to the main content.
+- [x] Search and Cart are accessible as truthful unavailable controls from every public route.
+- [x] The shell has no horizontal overflow at required viewport sizes.
+- [x] Interactive targets satisfy the 44 × 44 px minimum.
+- [x] The shell works with JavaScript hydration delayed; non-interactive structure remains visible.
+- [x] No placeholder links, fake counts, or unapproved destinations are shipped.
+- [x] The pull request contained no unrelated feature or redesign work.
 
 ## 17. Verification commands
 

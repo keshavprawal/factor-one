@@ -43,12 +43,30 @@ Do not introduce flash-sale patterns, fake scarcity, dark patterns, aggressive p
 
 Do not add a new dependency when the requirement can be met cleanly with the existing stack. Any necessary dependency must be justified in the pull request.
 
-## 4. Required workflow
+## 4. Repository Discovery
+
+Repository discovery is mandatory before every implementation task. Before
+writing code, inspect and record the current:
+
+- routes and public destinations,
+- components and shared layout primitives,
+- navigation and shared configuration,
+- tests and test tooling,
+- lint configuration and formatting rules,
+- package manager, lockfile, and dependencies,
+- architecture and existing implementation patterns.
+
+Base the implementation plan on this observed repository state, not on
+assumptions from a task description or prior conversation. If the task assumes
+an unavailable route, component, or service, use the smallest truthful
+behaviour permitted by the task and record the deviation in the handoff.
+
+## 5. Required workflow
 
 For every task:
 
 1. Read the governing documents and the complete task file.
-2. Inspect the existing implementation before editing.
+2. Complete Repository Discovery before planning or editing.
 3. State assumptions in the task handoff; do not encode uncertain assumptions as permanent architecture.
 4. Implement the smallest complete vertical slice satisfying the acceptance criteria.
 5. Add or update tests for behaviour that can regress.
@@ -58,7 +76,7 @@ For every task:
 
 Do not begin a second task while the active task remains incomplete.
 
-## 5. Required checks
+## 6. Required checks
 
 Run from the repository root:
 
@@ -72,7 +90,7 @@ pnpm format:check
 
 A task is not complete while any required command fails. If an environment limitation prevents a command from running, document the exact command, output, and limitation.
 
-## 6. Code standards
+## 7. Code standards
 
 - Use TypeScript strictness; do not use `any` unless an external boundary makes it unavoidable and the reason is documented.
 - Prefer Server Components. Add `"use client"` only where browser state, effects, or event handlers are required.
@@ -86,7 +104,7 @@ A task is not complete while any required command fails. If an environment limit
 - Do not leave dead code, commented-out implementations, placeholder lorem ipsum, or untracked TODOs.
 - Do not expose secrets or commit environment files containing credentials.
 
-## 7. Design implementation rules
+## 8. Design implementation rules
 
 - Reuse existing tokens and components before creating new ones.
 - Do not hard-code arbitrary colours, spacing, radii, or shadows when a repository token exists.
@@ -96,7 +114,7 @@ A task is not complete while any required command fails. If an environment limit
 - Motion must communicate state or hierarchy; decorative motion is prohibited.
 - Prevent avoidable layout shift.
 
-## 8. Accessibility baseline
+## 9. Accessibility baseline
 
 Every completed task must satisfy:
 
@@ -110,7 +128,7 @@ Every completed task must satisfy:
 - reduced-motion support,
 - screen-reader-compatible status and error feedback.
 
-## 9. Performance baseline
+## 10. Performance baseline
 
 - Do not ship unnecessary client JavaScript.
 - Use Next.js image and font optimisation where applicable.
@@ -119,7 +137,7 @@ Every completed task must satisfy:
 - Keep route transitions and primary interactions responsive.
 - Do not add large media assets without explicit approval and optimisation.
 
-## 10. Scope control
+## 11. Scope control
 
 The active task's `In scope`, `Out of scope`, and acceptance criteria are binding.
 
@@ -133,7 +151,7 @@ Do not:
 
 When a missing decision blocks implementation, stop at the smallest safe boundary and report the decision needed.
 
-## 11. Pull-request handoff
+## 12. Pull-request handoff
 
 Every pull request must include:
 
@@ -147,7 +165,7 @@ Every pull request must include:
 - known limitations,
 - explicit confirmation that no unrelated scope was added.
 
-## 12. Definition of complete
+## 13. Definition of complete
 
 Work is complete only when:
 
