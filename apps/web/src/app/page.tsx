@@ -61,7 +61,7 @@ export default function Home() {
       <section className="relative -mt-[4.5rem] flex min-h-[100svh] overflow-hidden pt-[4.5rem]" aria-labelledby="hero-heading">
         <Image
           src="/images/hero-suv.jpg"
-          alt="A graphite premium SUV outside a minimalist contemporary residence"
+          alt="White and graphite premium electric vehicles outside a minimalist contemporary residence"
           fill
           priority
           sizes="100vw"
@@ -148,14 +148,14 @@ export default function Home() {
           <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-12">
             {vehicles.map((vehicle) => (
               <article key={vehicle.name} className="group animate-hero-rise [animation-delay:140ms]">
-                <Link href={vehicle.href} className="block overflow-hidden transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                <Link href={vehicle.href} className="block overflow-hidden transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 motion-reduce:transform-none">
                   <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     <Image
                       src="/images/hero-suv.jpg"
                       alt={`${vehicle.name} electric vehicle`}
                       fill
                       sizes="(min-width: 1024px) 50vw, 100vw"
-                      className={`object-cover ${vehicle.imagePosition} transition-transform duration-700 ease-out group-hover:scale-[1.03]`}
+                      className={`object-cover ${vehicle.imagePosition} transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none`}
                     />
                   </div>
                   <div className="flex items-end justify-between gap-6 pt-6">
@@ -163,7 +163,7 @@ export default function Home() {
                       <h3 className="text-3xl font-semibold tracking-[-0.04em]">{vehicle.name}</h3>
                       <p className="mt-2 text-base text-muted-foreground">{vehicle.description}</p>
                     </div>
-                    <Button asChild className="shrink-0 rounded-full px-5">
+                    <Button asChild size="lg" className="shrink-0 rounded-full px-5 group-hover:bg-primary/90">
                       <span>Explore {vehicle.name}</span>
                     </Button>
                   </div>
@@ -191,14 +191,14 @@ export default function Home() {
           <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
             {categories.map((category) => (
               <article key={category.name} className="group animate-hero-rise [animation-delay:140ms]">
-                <Link href={category.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                <Link href={category.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 motion-reduce:transform-none">
                   <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     <Image
                       src={category.image}
                       alt={`${category.name} automotive products`}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
                     />
                   </div>
                   <div className="pt-5">
@@ -226,14 +226,14 @@ export default function Home() {
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
             {essentials.map((product) => (
               <article key={product.name} className="group animate-hero-rise [animation-delay:140ms]">
-                <Link href={product.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                <Link href={product.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 motion-reduce:transform-none">
                   <div className="relative aspect-square overflow-hidden bg-background">
                     <Image
                       src={product.image}
                       alt={product.name}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
                     />
                   </div>
                   <div className="pt-5">
@@ -241,7 +241,7 @@ export default function Home() {
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">{product.description}</p>
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-foreground">
                       Learn More
-                      <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                      <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 motion-reduce:transform-none" aria-hidden="true" />
                     </span>
                   </div>
                 </Link>
