@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Container } from '@/components/layout/container';
 import { CategoryCard } from '@/components/product/category-card';
 import { ProductCard } from '@/components/product/product-card';
@@ -195,9 +196,22 @@ export default function VF7Page() {
 
       <section id="vehicle-cta" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-cta-heading">
         <Container>
-          <h2 id="vehicle-cta-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-            Vehicle CTA
-          </h2>
+          <div className="mx-auto max-w-[44rem] text-center">
+            <h2 id="vehicle-cta-heading" className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Ready to Personalise Your VF7?
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+              Explore accessories engineered specifically for your vehicle and designed to enhance every journey.
+            </p>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button asChild size="lg" className="rounded-full px-6">
+                <ScrollLink href="#featured-products">Explore All Accessories</ScrollLink>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full px-6">
+                <Link href="/support">Contact Factor One</Link>
+              </Button>
+            </div>
+          </div>
         </Container>
       </section>
     </>
