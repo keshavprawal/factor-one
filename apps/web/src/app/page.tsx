@@ -250,6 +250,27 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      <section id="homepage-cta" className="scroll-mt-[4.5rem] bg-background section-space" aria-labelledby="homepage-cta-heading">
+        <Container>
+          <div className="mx-auto max-w-[44rem] text-center animate-hero-rise">
+            <h2 id="homepage-cta-heading" className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Engineered for Your Vehicle. Ready When You Are.
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+              Explore accessories designed specifically for your vehicle and discover products built with precision, quality and purpose.
+            </p>
+            <div className="mt-9 flex flex-col items-center gap-5">
+              <Button asChild size="lg" className="rounded-full px-7">
+                <Link href="/vehicles">Find Your Vehicle</Link>
+              </Button>
+              <Link href="/about" className="text-sm font-medium text-foreground underline underline-offset-4 transition-opacity hover:opacity-65">
+                Learn About Our Engineering
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }
