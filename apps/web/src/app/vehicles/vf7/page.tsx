@@ -53,6 +53,12 @@ const vehicleCategories = [
   { name: 'Charging', description: 'Power for your everyday routine.', href: '/vehicles/vf7/categories/charging', image: '/images/categories/charging.jpg' },
 ];
 
+const overviewHighlights = [
+  ['Precision Fit', 'Designed specifically for the VF7.'],
+  ['Daily Practicality', 'Accessories created around real ownership.'],
+  ['Premium Quality', 'Materials selected for long-term durability.'],
+];
+
 const ownershipResources = [
   { title: 'Installation Guides', description: 'View step-by-step installation instructions.', href: '/support/installation-guides' },
   { title: 'Warranty', description: 'Understand coverage and claims.', href: '/support/warranty' },
@@ -121,11 +127,7 @@ export default function VF7Page() {
               </p>
 
               <dl className="mt-10 border-t border-border">
-                {[
-                  ['Precision Fit', 'Designed specifically for the VF7.'],
-                  ['Daily Practicality', 'Accessories created around real ownership.'],
-                  ['Premium Quality', 'Materials selected for long-term durability.'],
-                ].map(([term, description]) => (
+                {overviewHighlights.map(([term, description]) => (
                   <div key={term} className="border-b border-border py-5 sm:py-6">
                     <dt className="text-lg font-medium tracking-[-0.025em]">{term}</dt>
                     <dd className="mt-1.5 text-sm leading-6 text-muted-foreground sm:text-base">{description}</dd>
