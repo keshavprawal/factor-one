@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/layout/container';
+import { ProductCard } from '@/components/product/product-card';
 import { Button } from '@/components/ui/button';
 import { ScrollLink } from '@/components/ui/scroll-link';
 
@@ -8,6 +9,37 @@ export const metadata: Metadata = {
   title: 'VinFast VF7',
   description: 'Factor One products engineered for the VinFast VF7.',
 };
+
+const featuredProducts = [
+  {
+    name: 'All-Weather Floor Mats',
+    description: 'Everyday protection tailored to the VF7 interior.',
+    price: '₹5,990',
+    href: '/vehicles/vf7/products/all-weather-floor-mats',
+    image: '/images/essentials/floor-mats.jpg',
+  },
+  {
+    name: 'Premium Parcel Tray',
+    description: 'A refined way to keep the rear cargo area organized.',
+    price: '₹4,490',
+    href: '/vehicles/vf7/products/premium-parcel-tray',
+    image: '/images/essentials/trunk-organizer.jpg',
+  },
+  {
+    name: 'Tempered Screen Protector',
+    description: 'Clear, durable protection for your central display.',
+    price: '₹1,990',
+    href: '/vehicles/vf7/products/tempered-screen-protector',
+    image: '/images/essentials/screen-protector.jpg',
+  },
+  {
+    name: 'Center Console Organizer',
+    description: 'Purposeful storage for the details you carry daily.',
+    price: '₹2,990',
+    href: '/vehicles/vf7/products/center-console-organizer',
+    image: '/images/essentials/trunk-organizer.jpg',
+  },
+];
 
 export default function VF7Page() {
   return (
@@ -88,9 +120,18 @@ export default function VF7Page() {
 
       <section id="featured-products" className="scroll-mt-[4.5rem] section-space" aria-labelledby="featured-products-heading">
         <Container>
-          <h2 id="featured-products-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-            Featured Products
-          </h2>
+          <div className="max-w-2xl">
+            <h2 id="featured-products-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Featured Accessories
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">Carefully selected accessories engineered specifically for the VinFast VF7.</p>
+          </div>
+
+          <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.name} {...product} />
+            ))}
+          </div>
         </Container>
       </section>
 
