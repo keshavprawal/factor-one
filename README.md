@@ -23,3 +23,9 @@ pnpm lint
 pnpm typecheck
 pnpm format:check
 ```
+
+## Project Operating System
+
+- [Table of Contents](docs/os/foundation/TABLE-OF-CONTENTS.md)
+- [AI Context](docs/os/foundation/ai/context.md)
+- [AI Reading Order](docs/os/foundation/ai/reading-order.md)
