@@ -19,6 +19,15 @@ const vehicles = [
   },
 ];
 
+const categories = [
+  { name: 'Interior', description: 'Refined details for every journey.', href: '/products/interior', image: '/images/categories/interior.jpg' },
+  { name: 'Exterior', description: 'Considered design from every angle.', href: '/products/exterior', image: '/images/categories/exterior.jpg' },
+  { name: 'Protection', description: 'Made to preserve the finish.', href: '/products/protection', image: '/images/categories/protection.jpg' },
+  { name: 'Charging', description: 'Power that fits your routine.', href: '/products/charging', image: '/images/categories/charging.jpg' },
+  { name: 'Storage', description: 'Space designed around real life.', href: '/products/storage', image: '/images/categories/storage.jpg' },
+  { name: 'Lifestyle', description: 'The details that travel with you.', href: '/products/lifestyle', image: '/images/categories/lifestyle.jpg' },
+];
+
 export default function Home() {
   return (
     <>
@@ -139,6 +148,39 @@ export default function Home() {
           <div className="mt-16 text-center sm:mt-20">
             <p className="text-sm font-medium text-muted-foreground">Coming Soon</p>
             <p className="mt-3 text-sm tracking-[0.12em] text-foreground/70">Tesla&nbsp;&nbsp;&nbsp; BYD&nbsp;&nbsp;&nbsp; Toyota</p>
+          </div>
+        </Container>
+      </section>
+
+      <section id="product-categories" className="scroll-mt-[4.5rem] bg-background section-space" aria-labelledby="product-categories-heading">
+        <Container>
+          <div className="max-w-2xl animate-hero-rise">
+            <h2 id="product-categories-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Explore by Category
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">Everything engineered specifically for your vehicle.</p>
+          </div>
+
+          <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
+            {categories.map((category) => (
+              <article key={category.name} className="group animate-hero-rise [animation-delay:140ms]">
+                <Link href={category.href} className="block transition-transform duration-500 ease-out group-hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    <Image
+                      src={category.image}
+                      alt={`${category.name} automotive products`}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <div className="pt-5">
+                    <h3 className="text-2xl font-medium tracking-[-0.035em]">{category.name}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{category.description}</p>
+                  </div>
+                </Link>
+              </article>
+            ))}
           </div>
         </Container>
       </section>
