@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/layout/container';
+import { CategoryCard } from '@/components/product/category-card';
 import { ProductCard } from '@/components/product/product-card';
 import { Button } from '@/components/ui/button';
 import { ScrollLink } from '@/components/ui/scroll-link';
@@ -39,6 +40,15 @@ const featuredProducts = [
     href: '/vehicles/vf7/products/center-console-organizer',
     image: '/images/essentials/trunk-organizer.jpg',
   },
+];
+
+const vehicleCategories = [
+  { name: 'Interior', description: 'Refined details for the cabin.', href: '/vehicles/vf7/categories/interior', image: '/images/categories/interior.jpg' },
+  { name: 'Exterior', description: 'Considered protection from every angle.', href: '/vehicles/vf7/categories/exterior', image: '/images/categories/exterior.jpg' },
+  { name: 'Protection', description: 'Made to preserve what matters.', href: '/vehicles/vf7/categories/protection', image: '/images/categories/protection.jpg' },
+  { name: 'Storage', description: 'Space designed around real life.', href: '/vehicles/vf7/categories/storage', image: '/images/categories/storage.jpg' },
+  { name: 'Electronics', description: 'Technology that integrates cleanly.', href: '/vehicles/vf7/categories/electronics', image: '/images/categories/lifestyle.jpg' },
+  { name: 'Charging', description: 'Power for your everyday routine.', href: '/vehicles/vf7/categories/charging', image: '/images/categories/charging.jpg' },
 ];
 
 export default function VF7Page() {
@@ -137,9 +147,22 @@ export default function VF7Page() {
 
       <section id="vehicle-categories" className="scroll-mt-[4.5rem] section-space" aria-labelledby="vehicle-categories-heading">
         <Container>
-          <h2 id="vehicle-categories-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
-            Browse by Category
-          </h2>
+          <div className="max-w-2xl">
+            <h2 id="vehicle-categories-heading" className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+              Browse by Category
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">Find accessories designed for every part of your VF7.</p>
+          </div>
+
+          <nav className="mt-14 lg:mt-16" aria-label="VF7 accessory categories">
+            <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
+              {vehicleCategories.map((category) => (
+                <li key={category.name}>
+                  <CategoryCard {...category} />
+                </li>
+              ))}
+            </ul>
+          </nav>
         </Container>
       </section>
 
