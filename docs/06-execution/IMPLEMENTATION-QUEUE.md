@@ -23,17 +23,19 @@ Only the first unblocked task marked `READY` may be implemented. A later task ma
 
 ## Launch sequence
 
-| Order | Task                                      | Status    | Outcome                                                                                                                                            |
-| ----: | ----------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-|     1 | `TASK-001-global-navigation-app-shell.md` | COMPLETED | Merged via PR #2 on 2026-07-25. Shared AppShell, configuration-driven navigation, accessible mobile dialog, and truthful unavailable destinations. |
-|     2 | TASK-002-homepage-foundation              | PENDING   | The homepage communicates the brand and directs users into product discovery.                                                                      |
-|     3 | TASK-003-shop-collection                  | BACKLOG   | Users can browse products through a clear collection experience.                                                                                   |
-|     4 | TASK-004-product-detail                   | BACKLOG   | Users can understand, trust, and evaluate one product.                                                                                             |
-|     5 | TASK-005-search                           | BACKLOG   | Users can find relevant products through partial and exact queries.                                                                                |
-|     6 | TASK-006-cart                             | BACKLOG   | Users can review and modify a purchase before checkout.                                                                                            |
-|     7 | TASK-007-about-contact                    | BACKLOG   | Users can understand the company and contact it easily.                                                                                            |
-|     8 | TASK-008-seo-accessibility-performance    | BACKLOG   | The release meets launch-wide quality requirements.                                                                                                |
-|     9 | TASK-009-release-verification             | BACKLOG   | The complete release is verified against SPEC-000.                                                                                                 |
+| Order | Task                                           | Status    | Outcome                                                                                                                                            |
+| ----: | ---------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     1 | `TASK-001-global-navigation-app-shell.md`      | COMPLETED | Merged via PR #2 on 2026-07-24. Shared AppShell, configuration-driven navigation, accessible mobile dialog, and truthful unavailable destinations. |
+|     2 | TASK-001B repository-governance-tooling        | COMPLETED | Merged via PR #3 on 2026-07-25. Repository discovery, tooling, and workflow baseline reconciled.                                                   |
+|     3 | `TASK-001C-engineering-workflow-governance.md` | IN REVIEW | Establishes mission briefs, discovery reports, ADRs, reviews, delivery workflow, and task-template governance.                                     |
+|     4 | TASK-002-homepage-foundation                   | BLOCKED   | The homepage communicates the brand and directs users into product discovery after TASK-001C is merged.                                            |
+|     5 | TASK-003-shop-collection                       | BACKLOG   | Users can browse products through a clear collection experience.                                                                                   |
+|     6 | TASK-004-product-detail                        | BACKLOG   | Users can understand, trust, and evaluate one product.                                                                                             |
+|     7 | TASK-005-search                                | BACKLOG   | Users can find relevant products through partial and exact queries.                                                                                |
+|     8 | TASK-006-cart                                  | BACKLOG   | Users can review and modify a purchase before checkout.                                                                                            |
+|     9 | TASK-007-about-contact                         | BACKLOG   | Users can understand the company and contact it easily.                                                                                            |
+|    10 | TASK-008-seo-accessibility-performance         | BACKLOG   | The release meets launch-wide quality requirements.                                                                                                |
+|    11 | TASK-009-release-verification                  | BACKLOG   | The complete release is verified against SPEC-000.                                                                                                 |
 
 ## Rules
 
@@ -48,23 +50,8 @@ Only the first unblocked task marked `READY` may be implemented. A later task ma
 
 Every task file must contain:
 
-1. Identity and status
-2. Objective
-3. User outcome
-4. Governing documents
-5. In scope
-6. Out of scope
-7. Functional requirements
-8. UX and responsive requirements
-9. Accessibility requirements
-10. Performance requirements
-11. Component and file guidance
-12. Analytics requirements, when applicable
-13. Test requirements
-14. Acceptance criteria
-15. Verification commands
-16. Implementation handoff
-17. Open decisions
+Use [the canonical task template](tasks/TASK-TEMPLATE.md). Conditional
+sections are completed only when applicable to the task.
 
 ## Agent handoff protocol
 
@@ -88,5 +75,5 @@ Next recommended task:
 
 ## Current execution instruction
 
-`TASK-002-homepage-foundation` is the first pending task. Do not begin it until
-it is marked `READY` with an approved task file.
+`TASK-002-homepage-foundation` remains blocked until TASK-001C is merged. Do
+not begin it until it is marked `READY` with an approved task file.
