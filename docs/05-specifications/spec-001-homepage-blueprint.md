@@ -2,7 +2,7 @@
 
 **Document ID:** SPEC-001
 
-**Version:** 2.2.0
+**Version:** 2.3.0
 
 **Status:** Implementation-ready, subject to final product photography
 
@@ -15,7 +15,7 @@
 ## 1. Authority and Intent
 
 This specification defines the founder-approved Homepage V2 direction. Version
-2.2 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
+2.3 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
 and section-order requirements in earlier SPEC-001 versions.
 
 Within five seconds the homepage must communicate:
@@ -54,12 +54,12 @@ capability. It is not a campaign or a generic community forum.
 
 The homepage origin statement is:
 
-> By The VinFast owners, for The VinFast owners.
+> By VinFast owners, for VinFast owners.
 
 Required homepage brand statement:
 
 1. Factor One
-2. By The VinFast owners, for The VinFast owners.
+2. By VinFast owners, for VinFast owners.
 
 The two lines must read as one cohesive statement. **Built with Owners** remains
 the operating principle and roadmap capability but is not repeated between the
@@ -100,9 +100,9 @@ Subject to truthful availability, the header contains:
   - Bumper Mud Guard
 - Screen Guard
 - Door Visor
-- Knowledge
+- Decals
 - Built with Owners
-- Assistance
+- Knowledge
 - My Garage
 
 Mud Guards is a compact, accessible submenu. It must:
@@ -114,16 +114,23 @@ Mud Guards is a compact, accessible submenu. It must:
 - close after a destination is selected;
 - not depend on hover.
 
-Assistance and My Garage remain visibly and truthfully labelled as unavailable
-until approved routes exist. Valid destinations use stronger contrast and must
-not resemble disabled controls. Vehicles remains configured for future use but
-is not rendered. Decals is omitted until approved.
+Product destinations are followed by restrained spacing before Built with
+Owners and Knowledge. Decals remains visibly and truthfully unavailable until
+an approved route exists. Valid destinations use stronger contrast and must not
+resemble disabled controls. Vehicles remains configured for future use but is
+not rendered.
+
+My Garage is the far-right account menu trigger. Its menu contains disabled,
+truthfully labelled My Garage and Assistance destinations until approved routes
+exist. Assistance is not a top-level navigation item.
 
 ### Mobile navigation
 
 Use the existing accessible dialog. Mud Guards becomes one expandable item with
-both sub-options visible inside it. Avoid nested dialogs or touch-dependent
-hover behaviour.
+both sub-options visible inside it. Product, company, and account destinations
+remain clearly grouped. The account group contains the My Garage menu with My
+Garage and Assistance marked `Coming soon`. Avoid nested dialogs or
+touch-dependent hover behaviour.
 
 ### Architecture
 
@@ -161,9 +168,10 @@ Explain the company before asking the owner to explore.
 ### Required copy
 
 - Wordmark: `Factor One`
-- Origin: `By The VinFast owners, for The VinFast owners.`
+- Origin: `By VinFast owners, for VinFast owners.`
 - Headline: `Accessories that belong on your car.`
-- Supporting copy: `Designed by VinFast owners who understand it better.`
+- Supporting copy: `Designed by owners who understand the small details because
+we drive the same cars every day.`
 - Discovery action: `Explore My Car`
 - Discovery action: `Explore Accessories`
 
@@ -218,6 +226,21 @@ Display in this order:
 
 Parcel Tray remains second-last. Each item links to the matching featured
 product anchor.
+
+The stable product destinations are:
+
+| Product             | Destination/state                   |
+| ------------------- | ----------------------------------- |
+| Parcel Tray         | `/#product-parcel-tray`             |
+| Screen Guard        | `/#product-screen-guard`            |
+| Door Visor          | `/#product-door-visor`              |
+| Rear Door Mud Guard | `/#product-rear-door-mud-guard`     |
+| Bumper Mud Guard    | `/#product-bumper-mud-guard`        |
+| Decals              | `Coming soon`; no navigation action |
+
+Labels, stable IDs, and destinations must come from the central typed
+configuration. Product discovery controls must not infer destinations from
+array position, label matching, or copied fallback URLs.
 
 ### Responsive behaviour
 
@@ -479,7 +502,7 @@ No CMS, API, global state, route, or dependency is authorized.
 - compatibility engine;
 - backend services or APIs;
 - voting, discussions, beta applications, or roadmap detail;
-- Decals without approval;
+- Decals routes or product claims without approval;
 - final claims or photography not supplied by Product;
 - a permanent logo.
 
@@ -489,10 +512,15 @@ No CMS, API, global state, route, or dependency is authorized.
 
 - [ ] Exactly one navigation layer is visible.
 - [ ] Door Visor appears in the primary header.
+- [ ] Decals appears after Door Visor with a truthful unavailable state.
 - [ ] Mud Guards exposes Rear Door Mud Guard and Bumper Mud Guard.
 - [ ] Desktop submenu supports click, keyboard, Escape, and focus restoration.
 - [ ] Mobile Mud Guards expands to show both sub-options.
+- [ ] Product links precede Built with Owners and Knowledge with restrained
+      visual separation.
+- [ ] Assistance appears inside My Garage, not as a top-level item.
 - [ ] My Garage and Assistance remain truthfully unavailable.
+- [ ] Every product label resolves to its central configured destination/state.
 - [ ] No fake route exists.
 
 ### Brand and first viewport

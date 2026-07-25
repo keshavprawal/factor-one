@@ -1,116 +1,22 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Container } from '@/components/layout/container';
 import { CategoryCard } from '@/components/product/category-card';
 import { ProductCard } from '@/components/product/product-card';
 import { ResourceCard } from '@/components/resource/resource-card';
 import { Button } from '@/components/ui/button';
 import { ScrollLink } from '@/components/ui/scroll-link';
+import {
+  vf7Categories,
+  vf7FeaturedProducts,
+  vf7OverviewHighlights,
+  vf7OwnershipResources,
+} from '@/config/vf7';
 
 export const metadata: Metadata = {
   title: 'VinFast VF7',
   description: 'Factor One products engineered for the VinFast VF7.',
 };
-
-const featuredProducts = [
-  {
-    name: 'All-Weather Floor Mats',
-    description: 'Everyday protection tailored to the VF7 interior.',
-    price: '₹5,990',
-    href: '/vehicles/vf7/products/all-weather-floor-mats',
-    image: '/images/essentials/floor-mats.jpg',
-  },
-  {
-    name: 'Premium Parcel Tray',
-    description: 'A refined way to keep the rear cargo area organized.',
-    price: '₹4,490',
-    href: '/vehicles/vf7/products/premium-parcel-tray',
-    image: '/images/essentials/trunk-organizer.jpg',
-  },
-  {
-    name: 'Tempered Screen Protector',
-    description: 'Clear, durable protection for your central display.',
-    price: '₹1,990',
-    href: '/vehicles/vf7/products/tempered-screen-protector',
-    image: '/images/essentials/screen-protector.jpg',
-  },
-  {
-    name: 'Center Console Organizer',
-    description: 'Purposeful storage for the details you carry daily.',
-    price: '₹2,990',
-    href: '/vehicles/vf7/products/center-console-organizer',
-    image: '/images/essentials/trunk-organizer.jpg',
-  },
-];
-
-const vehicleCategories = [
-  {
-    name: 'Interior',
-    description: 'Refined details for the cabin.',
-    href: '/vehicles/vf7/categories/interior',
-    image: '/images/categories/interior.jpg',
-  },
-  {
-    name: 'Exterior',
-    description: 'Considered protection from every angle.',
-    href: '/vehicles/vf7/categories/exterior',
-    image: '/images/categories/exterior.jpg',
-  },
-  {
-    name: 'Protection',
-    description: 'Made to preserve what matters.',
-    href: '/vehicles/vf7/categories/protection',
-    image: '/images/categories/protection.jpg',
-  },
-  {
-    name: 'Storage',
-    description: 'Space designed around real life.',
-    href: '/vehicles/vf7/categories/storage',
-    image: '/images/categories/storage.jpg',
-  },
-  {
-    name: 'Electronics',
-    description: 'Technology that integrates cleanly.',
-    href: '/vehicles/vf7/categories/electronics',
-    image: '/images/categories/lifestyle.jpg',
-  },
-  {
-    name: 'Charging',
-    description: 'Power for your everyday routine.',
-    href: '/vehicles/vf7/categories/charging',
-    image: '/images/categories/charging.jpg',
-  },
-];
-
-const overviewHighlights = [
-  ['Precision Fit', 'Designed specifically for the VF7.'],
-  ['Daily Practicality', 'Accessories created around real ownership.'],
-  ['Premium Quality', 'Materials selected for long-term durability.'],
-];
-
-const ownershipResources = [
-  {
-    title: 'Installation Guides',
-    description: 'View step-by-step installation instructions.',
-    href: '/support/installation-guides',
-  },
-  {
-    title: 'Warranty',
-    description: 'Understand coverage and claims.',
-    href: '/support/warranty',
-  },
-  {
-    title: 'Care & Maintenance',
-    description: 'Learn how to maximise product life.',
-    href: '/support/care-and-maintenance',
-  },
-  {
-    title: 'Frequently Asked Questions',
-    description: 'Quick answers to common questions.',
-    href: '/support/faq',
-  },
-];
 
 export default function VF7Page() {
   return (
@@ -138,7 +44,7 @@ export default function VF7Page() {
               <p className="text-muted-foreground mt-6 text-base leading-7 sm:text-lg sm:leading-8">
                 Discover accessories engineered specifically for the VinFast
                 VF7. Every product is designed to integrate seamlessly with your
-                vehicle while maintaining its design language and everyday
+                car while maintaining its design language and everyday
                 practicality.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -202,12 +108,12 @@ export default function VF7Page() {
                 The VinFast VF7 combines electric performance, intelligent
                 technology and everyday practicality. Factor One develops
                 accessories specifically for the VF7, ensuring every product
-                complements the vehicle&apos;s design while solving real
-                ownership needs.
+                complements the car&apos;s design while solving real ownership
+                needs.
               </p>
 
               <dl className="border-border mt-10 border-t">
-                {overviewHighlights.map(([term, description]) => (
+                {vf7OverviewHighlights.map(([term, description]) => (
                   <div
                     key={term}
                     className="border-border border-b py-5 sm:py-6"
@@ -246,7 +152,7 @@ export default function VF7Page() {
           </div>
 
           <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
-            {featuredProducts.map((product) => (
+            {vf7FeaturedProducts.map((product) => (
               <ProductCard key={product.name} {...product} />
             ))}
           </div>
@@ -255,7 +161,7 @@ export default function VF7Page() {
 
       <section
         id="vehicle-categories"
-        className="section-space scroll-mt-[4.5rem]"
+        className="scroll-mt-[4.5rem] py-20 sm:py-24 lg:py-24"
         aria-labelledby="vehicle-categories-heading"
       >
         <Container>
@@ -267,19 +173,23 @@ export default function VF7Page() {
               Browse by Category
             </h2>
             <p className="text-muted-foreground mt-5 text-lg leading-8">
-              Find accessories designed for every part of your VF7.
+              Start with the part of your VF7 you want to protect or improve.
             </p>
           </div>
 
-          <nav className="mt-14 lg:mt-16" aria-label="VF7 accessory categories">
-            <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
-              {vehicleCategories.map((category) => (
+          <div
+            className="mt-10 lg:mt-12"
+            role="group"
+            aria-label="VF7 accessory categories"
+          >
+            <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {vf7Categories.map((category) => (
                 <li key={category.name}>
                   <CategoryCard {...category} />
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
         </Container>
       </section>
 
@@ -303,7 +213,7 @@ export default function VF7Page() {
           </div>
 
           <div className="mt-14 grid gap-x-16 gap-y-0 md:grid-cols-2 lg:mt-16 lg:gap-x-24">
-            {ownershipResources.map((resource) => (
+            {vf7OwnershipResources.map((resource) => (
               <ResourceCard key={resource.title} {...resource} />
             ))}
           </div>
@@ -324,7 +234,7 @@ export default function VF7Page() {
               Ready to Personalise Your VF7?
             </h2>
             <p className="text-muted-foreground mt-6 text-lg leading-8">
-              Explore accessories engineered specifically for your vehicle and
+              Explore accessories engineered specifically for your car and
               designed to enhance every journey.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -334,12 +244,14 @@ export default function VF7Page() {
                 </ScrollLink>
               </Button>
               <Button
-                asChild
+                type="button"
                 variant="outline"
                 size="lg"
+                disabled
+                aria-disabled="true"
                 className="rounded-full px-6"
               >
-                <Link href="/support">Contact Factor One</Link>
+                Contact Factor One — Coming soon
               </Button>
             </div>
           </div>

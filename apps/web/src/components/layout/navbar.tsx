@@ -12,14 +12,19 @@ import {
 } from 'react';
 import { Wordmark } from '@/components/brand/wordmark';
 import { Container } from '@/components/layout/container';
+import { ScrollLink } from '@/components/ui/scroll-link';
 import {
+  companyNavigation,
+  garageNavigation,
   isAvailableNavigationItem,
   isCurrentNavigationItem,
   isGroupedNavigationItem,
-  mobileNavigation,
-  primaryNavigation,
+  mobileNavigationSections,
+  productNavigation,
   type AvailableNavigationItem,
   type GroupedNavigationItem,
+  type NavigationItem,
+  type NavigationLeaf,
 } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 
@@ -40,7 +45,7 @@ function NavigationItemLink({
   pathname,
 }: NavigationItemLinkProps) {
   return (
-    <Link
+    <ScrollLink
       href={item.href}
       aria-current={
         isCurrentNavigationItem(item, pathname) ? 'page' : undefined
@@ -49,7 +54,33 @@ function NavigationItemLink({
       onClick={onNavigate}
     >
       {item.label}
-    </Link>
+    </ScrollLink>
+  );
+}
+
+function UnavailableNavigationControl({
+  item,
+  compact = false,
+}: {
+  compact?: boolean;
+  item: NavigationLeaf;
+}) {
+  return (
+    <button
+      type="button"
+      disabled
+      aria-disabled="true"
+      className={cn(
+        'text-muted-foreground inline-flex min-h-11 items-center justify-between gap-3 rounded-md text-left font-medium',
+        compact ? 'w-full px-3 text-sm' : 'whitespace-nowrap text-xs',
+      )}
+      title={`${item.label} is not yet available`}
+    >
+      {item.label}
+      <span className="bg-muted rounded-full px-2 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.08em]">
+        Coming soon
+      </span>
+    </button>
   );
 }
 
@@ -104,6 +135,8 @@ function DesktopNavigationGroup({
     }
   }
 
+  let availableIndex = 0;
+
   return (
     <li ref={groupRef} className="relative">
       <button
@@ -131,30 +164,45 @@ function DesktopNavigationGroup({
           className="border-border bg-warm absolute left-1/2 top-[calc(100%+0.5rem)] w-64 -translate-x-1/2 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
         >
           <p className="text-muted-foreground px-3 pb-2 pt-1 text-[0.65rem] font-medium uppercase tracking-[0.14em]">
-            Mud Guards
+            {group.label}
           </p>
           <ul>
-            {group.children.map((item, index) => (
-              <li key={item.id}>
-                <Link
-                  ref={index === 0 ? firstItemRef : undefined}
-                  href={item.href}
-                  aria-current={
-                    isCurrentNavigationItem(item, pathname) ? 'page' : undefined
-                  }
-                  className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-colors"
-                  onClick={() => onClose()}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Escape') {
-                      event.preventDefault();
-                      onClose(true);
+            {group.children.map((item) => {
+              if (!isAvailableNavigationItem(item)) {
+                return (
+                  <li key={item.id}>
+                    <UnavailableNavigationControl item={item} compact />
+                  </li>
+                );
+              }
+
+              const isFirstAvailable = availableIndex === 0;
+              availableIndex += 1;
+
+              return (
+                <li key={item.id}>
+                  <ScrollLink
+                    ref={isFirstAvailable ? firstItemRef : undefined}
+                    href={item.href}
+                    aria-current={
+                      isCurrentNavigationItem(item, pathname)
+                        ? 'page'
+                        : undefined
                     }
-                  }}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+                    className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-colors"
+                    onClick={() => onClose()}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Escape') {
+                        event.preventDefault();
+                        onClose(true);
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </ScrollLink>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : null}
@@ -162,15 +210,111 @@ function DesktopNavigationGroup({
   );
 }
 
+interface DesktopGarageMenuProps {
+  isOpen: boolean;
+  onClose: (restoreFocus?: boolean) => void;
+  onOpen: () => void;
+  triggerRef: RefObject<HTMLButtonElement | null>;
+}
+
+function DesktopGarageMenu({
+  isOpen,
+  onClose,
+  onOpen,
+  triggerRef,
+}: DesktopGarageMenuProps) {
+  const groupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        event.target instanceof Node &&
+        !groupRef.current?.contains(event.target)
+      ) {
+        onClose();
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [isOpen, onClose]);
+
+  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      onOpen();
+    }
+
+    if (event.key === 'Escape' && isOpen) {
+      event.preventDefault();
+      onClose(true);
+    }
+  }
+
+  return (
+    <div ref={groupRef} className="relative hidden sm:block">
+      <button
+        ref={triggerRef}
+        type="button"
+        className={cn(iconButtonClassName, 'gap-2 px-3 sm:w-auto')}
+        aria-expanded={isOpen}
+        aria-controls="garage-desktop-menu"
+        onClick={() => (isOpen ? onClose() : onOpen())}
+        onKeyDown={handleKeyDown}
+      >
+        <CarFront className="size-4" aria-hidden="true" />
+        <span className="text-xs font-medium">My Garage</span>
+        <ChevronDown
+          className={cn(
+            'size-3.5 transition-transform duration-200',
+            isOpen && 'rotate-180',
+          )}
+          aria-hidden="true"
+        />
+      </button>
+
+      {isOpen ? (
+        <div
+          id="garage-desktop-menu"
+          className="border-border bg-warm absolute right-0 top-[calc(100%+0.5rem)] w-72 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault();
+              onClose(true);
+            }
+          }}
+        >
+          <p className="text-muted-foreground px-3 pb-2 pt-1 text-[0.65rem] font-medium uppercase tracking-[0.14em]">
+            Account
+          </p>
+          <ul>
+            {garageNavigation.children.map((item) => (
+              <li key={item.id}>
+                <UnavailableNavigationControl item={item} compact />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname() ?? '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [desktopGroupOpen, setDesktopGroupOpen] = useState(false);
-  const [mobileGroupOpen, setMobileGroupOpen] = useState(false);
+  const [desktopProductMenuOpen, setDesktopProductMenuOpen] = useState(false);
+  const [desktopGarageOpen, setDesktopGarageOpen] = useState(false);
+  const [mobileGroupOpen, setMobileGroupOpen] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
-  const groupTriggerRef = useRef<HTMLButtonElement>(null);
+  const productMenuTriggerRef = useRef<HTMLButtonElement>(null);
+  const garageTriggerRef = useRef<HTMLButtonElement>(null);
   const wasMenuOpenRef = useRef(false);
 
   useEffect(() => {
@@ -206,11 +350,122 @@ export function Navbar() {
     }
   }, [isMenuOpen]);
 
-  function closeDesktopGroup(restoreFocus = false) {
-    setDesktopGroupOpen(false);
+  function closeProductMenu(restoreFocus = false) {
+    setDesktopProductMenuOpen(false);
     if (restoreFocus) {
-      requestAnimationFrame(() => groupTriggerRef.current?.focus());
+      requestAnimationFrame(() => productMenuTriggerRef.current?.focus());
     }
+  }
+
+  function closeGarageMenu(restoreFocus = false) {
+    setDesktopGarageOpen(false);
+    if (restoreFocus) {
+      requestAnimationFrame(() => garageTriggerRef.current?.focus());
+    }
+  }
+
+  function renderDesktopItem(item: NavigationItem) {
+    if (isGroupedNavigationItem(item)) {
+      return (
+        <DesktopNavigationGroup
+          key={item.id}
+          group={item}
+          isOpen={desktopProductMenuOpen}
+          onOpen={() => {
+            setDesktopGarageOpen(false);
+            setDesktopProductMenuOpen(true);
+          }}
+          onClose={closeProductMenu}
+          pathname={pathname}
+          triggerRef={productMenuTriggerRef}
+        />
+      );
+    }
+
+    if (!isAvailableNavigationItem(item)) {
+      return (
+        <li key={item.id}>
+          <UnavailableNavigationControl item={item} />
+        </li>
+      );
+    }
+
+    return (
+      <li key={item.id}>
+        <NavigationItemLink
+          item={item}
+          pathname={pathname}
+          className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-colors"
+        />
+      </li>
+    );
+  }
+
+  function renderMobileItem(item: NavigationItem) {
+    if (isGroupedNavigationItem(item)) {
+      const isOpen = mobileGroupOpen === item.id;
+
+      return (
+        <li key={item.id}>
+          <button
+            type="button"
+            className="hover:bg-muted flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm font-medium transition-colors"
+            aria-expanded={isOpen}
+            aria-controls={`${item.id}-mobile-menu`}
+            onClick={() => setMobileGroupOpen(isOpen ? null : item.id)}
+          >
+            {item.label}
+            <ChevronDown
+              className={cn(
+                'size-4 transition-transform duration-200',
+                isOpen && 'rotate-180',
+              )}
+              aria-hidden="true"
+            />
+          </button>
+          {isOpen ? (
+            <ul
+              id={`${item.id}-mobile-menu`}
+              className="border-border ml-3 border-l pl-3"
+            >
+              {item.children.map((child) => (
+                <li key={child.id}>
+                  {isAvailableNavigationItem(child) ? (
+                    <NavigationItemLink
+                      item={child}
+                      pathname={pathname}
+                      onNavigate={() => setIsMenuOpen(false)}
+                      className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
+                    />
+                  ) : (
+                    <UnavailableNavigationControl item={child} compact />
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </li>
+      );
+    }
+
+    if (!isAvailableNavigationItem(item)) {
+      return (
+        <li key={item.id}>
+          <UnavailableNavigationControl item={item} compact />
+        </li>
+      );
+    }
+
+    return (
+      <li key={item.id}>
+        <NavigationItemLink
+          item={item}
+          pathname={pathname}
+          onNavigate={() => setIsMenuOpen(false)}
+          className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
+        />
+      </li>
+    );
   }
 
   return (
@@ -232,73 +487,26 @@ export function Navbar() {
 
         <nav
           aria-label="Primary navigation"
-          className="absolute left-1/2 hidden -translate-x-1/2 xl:block"
+          className="absolute left-1/2 hidden -translate-x-1/2 xl:flex xl:items-center xl:gap-8"
         >
           <ul className="flex items-center gap-5">
-            {primaryNavigation.map((item) => {
-              if (isGroupedNavigationItem(item)) {
-                return (
-                  <DesktopNavigationGroup
-                    key={item.id}
-                    group={item}
-                    isOpen={desktopGroupOpen}
-                    onOpen={() => setDesktopGroupOpen(true)}
-                    onClose={closeDesktopGroup}
-                    pathname={pathname}
-                    triggerRef={groupTriggerRef}
-                  />
-                );
-              }
-
-              if (!isAvailableNavigationItem(item)) {
-                return (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      disabled
-                      aria-disabled="true"
-                      className="text-muted-foreground inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap text-xs font-medium"
-                      title={`${item.label} is not yet available`}
-                    >
-                      {item.label}
-                      <span className="text-[0.6rem] font-semibold uppercase tracking-[0.1em]">
-                        Soon
-                      </span>
-                    </button>
-                  </li>
-                );
-              }
-
-              return (
-                <li key={item.id}>
-                  <NavigationItemLink
-                    item={item}
-                    pathname={pathname}
-                    className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-colors"
-                  />
-                </li>
-              );
-            })}
+            {productNavigation.map(renderDesktopItem)}
+          </ul>
+          <ul className="flex items-center gap-5">
+            {companyNavigation.map(renderDesktopItem)}
           </ul>
         </nav>
 
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            disabled
-            aria-disabled="true"
-            className={cn(
-              iconButtonClassName,
-              'text-muted-foreground hidden gap-2 px-3 sm:flex sm:w-auto',
-            )}
-            title="My Garage is not yet available"
-          >
-            <CarFront className="size-4" aria-hidden="true" />
-            <span className="text-xs font-medium">My Garage</span>
-            <span className="text-[0.6rem] font-semibold uppercase tracking-[0.1em]">
-              Soon
-            </span>
-          </button>
+          <DesktopGarageMenu
+            isOpen={desktopGarageOpen}
+            onOpen={() => {
+              setDesktopProductMenuOpen(false);
+              setDesktopGarageOpen(true);
+            }}
+            onClose={closeGarageMenu}
+            triggerRef={garageTriggerRef}
+          />
           <button
             ref={menuTriggerRef}
             type="button"
@@ -324,14 +532,14 @@ export function Navbar() {
         id="mobile-navigation"
         aria-labelledby="mobile-navigation-heading"
         aria-modal="true"
-        className="bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border p-0 xl:hidden"
+        className="bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 xl:hidden"
         onCancel={(event) => {
           event.preventDefault();
           setIsMenuOpen(false);
         }}
         onClose={() => {
           setIsMenuOpen(false);
-          setMobileGroupOpen(false);
+          setMobileGroupOpen(null);
         }}
       >
         <Container className="py-5 sm:py-6">
@@ -352,77 +560,21 @@ export function Navbar() {
             </button>
           </div>
           <nav aria-label="Mobile navigation" className="mt-4">
-            <ul>
-              {mobileNavigation.map((item) => {
-                if (isGroupedNavigationItem(item)) {
-                  return (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        className="hover:bg-muted flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm font-medium transition-colors"
-                        aria-expanded={mobileGroupOpen}
-                        aria-controls={`${item.id}-mobile-menu`}
-                        onClick={() => setMobileGroupOpen((open) => !open)}
-                      >
-                        {item.label}
-                        <ChevronDown
-                          className={cn(
-                            'size-4 transition-transform duration-200',
-                            mobileGroupOpen && 'rotate-180',
-                          )}
-                          aria-hidden="true"
-                        />
-                      </button>
-                      {mobileGroupOpen ? (
-                        <ul
-                          id={`${item.id}-mobile-menu`}
-                          className="border-border ml-3 border-l pl-3"
-                        >
-                          {item.children.map((child) => (
-                            <li key={child.id}>
-                              <NavigationItemLink
-                                item={child}
-                                pathname={pathname}
-                                onNavigate={() => setIsMenuOpen(false)}
-                                className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
-                              />
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </li>
-                  );
-                }
-
-                if (!isAvailableNavigationItem(item)) {
-                  return (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        disabled
-                        aria-disabled="true"
-                        className="text-muted-foreground inline-flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-sm font-medium"
-                        title={`${item.label} is not yet available`}
-                      >
-                        {item.label}
-                        <span className="text-xs font-medium">Coming soon</span>
-                      </button>
-                    </li>
-                  );
-                }
-
-                return (
-                  <li key={item.id}>
-                    <NavigationItemLink
-                      item={item}
-                      pathname={pathname}
-                      onNavigate={() => setIsMenuOpen(false)}
-                      className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
-                    />
-                  </li>
-                );
-              })}
-            </ul>
+            {mobileNavigationSections.map((section, index) => (
+              <section
+                key={section.id}
+                className={cn(index > 0 && 'border-border mt-4 border-t pt-4')}
+                aria-labelledby={`mobile-navigation-${section.id}`}
+              >
+                <h3
+                  id={`mobile-navigation-${section.id}`}
+                  className="text-muted-foreground px-3 text-[0.65rem] font-semibold uppercase tracking-[0.14em]"
+                >
+                  {section.label}
+                </h3>
+                <ul className="mt-1">{section.items.map(renderMobileItem)}</ul>
+              </section>
+            ))}
           </nav>
         </Container>
       </dialog>

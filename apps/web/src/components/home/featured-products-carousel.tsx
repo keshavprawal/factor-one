@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useRef, useState, type UIEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type UIEvent } from 'react';
 import { OwnerBuiltBadge } from '@/components/home/owner-built-badge';
 import { Button } from '@/components/ui/button';
 import type { FeaturedProduct } from '@/config/homepage';
@@ -53,11 +53,13 @@ export function FeaturedProductsCarousel({
   const trackRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
 
-  function scrollToProduct(index: number) {
+  const scrollToProduct = useCallback((index: number) => {
     const track = trackRef.current;
-    const product = track?.children.item(index);
+    const product = track?.querySelector<HTMLElement>(
+      `[data-product-index="${index}"]`,
+    );
 
-    if (!(product instanceof HTMLElement)) {
+    if (!product) {
       return;
     }
 
@@ -69,7 +71,23 @@ export function FeaturedProductsCarousel({
       block: 'nearest',
       inline: 'center',
     });
-  }
+  }, []);
+
+  useEffect(() => {
+    function activateHashProduct() {
+      const index = products.findIndex(
+        (product) => `#product-${product.id}` === window.location.hash,
+      );
+
+      if (index >= 0) {
+        requestAnimationFrame(() => scrollToProduct(index));
+      }
+    }
+
+    activateHashProduct();
+    window.addEventListener('hashchange', activateHashProduct);
+    return () => window.removeEventListener('hashchange', activateHashProduct);
+  }, [products, scrollToProduct]);
 
   function updateActiveProduct(event: UIEvent<HTMLDivElement>) {
     if (frameRef.current !== null) {
@@ -82,19 +100,19 @@ export function FeaturedProductsCarousel({
       let closestIndex = 0;
       let closestDistance = Number.POSITIVE_INFINITY;
 
-      Array.from(track.children).forEach((child, index) => {
-        if (!(child instanceof HTMLElement)) {
-          return;
-        }
+      track
+        .querySelectorAll<HTMLElement>('[data-product-index]')
+        .forEach((child) => {
+          const index = Number(child.dataset.productIndex);
 
-        const childCenter = child.offsetLeft + child.offsetWidth / 2;
-        const distance = Math.abs(trackCenter - childCenter);
+          const childCenter = child.offsetLeft + child.offsetWidth / 2;
+          const distance = Math.abs(trackCenter - childCenter);
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+          }
+        });
 
       setActiveIndex(closestIndex);
       frameRef.current = null;
@@ -109,10 +127,15 @@ export function FeaturedProductsCarousel({
         aria-label="Featured products"
         onScroll={updateActiveProduct}
       >
+        <div
+          className="w-[7%] shrink-0 sm:w-[18%] lg:w-[27%] xl:w-[30%]"
+          aria-hidden="true"
+        />
         {products.map((product, index) => (
           <article
             key={product.id}
             id={`product-${product.id}`}
+            data-product-index={index}
             className={cn(
               'w-[86%] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-lg bg-white transition-[transform,opacity] duration-300 sm:w-[64%] lg:w-[46%] xl:w-[40%]',
               index === activeIndex
@@ -147,6 +170,10 @@ export function FeaturedProductsCarousel({
             </div>
           </article>
         ))}
+        <div
+          className="w-[7%] shrink-0 sm:w-[18%] lg:w-[27%] xl:w-[30%]"
+          aria-hidden="true"
+        />
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-6">

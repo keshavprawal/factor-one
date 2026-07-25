@@ -1,7 +1,9 @@
+import { productDestinations, type ProductId } from '@/config/navigation';
+
 export interface FeaturedProduct {
   availability: string;
   description: string;
-  id: string;
+  id: Exclude<ProductId, 'decals'>;
   image?: string;
   imageAlt?: string;
   name: string;
@@ -29,8 +31,8 @@ export interface RoadmapItem {
 
 export const featuredProducts: readonly FeaturedProduct[] = [
   {
-    id: 'screen-guard',
-    name: 'Screen Guard',
+    id: productDestinations.screenGuard.id,
+    name: productDestinations.screenGuard.label,
     description:
       'Helps protect the display without getting in the way of everyday use.',
     availability: 'Product direction',
@@ -40,8 +42,8 @@ export const featuredProducts: readonly FeaturedProduct[] = [
       'Repository product close-up — final Factor One photography pending.',
   },
   {
-    id: 'rear-door-mud-guard',
-    name: 'Rear Door Mud Guard',
+    id: productDestinations.rearDoorMudGuard.id,
+    name: productDestinations.rearDoorMudGuard.label,
     description:
       'Made to address the spray and grime owners notice around the rear doors.',
     availability: 'In testing',
@@ -49,16 +51,16 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     ownerRequestCount: 67,
   },
   {
-    id: 'bumper-mud-guard',
-    name: 'Bumper Mud Guard',
+    id: productDestinations.bumperMudGuard.id,
+    name: productDestinations.bumperMudGuard.label,
     description:
       'A practical layer of protection for an exposed part of the car.',
     availability: 'Product direction',
     visualStatus: 'Product photography pending.',
   },
   {
-    id: 'parcel-tray',
-    name: 'Parcel Tray',
+    id: productDestinations.parcelTray.id,
+    name: productDestinations.parcelTray.label,
     description:
       'Designed to close the open cargo-area gap owners asked Factor One to solve.',
     availability: 'In design',
@@ -66,8 +68,8 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     ownerRequestCount: 184,
   },
   {
-    id: 'door-visor',
-    name: 'Door Visor',
+    id: productDestinations.doorVisor.id,
+    name: productDestinations.doorVisor.label,
     description:
       'A considered exterior addition for ventilation in everyday conditions.',
     availability: 'Product direction',

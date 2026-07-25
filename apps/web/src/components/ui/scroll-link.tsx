@@ -13,11 +13,20 @@ export const ScrollLink = forwardRef<
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     onClick?.(event);
 
-    if (event.defaultPrevented || !href?.startsWith('#')) {
+    if (event.defaultPrevented || !href) {
       return;
     }
 
-    const target = document.getElementById(href.slice(1));
+    const destination = new URL(href, window.location.href);
+
+    if (
+      destination.pathname !== window.location.pathname ||
+      !destination.hash
+    ) {
+      return;
+    }
+
+    const target = document.getElementById(destination.hash.slice(1));
 
     if (!target) {
       return;
@@ -29,8 +38,13 @@ export const ScrollLink = forwardRef<
         ? 'auto'
         : 'smooth',
       block: 'start',
+      inline: 'center',
     });
-    window.history.replaceState(null, '', href);
+    window.history.replaceState(
+      null,
+      '',
+      `${destination.pathname}${destination.hash}`,
+    );
   }
 
   return <a ref={ref} href={href} onClick={handleClick} {...props} />;

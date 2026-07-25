@@ -20,6 +20,7 @@ import {
   proofPoints,
   roadmapItems,
 } from '@/config/homepage';
+import { getProductAnchor } from '@/config/navigation';
 
 const sectionHeadingClassName =
   'text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl';
@@ -39,7 +40,7 @@ export default function Home() {
               className="mx-auto whitespace-nowrap"
             />
             <p className="text-muted-foreground mt-5 text-sm leading-6 sm:mt-6 sm:text-base">
-              By The VinFast owners, for The VinFast owners.
+              By VinFast owners, for VinFast owners.
             </p>
           </div>
 
@@ -52,7 +53,8 @@ export default function Home() {
                 Accessories that belong on your car.
               </h1>
               <p className="text-muted-foreground mt-7 max-w-xl text-lg leading-8 sm:text-xl">
-                Designed by VinFast owners who understand it better.
+                Designed by owners who understand the small details because we
+                drive the same cars every day.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -176,7 +178,7 @@ export default function Home() {
                   {featuredProducts.map((product) => (
                     <li key={product.id} className="border-border border-b">
                       <ScrollLink
-                        href={`#product-${product.id}`}
+                        href={getProductAnchor(product.id)}
                         className="group flex min-h-14 items-center justify-between gap-4 py-2 text-sm font-medium"
                       >
                         {product.name}

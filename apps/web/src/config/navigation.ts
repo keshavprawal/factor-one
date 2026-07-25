@@ -10,8 +10,12 @@ export interface UnavailableNavigationItem {
   unavailable: true;
 }
 
+export type NavigationLeaf =
+  | AvailableNavigationItem
+  | UnavailableNavigationItem;
+
 export interface GroupedNavigationItem {
-  children: readonly AvailableNavigationItem[];
+  children: readonly NavigationLeaf[];
   id: string;
   label: string;
 }
@@ -32,6 +36,28 @@ export interface FooterNavigationGroup {
   label: string;
 }
 
+export interface NavigationSection {
+  id: string;
+  items: readonly NavigationItem[];
+  label: string;
+}
+
+export type ProductId =
+  | 'parcel-tray'
+  | 'screen-guard'
+  | 'door-visor'
+  | 'decals'
+  | 'rear-door-mud-guard'
+  | 'bumper-mud-guard';
+
+export function getProductAnchor(id: Exclude<ProductId, 'decals'>) {
+  return `#product-${id}` as const;
+}
+
+function getProductHref(id: Exclude<ProductId, 'decals'>) {
+  return `/${getProductAnchor(id)}` as const;
+}
+
 const home: AvailableNavigationItem = {
   href: '/',
   id: 'home',
@@ -44,35 +70,38 @@ const vf7: AvailableNavigationItem = {
   label: 'VinFast VF7',
 };
 
-const screenGuard: AvailableNavigationItem = {
-  href: '/#product-screen-guard',
-  id: 'screen-guard',
-  label: 'Screen Guard',
-};
-
-const rearDoorMudGuard: AvailableNavigationItem = {
-  href: '/#product-rear-door-mud-guard',
-  id: 'rear-door-mud-guard',
-  label: 'Rear Door Mud Guard',
-};
-
-const bumperMudGuard: AvailableNavigationItem = {
-  href: '/#product-bumper-mud-guard',
-  id: 'bumper-mud-guard',
-  label: 'Bumper Mud Guard',
-};
-
-const parcelTray: AvailableNavigationItem = {
-  href: '/#product-parcel-tray',
-  id: 'parcel-tray',
-  label: 'Parcel Tray',
-};
-
-const doorVisor: AvailableNavigationItem = {
-  href: '/#product-door-visor',
-  id: 'door-visor',
-  label: 'Door Visor',
-};
+export const productDestinations = {
+  parcelTray: {
+    href: getProductHref('parcel-tray'),
+    id: 'parcel-tray',
+    label: 'Parcel Tray',
+  },
+  screenGuard: {
+    href: getProductHref('screen-guard'),
+    id: 'screen-guard',
+    label: 'Screen Guard',
+  },
+  doorVisor: {
+    href: getProductHref('door-visor'),
+    id: 'door-visor',
+    label: 'Door Visor',
+  },
+  decals: {
+    id: 'decals',
+    label: 'Decals',
+    unavailable: true,
+  },
+  rearDoorMudGuard: {
+    href: getProductHref('rear-door-mud-guard'),
+    id: 'rear-door-mud-guard',
+    label: 'Rear Door Mud Guard',
+  },
+  bumperMudGuard: {
+    href: getProductHref('bumper-mud-guard'),
+    id: 'bumper-mud-guard',
+    label: 'Bumper Mud Guard',
+  },
+} as const satisfies Record<string, NavigationLeaf>;
 
 const knowledge: AvailableNavigationItem = {
   href: '/#knowledge',
@@ -89,31 +118,47 @@ const builtWithOwners: AvailableNavigationItem = {
 export const mudGuardNavigation: GroupedNavigationItem = {
   id: 'mud-guards',
   label: 'Mud Guards',
-  children: [rearDoorMudGuard, bumperMudGuard],
+  children: [
+    productDestinations.rearDoorMudGuard,
+    productDestinations.bumperMudGuard,
+  ],
 };
 
-export const primaryNavigation: readonly NavigationItem[] = [
-  parcelTray,
+export const productNavigation: readonly NavigationItem[] = [
+  productDestinations.parcelTray,
   mudGuardNavigation,
-  screenGuard,
-  doorVisor,
-  knowledge,
+  productDestinations.screenGuard,
+  productDestinations.doorVisor,
+  productDestinations.decals,
+];
+
+export const companyNavigation: readonly NavigationItem[] = [
   builtWithOwners,
-  { id: 'assistance', label: 'Assistance', unavailable: true },
+  knowledge,
+];
+
+export const primaryNavigation: readonly NavigationItem[] = [
+  ...productNavigation,
+  ...companyNavigation,
 ];
 
 export const futureNavigation: readonly HiddenNavigationItem[] = [
   { id: 'vehicles', label: 'Vehicles', visible: false },
 ];
 
-export const utilityNavigation: readonly NavigationItem[] = [
-  { id: 'garage', label: 'My Garage', unavailable: true },
-];
+export const garageNavigation: GroupedNavigationItem = {
+  id: 'garage',
+  label: 'My Garage',
+  children: [
+    { id: 'garage-home', label: 'My Garage', unavailable: true },
+    { id: 'assistance', label: 'Assistance', unavailable: true },
+  ],
+};
 
-export const mobileNavigation: readonly NavigationItem[] = [
-  home,
-  ...primaryNavigation,
-  ...utilityNavigation,
+export const mobileNavigationSections: readonly NavigationSection[] = [
+  { id: 'products', label: 'Products', items: productNavigation },
+  { id: 'factor-one', label: 'Factor One', items: companyNavigation },
+  { id: 'account', label: 'Account', items: [garageNavigation] },
 ];
 
 export const footerNavigation: readonly FooterNavigationGroup[] = [
@@ -128,7 +173,7 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
 ];
 
 export function isAvailableNavigationItem(
-  item: NavigationItem,
+  item: NavigationItem | NavigationLeaf,
 ): item is AvailableNavigationItem {
   return 'href' in item;
 }

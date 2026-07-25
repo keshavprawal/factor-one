@@ -3,43 +3,80 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
 export interface ProductCardProps {
-  name: string;
   description: string;
-  price: string;
   href: string;
-  image: string;
+  image?: string;
+  imageAlt?: string;
+  name: string;
+  visualStatus: string;
+}
+
+function ProductVisual({
+  image,
+  imageAlt,
+  name,
+}: Pick<ProductCardProps, 'image' | 'imageAlt' | 'name'>) {
+  if (image && imageAlt) {
+    return (
+      <Image
+        src={image}
+        alt={imageAlt}
+        fill
+        sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
+      />
+    );
+  }
+
+  return (
+    <div
+      className="bg-muted absolute inset-0 flex items-end overflow-hidden p-5"
+      role="img"
+      aria-label={`${name} product photography pending`}
+    >
+      <div
+        className="border-foreground/10 absolute inset-[14%] rounded-[1.5rem] border"
+        aria-hidden="true"
+      />
+      <div
+        className="border-foreground/10 absolute inset-x-[24%] bottom-[24%] top-[34%] rounded-full border"
+        aria-hidden="true"
+      />
+      <p className="text-muted-foreground relative text-[0.65rem] font-semibold uppercase tracking-[0.12em]">
+        {name} · Product study
+      </p>
+    </div>
+  );
 }
 
 export function ProductCard({
-  name,
   description,
-  price,
   href,
   image,
+  imageAlt,
+  name,
+  visualStatus,
 }: ProductCardProps) {
   return (
     <article className="group h-full">
       <Link
         href={href}
-        className="focus-visible:ring-ring flex h-full flex-col transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
+        className="focus-visible:ring-ring flex h-full flex-col transition-transform duration-300 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
+        aria-label={`View ${name}`}
       >
-        <div className="bg-muted relative aspect-square overflow-hidden">
-          <Image
-            src={image}
-            alt={name}
-            fill
-            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
-          />
+        <div className="bg-muted relative aspect-square overflow-hidden rounded-md">
+          <ProductVisual image={image} imageAlt={imageAlt} name={name} />
+          <p className="bg-charcoal/85 text-charcoal-foreground absolute bottom-3 left-3 right-3 rounded-sm px-3 py-2 text-xs leading-5">
+            {visualStatus}
+          </p>
         </div>
         <div className="flex flex-1 flex-col pt-5">
           <h3 className="text-xl font-medium tracking-[-0.03em]">{name}</h3>
           <p className="text-muted-foreground mt-2 text-sm leading-6">
             {description}
           </p>
-          <p className="text-foreground mt-4 text-sm font-medium">{price}</p>
           <span className="text-foreground mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium">
-            View Product
+            View product direction
             <ArrowUpRight
               className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
               aria-hidden="true"
