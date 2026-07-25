@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 export interface CategoryCardProps {
   name: string;
   description: string;
-  href: string;
+  href?: string;
   image: string;
 }
 
@@ -15,11 +15,8 @@ export function CategoryCard({
   href,
   image,
 }: CategoryCardProps) {
-  return (
-    <Link
-      href={href}
-      className="focus-visible:ring-ring group flex h-full flex-col transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
-    >
+  const content = (
+    <>
       <div className="bg-muted relative aspect-[3/2] overflow-hidden">
         <Image
           src={image}
@@ -36,11 +33,26 @@ export function CategoryCard({
             {description}
           </p>
         </div>
-        <ArrowRight
-          className="mt-1 size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
-          aria-hidden="true"
-        />
+        {href ? (
+          <ArrowRight
+            className="mt-1 size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
+            aria-hidden="true"
+          />
+        ) : null}
       </div>
+    </>
+  );
+
+  if (!href) {
+    return <article className="group flex h-full flex-col">{content}</article>;
+  }
+
+  return (
+    <Link
+      href={href}
+      className="focus-visible:ring-ring group flex h-full flex-col transition-transform duration-500 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
+    >
+      {content}
     </Link>
   );
 }

@@ -1,425 +1,217 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Container } from '@/components/layout/container';
+import { Grid } from '@/components/layout/grid';
+import { CategoryCard } from '@/components/product/category-card';
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from '@/components/ui/card';
+import { ScrollLink } from '@/components/ui/scroll-link';
+import {
+  homepageCategories,
+  homepagePrinciples,
+  homepageResources,
+} from '@/config/homepage';
 
-const vehicles = [
-  {
-    name: 'VF6',
-    description: 'Designed for everyday electric mobility.',
-    href: '/vehicles/vf6',
-    imagePosition: 'object-[20%_center]',
-  },
-  {
-    name: 'VF7',
-    description: 'Designed for drivers who expect more.',
-    href: '/vehicles/vf7',
-    imagePosition: 'object-[80%_center]',
-  },
-];
-
-const categories = [
-  {
-    name: 'Interior',
-    description: 'Refined details for every journey.',
-    href: '/products/interior',
-    image: '/images/categories/interior.jpg',
-  },
-  {
-    name: 'Exterior',
-    description: 'Considered design from every angle.',
-    href: '/products/exterior',
-    image: '/images/categories/exterior.jpg',
-  },
-  {
-    name: 'Protection',
-    description: 'Made to preserve the finish.',
-    href: '/products/protection',
-    image: '/images/categories/protection.jpg',
-  },
-  {
-    name: 'Charging',
-    description: 'Power that fits your routine.',
-    href: '/products/charging',
-    image: '/images/categories/charging.jpg',
-  },
-  {
-    name: 'Storage',
-    description: 'Space designed around real life.',
-    href: '/products/storage',
-    image: '/images/categories/storage.jpg',
-  },
-  {
-    name: 'Lifestyle',
-    description: 'The details that travel with you.',
-    href: '/products/lifestyle',
-    image: '/images/categories/lifestyle.jpg',
-  },
-];
-
-const essentials = [
-  {
-    name: 'All-Weather Floor Mats',
-    description: 'Protect your interior from dirt, water and daily wear.',
-    href: '/products/all-weather-floor-mats',
-    image: '/images/essentials/floor-mats.jpg',
-  },
-  {
-    name: 'Tempered Screen Protector',
-    description:
-      'Protect the display while preserving clarity and touch response.',
-    href: '/products/tempered-screen-protector',
-    image: '/images/essentials/screen-protector.jpg',
-  },
-  {
-    name: 'Rear Trunk Organizer',
-    description: 'Keep everyday essentials secure and organized.',
-    href: '/products/rear-trunk-organizer',
-    image: '/images/essentials/trunk-organizer.jpg',
-  },
-  {
-    name: 'Fast Charging Cable',
-    description: 'Reliable charging built for everyday use.',
-    href: '/products/fast-charging-cable',
-    image: '/images/essentials/charging-cable.jpg',
-  },
-];
+const sectionHeadingClassName =
+  'text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl';
 
 export default function Home() {
   return (
     <>
       <section
-        className="relative -mt-[4.5rem] flex min-h-[100svh] overflow-hidden pt-[4.5rem]"
+        className="relative -mt-[4.5rem] flex min-h-[min(46rem,100svh)] overflow-hidden pt-[4.5rem]"
         aria-labelledby="hero-heading"
       >
         <Image
           src="/images/hero-suv.jpg"
-          alt="White and graphite premium electric vehicles outside a minimalist contemporary residence"
+          alt="Premium electric vehicles outside a minimalist contemporary residence"
           fill
           priority
           sizes="100vw"
           className="object-cover object-center"
         />
         <div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.32),rgba(255,255,255,0)_62%)]"
+          className="absolute inset-0 bg-gradient-to-b from-white/55 via-white/35 to-white/80"
           aria-hidden="true"
         />
 
-        <Container className="relative z-10 flex flex-1 items-center justify-center py-20 sm:py-24 lg:py-28">
-          <div className="max-w-3xl text-center">
+        <Container className="relative z-10 flex flex-1 items-center py-20 sm:py-24 lg:py-28">
+          <div className="max-w-2xl">
+            <p className="text-foreground/70 text-sm font-medium uppercase tracking-[0.16em]">
+              Factor One
+            </p>
             <h1
               id="hero-heading"
-              className="animate-hero-rise text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
+              className="mt-5 text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
             >
-              Designed to Belong.
+              Own Your Car With Confidence.
             </h1>
-            <p className="animate-hero-fade text-foreground/80 mx-auto mt-6 max-w-xl text-lg leading-8 [animation-delay:140ms] sm:text-xl">
-              Premium automotive products engineered specifically for your
-              vehicle.
+            <p className="text-foreground/80 mt-6 max-w-xl text-lg leading-8 sm:text-xl">
+              Factor One helps you choose the right products, understand your
+              vehicle, and make confident ownership decisions.
             </p>
-            <div className="animate-hero-fade mt-9 flex flex-col justify-center gap-3 [animation-delay:280ms] sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" className="rounded-full px-6">
-                <Link href="/vehicles">
-                  Explore Your Vehicle
+                <ScrollLink href="#featured-categories">
+                  Explore Products
                   <ArrowUpRight className="ml-2 size-4" aria-hidden="true" />
-                </Link>
+                </ScrollLink>
               </Button>
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-foreground/25 rounded-full bg-white/55 px-6 backdrop-blur-sm"
+                className="border-foreground/25 rounded-full bg-white/70 px-6"
               >
-                <Link href="/about">Our Philosophy</Link>
+                <ScrollLink href="#why-factor-one">Learn More</ScrollLink>
               </Button>
             </div>
           </div>
         </Container>
+      </section>
 
-        <div
-          className="text-foreground/65 absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] sm:flex"
-          aria-hidden="true"
-        >
-          <span>Scroll</span>
-          <ArrowDown className="size-3.5" />
-        </div>
+      <section
+        className="section-space scroll-mt-[4.5rem]"
+        aria-labelledby="principles-heading"
+      >
+        <Container>
+          <div className="max-w-2xl">
+            <p className="text-muted-foreground text-sm font-medium uppercase tracking-[0.14em]">
+              A clearer standard
+            </p>
+            <h2
+              id="principles-heading"
+              className={`${sectionHeadingClassName} mt-4`}
+            >
+              Guidance that earns its place.
+            </h2>
+          </div>
+          <Grid columns={3} gap="lg" className="mt-12 lg:mt-16">
+            {homepagePrinciples.map((principle) => (
+              <Card
+                key={principle.title}
+                className="border-border bg-card h-full p-6 shadow-none sm:p-8"
+              >
+                <CardContent className="p-0">
+                  <CardTitle className="text-2xl font-medium tracking-[-0.035em]">
+                    {principle.title}
+                  </CardTitle>
+                  <CardDescription className="mt-4 text-base leading-7">
+                    {principle.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </Grid>
+        </Container>
+      </section>
+
+      <section
+        id="featured-categories"
+        className="section-space bg-muted/35 scroll-mt-[4.5rem]"
+        aria-labelledby="categories-heading"
+      >
+        <Container>
+          <div className="flex max-w-2xl flex-col gap-5">
+            <p className="text-muted-foreground text-sm font-medium uppercase tracking-[0.14em]">
+              Start with what matters
+            </p>
+            <h2 id="categories-heading" className={sectionHeadingClassName}>
+              Explore the parts of ownership you want to improve.
+            </h2>
+            <p className="text-muted-foreground max-w-xl text-lg leading-8">
+              Browse considered areas of ownership. Product availability and
+              compatibility will be made clear before you choose.
+            </p>
+          </div>
+          <Grid columns={3} gap="lg" className="mt-12 lg:mt-16">
+            {homepageCategories.map((category) => (
+              <CategoryCard key={category.name} {...category} />
+            ))}
+          </Grid>
+        </Container>
       </section>
 
       <section
         id="why-factor-one"
-        className="bg-background section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-[4.5rem]"
         aria-labelledby="why-factor-one-heading"
       >
         <Container>
-          <div className="grid gap-16 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:gap-24 xl:gap-32">
-            <div className="animate-hero-rise max-w-xl">
-              <h2
-                id="why-factor-one-heading"
-                className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl"
-              >
-                Engineered for the Vehicle. Not Adapted to It.
-              </h2>
-              <div className="text-muted-foreground mt-8 space-y-5 text-lg leading-8">
-                <p>
-                  Most aftermarket accessories are designed to fit many
-                  vehicles.
-                </p>
-                <p>Factor One takes a different approach.</p>
-                <p>
-                  Every product begins with the vehicle itself, resulting in
-                  cleaner integration, better fit, and a more refined ownership
-                  experience.
-                </p>
-              </div>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:items-end lg:gap-24">
+            <h2 id="why-factor-one-heading" className={sectionHeadingClassName}>
+              Better information makes better ownership decisions.
+            </h2>
+            <div className="text-muted-foreground max-w-xl space-y-5 text-lg leading-8">
+              <p>
+                Factor One is built to reduce uncertainty, not add more options
+                for their own sake.
+              </p>
+              <p>
+                We help you understand what matters, choose with confidence, and
+                enjoy ownership with less second-guessing.
+              </p>
             </div>
-
-            <ol className="animate-hero-rise border-border border-t [animation-delay:120ms]">
-              {[
-                [
-                  'Vehicle Specific',
-                  'Designed around the vehicle from the beginning.',
-                ],
-                ['Precision Fit', 'Clean integration with factory design.'],
-                [
-                  'Premium Materials',
-                  'Built to last through everyday ownership.',
-                ],
-                ['Thoughtful Engineering', 'Every detail exists for a reason.'],
-              ].map(([title, description], index) => (
-                <li
-                  key={title}
-                  className="border-border grid grid-cols-[2rem_1fr] gap-4 border-b py-7 sm:grid-cols-[3rem_1fr] sm:py-8"
-                >
-                  <span className="text-muted-foreground font-mono text-xs">
-                    0{index + 1}
-                  </span>
-                  <div>
-                    <h3 className="text-xl font-medium tracking-[-0.025em] sm:text-2xl">
-                      {title}
-                    </h3>
-                    <p className="text-muted-foreground mt-2 max-w-md text-sm leading-6 sm:text-base">
-                      {description}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
           </div>
         </Container>
       </section>
 
       <section
-        id="vehicle-selector"
-        className="bg-background section-space scroll-mt-[4.5rem]"
-        aria-labelledby="vehicle-selector-heading"
+        className="section-space bg-muted/35"
+        aria-labelledby="knowledge-heading"
       >
         <Container>
-          <div className="animate-hero-rise mx-auto max-w-2xl text-center">
-            <h2
-              id="vehicle-selector-heading"
-              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
-            >
-              Which vehicle do you drive?
-            </h2>
-            <p className="text-muted-foreground mt-5 text-lg leading-8">
-              Select your vehicle to explore products engineered specifically
-              for it.
+          <div className="max-w-2xl">
+            <p className="text-muted-foreground text-sm font-medium uppercase tracking-[0.14em]">
+              Knowledge
             </p>
+            <h2
+              id="knowledge-heading"
+              className={`${sectionHeadingClassName} mt-4`}
+            >
+              Make each next step easier to understand.
+            </h2>
           </div>
-
-          <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-12">
-            {vehicles.map((vehicle) => (
-              <article
-                key={vehicle.name}
-                className="animate-hero-rise group [animation-delay:140ms]"
+          <Grid columns={4} gap="default" className="mt-12 lg:mt-16">
+            {homepageResources.map((resource) => (
+              <Card
+                key={resource.title}
+                className="border-border bg-card h-full p-6 shadow-none sm:p-7"
               >
-                <Link
-                  href={vehicle.href}
-                  className="focus-visible:ring-ring block overflow-hidden transition-transform duration-500 ease-out focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 group-hover:-translate-y-1 motion-reduce:transform-none"
-                >
-                  <div className="bg-muted relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src="/images/hero-suv.jpg"
-                      alt={`${vehicle.name} electric vehicle`}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className={`object-cover ${vehicle.imagePosition} transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none`}
-                    />
-                  </div>
-                  <div className="flex items-end justify-between gap-6 pt-6">
-                    <div>
-                      <h3 className="text-3xl font-semibold tracking-[-0.04em]">
-                        {vehicle.name}
-                      </h3>
-                      <p className="text-muted-foreground mt-2 text-base">
-                        {vehicle.description}
-                      </p>
-                    </div>
-                    <Button
-                      asChild
-                      size="lg"
-                      className="group-hover:bg-primary/90 shrink-0 rounded-full px-5"
-                    >
-                      <span>Explore {vehicle.name}</span>
-                    </Button>
-                  </div>
-                </Link>
-              </article>
+                <CardContent className="p-0">
+                  <CardTitle className="text-xl font-medium tracking-[-0.03em]">
+                    {resource.title}
+                  </CardTitle>
+                  <CardDescription className="mt-3 text-sm leading-6">
+                    {resource.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
             ))}
-          </div>
-
-          <div className="mt-16 text-center sm:mt-20">
-            <p className="text-muted-foreground text-sm font-medium">
-              Coming Soon
-            </p>
-            <p className="text-foreground/70 mt-3 text-sm tracking-[0.12em]">
-              Tesla&nbsp;&nbsp;&nbsp; BYD&nbsp;&nbsp;&nbsp; Toyota
-            </p>
-          </div>
+          </Grid>
         </Container>
       </section>
 
-      <section
-        id="product-categories"
-        className="bg-background section-space scroll-mt-[4.5rem]"
-        aria-labelledby="product-categories-heading"
-      >
+      <section className="section-space" aria-labelledby="homepage-cta-heading">
         <Container>
-          <div className="animate-hero-rise max-w-2xl">
-            <h2
-              id="product-categories-heading"
-              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
-            >
-              Explore by Category
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 id="homepage-cta-heading" className={sectionHeadingClassName}>
+              Ready to build your garage?
             </h2>
-            <p className="text-muted-foreground mt-5 text-lg leading-8">
-              Everything engineered specifically for your vehicle.
+            <p className="text-muted-foreground mx-auto mt-6 max-w-xl text-lg leading-8">
+              Start by exploring the areas of ownership that matter most to you.
             </p>
-          </div>
-
-          <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-16">
-            {categories.map((category) => (
-              <article
-                key={category.name}
-                className="animate-hero-rise group [animation-delay:140ms]"
-              >
-                <Link
-                  href={category.href}
-                  className="focus-visible:ring-ring block transition-transform duration-500 ease-out focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 group-hover:-translate-y-1 motion-reduce:transform-none"
-                >
-                  <div className="bg-muted relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={category.image}
-                      alt={`${category.name} automotive products`}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
-                    />
-                  </div>
-                  <div className="pt-5">
-                    <h3 className="text-2xl font-medium tracking-[-0.035em]">
-                      {category.name}
-                    </h3>
-                    <p className="text-muted-foreground mt-2 text-sm leading-6">
-                      {category.description}
-                    </p>
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section
-        id="essentials"
-        className="bg-muted/35 section-space scroll-mt-[4.5rem]"
-        aria-labelledby="essentials-heading"
-      >
-        <Container>
-          <div className="animate-hero-rise max-w-2xl">
-            <h2
-              id="essentials-heading"
-              className="text-balance text-4xl font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl"
-            >
-              Start with the Essentials
-            </h2>
-            <p className="text-muted-foreground mt-5 text-lg leading-8">
-              The upgrades most owners choose first to protect, organize and
-              enhance their vehicle.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-8">
-            {essentials.map((product) => (
-              <article
-                key={product.name}
-                className="animate-hero-rise group [animation-delay:140ms]"
-              >
-                <Link
-                  href={product.href}
-                  className="focus-visible:ring-ring block transition-transform duration-500 ease-out focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 group-hover:-translate-y-1 motion-reduce:transform-none"
-                >
-                  <div className="bg-background relative aspect-square overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
-                    />
-                  </div>
-                  <div className="pt-5">
-                    <h3 className="text-xl font-medium tracking-[-0.03em]">
-                      {product.name}
-                    </h3>
-                    <p className="text-muted-foreground mt-2 text-sm leading-6">
-                      {product.description}
-                    </p>
-                    <span className="text-foreground mt-4 inline-flex items-center gap-1 text-sm font-medium">
-                      Learn More
-                      <ArrowRight
-                        className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 motion-reduce:transform-none"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section
-        id="homepage-cta"
-        className="bg-background section-space scroll-mt-[4.5rem]"
-        aria-labelledby="homepage-cta-heading"
-      >
-        <Container>
-          <div className="animate-hero-rise mx-auto max-w-[44rem] text-center">
-            <h2
-              id="homepage-cta-heading"
-              className="text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl"
-            >
-              Engineered for Your Vehicle. Ready When You Are.
-            </h2>
-            <p className="text-muted-foreground mt-6 text-lg leading-8">
-              Explore accessories designed specifically for your vehicle and
-              discover products built with precision, quality and purpose.
-            </p>
-            <div className="mt-9 flex flex-col items-center gap-5">
-              <Button asChild size="lg" className="rounded-full px-7">
-                <Link href="/vehicles">Find Your Vehicle</Link>
-              </Button>
-              <Link
-                href="/about"
-                className="text-foreground text-sm font-medium underline underline-offset-4 transition-opacity hover:opacity-65"
-              >
-                Learn About Our Engineering
-              </Link>
-            </div>
+            <Button asChild size="lg" className="mt-9 rounded-full px-7">
+              <ScrollLink href="#featured-categories">
+                Get Started
+                <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+              </ScrollLink>
+            </Button>
           </div>
         </Container>
       </section>
