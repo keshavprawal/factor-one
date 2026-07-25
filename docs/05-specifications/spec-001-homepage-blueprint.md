@@ -1,641 +1,489 @@
-# SPEC-001 — Homepage Blueprint
+# SPEC-001 — Homepage V2
 
 **Document ID:** SPEC-001
-**Version:** 1.0.0
-**Status:** Implementation-ready, subject to approved content and media
+
+**Version:** 2.0.0
+
+**Status:** Implementation-ready, subject to final product photography
+
 **Owner:** Product
+
 **Route:** `/`
+
 **Parent specification:** `docs/05-specifications/spec-000.md`
 
-## 1. Authority and Scope
+## 1. Authority and Intent
 
-This specification defines the implementation blueprint for the Factor One
-homepage. It refines the homepage requirements in SPEC-000 without expanding
-the product scope.
+This specification defines Homepage V2 for Factor One. It replaces the previous
+SPEC-001 homepage direction.
 
-The homepage must use the shared application shell and centralized navigation
-established by ADR-0001. It must not create placeholder routes or imply that
-unavailable products, services, compatibility information, policies, or support
-programs exist.
+The homepage must communicate, within five seconds:
 
-Where documents conflict, authority follows:
+> Factor One helps VinFast owners discover thoughtfully designed accessories
+> built by people who own the same car.
 
-1. Engineering Constitution
-2. Accepted Architecture Decision Records
-3. SPEC-000
-4. This specification
-5. Implementation
+It must answer, in order:
+
+1. What problem exists?
+2. Why does this matter to an owner?
+3. How did Factor One solve it?
+4. Why is the solution different?
+5. What can the owner do next?
+
+Factor One solves ownership problems first and sells products second.
 
 ## 2. Business Objective
 
-The homepage must establish Factor One as an engineering-led automotive company
-that helps owners make confident decisions about their vehicles.
+Establish Factor One as the most trusted place for VinFast owners to discover,
+improve, and help build accessories for their cars.
 
-Its primary business purpose is to build trust before asking for a transaction.
-It must communicate that Factor One:
+Success is measured by clarity and trust, not catalogue size or immediate
+conversion. A visitor should understand:
 
-- improves vehicle ownership through purposeful products;
-- prioritizes vehicle fit, usability, quality, and long-term value;
-- selects quality before catalogue size;
-- explains what matters so owners can make informed decisions.
+- what Factor One makes;
+- that Factor One currently serves VinFast owners;
+- that products are shaped by people who live with the same cars;
+- where to start with their car or an accessory;
+- how owners can influence what is built next.
 
-The homepage is successful when a first-time visitor understands the brand,
-recognizes its relevance to vehicle ownership, and can identify one truthful
-next action without encountering unsupported claims or unavailable
-destinations.
+## 3. Brand Operating Principle
 
-## 3. Ten-Second Comprehension Requirement
+**Built with Owners** is the company operating principle and a permanent product
+capability. It is not a campaign or a generic community forum.
 
-Within ten seconds, the first viewport and immediately adjacent content must
-answer:
+The origin story supports, but does not replace, the operating principle:
 
-| Question                    | Required answer                                                                                                   |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| What is Factor One?         | An engineering-led automotive company focused on improving vehicle ownership.                                     |
-| What problem does it solve? | It reduces uncertainty around choosing useful, compatible, high-quality vehicle products.                         |
-| Why should I trust it?      | Factor One prioritizes purposeful selection, clear compatibility, engineering judgment, and honest communication. |
-| What can I do here?         | Understand the Factor One standard and begin exploring supported vehicles or approved product discovery.          |
-| What is the next action?    | Use the single primary homepage action that points to an approved route or valid in-page destination.             |
+> Started by VinFast owners. Built with owners.
 
-The first viewport must not depend on animation, scrolling, hover, or
-unavailable navigation to communicate these answers.
+“By VinFast owners, for VinFast owners” may be used only as supporting origin
+context.
 
-## 4. User Journey
+## 4. Information Hierarchy
 
-### 4.1 Entry
+The homepage must render in this order:
 
-The visitor arrives at `/` and immediately sees:
+1. Product strip
+2. Global navigation
+3. Large Factor One wordmark
+4. Built with Owners principle and origin
+5. Hero explanation
+6. Car and accessories entry paths
+7. Featured products
+8. Knowledge
+9. Built with Owners roadmap preview
+10. Why Factor One and PPF standard
+11. Shared footer
 
-- the Factor One identity;
-- a concise ownership-focused value proposition;
-- one primary action;
-- one secondary action only when it serves a distinct purpose.
+Trust-building proof follows product discovery. Philosophy must not obscure the
+initial explanation of the company.
 
-### 4.2 Understanding
+## 5. Global Header
 
-The visitor learns:
+### Purpose
 
-- why Factor One exists;
-- how Factor One evaluates what belongs on a vehicle;
-- why fit, purpose, and ownership value matter;
-- that catalogue volume is not the measure of quality.
+Give owners direct access to the current product ecosystem while remaining
+truthful about unavailable destinations.
 
-### 4.3 Orientation
+### Product strip
 
-The visitor identifies the most relevant approved discovery path:
+Render above the main navigation and include current product concepts:
 
-- supported vehicle;
-- approved product category;
-- approved featured product;
-- approved ownership information.
+- Screen Guard
+- Rear Door Mud Guard
+- Mud Guards
+- Parcel Tray
+- Door Visor
 
-Unavailable paths must be omitted or rendered according to ADR-0001's truthful
-disabled-state rules.
+Each available item must link to a valid in-page product anchor. The strip must
+remain horizontally usable on small screens.
 
-### 4.4 Confidence
+### Primary navigation
 
-The visitor receives evidence through approved product information, real
-photography, transparent criteria, and approved customer-support information.
-Unsupported statistics, guarantees, reviews, certifications, testing claims,
-and commercial promises are prohibited.
+Use the centralized navigation configuration:
 
-### 4.5 Continuation
+- Parcel Tray
+- Mud Guards
+- Screen Guard
+- Knowledge
+- Built with Owners
+- Assistance
 
-The visitor reaches one clear closing action that continues to a real route or
-valid in-page anchor. The homepage must never end with a dead link or invented
-destination.
+Do not expose Decals without explicit approval. Configure Vehicles for future
+use but do not render it. Assistance must remain disabled until an approved
+route exists.
 
-## 5. Information Hierarchy
+### Utility navigation
 
-The homepage hierarchy is:
+Use the label **My Garage**. It remains disabled until garage functionality and
+an approved route exist.
 
-1. Brand identity and ownership value
-2. Primary next action
-3. Vehicle or product relevance
-4. Factor One's selection and engineering standard
-5. Approved product evidence
-6. Ownership confidence
-7. Closing action
+### Responsive behaviour
 
-Visual hierarchy must be established primarily through:
+- Desktop: product strip, wordmark, primary navigation, My Garage.
+- Mobile and tablet: product strip, wordmark, My Garage status, accessible menu.
+- Preserve keyboard order, visible focus, and the existing modal menu
+  behaviour.
 
-- semantic structure;
-- typography;
-- spacing;
-- composition;
-- image scale and crop;
-- contrast.
+## 6. Brand Introduction and Hero
 
-Decorative colour, shadows, gradients, badges, or animation must not carry
-essential meaning.
+### Purpose
 
-## 6. Homepage Sections
+Explain Factor One before asking the visitor to explore.
 
-Sections must appear in the following order. Conditional sections remain part
-of the blueprint but must be omitted from production until their required
-content is approved.
+### Required content
 
-### 6.1 Announcement Bar — Conditional
+- Large wordmark: `FACTOR ONE`
+- Operating principle: `Built with Owners`
+- Origin: `Started by VinFast owners. Built with owners.`
+- Headline: `Accessories that belong on your car.`
+- Supporting copy conveying: Factor One designs accessories first for VinFast
+  owners, informed by people who drive the cars every day.
+- Primary action: `Explore My Car`
+- Secondary action: `Explore Accessories`
 
-**Purpose:** Communicate one timely, material update without competing with the
-brand.
+### Visual
 
-**Render only when:** Product has approved a legitimate announcement with a
-defined start and end condition.
+Use approved local product photography or an explicitly identified development
+visual. Do not use a hero car, random stock photography, or third-party brand
+imagery.
 
-**Permitted content:** Delivery updates, an approved launch, or another
-time-bound operational message.
+### Desktop layout
 
-**Prohibited content:** Fake scarcity, generic promotions, unsupported free
-shipping claims, countdowns, rotating messages, or permanent filler.
+Use a charcoal surface. The wordmark and operating principle establish identity
+before a two-column explanation and product visual. Keep copy widths controlled.
 
-**Desktop layout:** Single restrained line above the global header.
+### Mobile layout
 
-**Mobile layout:** One short line; truncate only when the full message remains
-available accessibly. Do not create a carousel.
+Keep identity and message concise. Stack copy, actions, and visual without an
+artificial full-screen height. Ensure both actions remain easy to reach.
 
-**Copy placeholder:**
+## 7. Two Entry Paths
 
-- Message: `[Approved time-bound announcement]`
-- Destination: `[Approved real route, when required]`
+### Purpose
 
-### 6.2 Global Navigation
+Let visitors begin with either the car they drive or the accessory they need.
+Both paths remain visible rather than being hidden behind tabs.
 
-**Purpose:** Identify Factor One and expose only truthful, supported
-destinations.
+### My Car
 
-**Implementation:** Reuse the existing AppShell, Navbar, Footer, and centralized
-navigation configuration. Do not define navigation inside the homepage.
+- VinFast VF7 links to the existing `/vehicles/vf7` route.
+- VinFast VF6 displays `Coming Soon` and has no navigation action.
 
-**Desktop layout:** Wordmark, approved primary destinations, and approved
-utility controls.
+### Accessories
 
-**Mobile layout:** Wordmark, available utility controls, and the existing
-accessible menu pattern.
+List in this order:
 
-**Availability rule:** Destinations without approved routes follow ADR-0001:
-disabled and non-navigating when their presence is required, otherwise omitted.
+1. Screen Guard
+2. Rear Door Mud Guard
+3. Mud Guards
+4. Parcel Tray
+5. Door Visor
 
-### 6.3 Hero
+Parcel Tray must remain second-last. Each item links to its matching featured
+product anchor.
 
-**Purpose:** Answer what Factor One is, what ownership problem it addresses, and
-what the visitor should do next.
+### Responsive behaviour
 
-**Required content:**
+- Desktop: balanced two-column paths.
+- Mobile: stacked paths with the car path first.
+- Disabled states must remain legible and unavailable without appearing broken.
 
-- optional restrained eyebrow;
-- one `h1`;
-- one supporting paragraph;
-- one primary action;
-- optional secondary action with a distinct informational purpose;
-- one approved visual area.
+## 8. Featured Products
 
-**Desktop layout:**
+### Purpose
 
-- Occupy most, but not necessarily all, of the first viewport.
-- Use the global container.
-- Keep copy within a readable width.
-- Position content and media so neither obscures the other.
-- Keep the primary action visually dominant.
+Introduce the current product direction without pretending that commerce,
+pricing, or product pages are available.
 
-**Mobile layout:**
+### Interaction
 
-- Preserve the same message without forcing a full-screen empty composition.
-- Keep the headline readable without orphaned words or horizontal overflow.
-- Stack actions when needed.
-- Ensure media supports rather than displaces the primary message.
+Create a manual-first carousel with:
 
-**Copy placeholders:**
+- adjacent previews;
+- an active product that is subtly elevated;
+- previous and next controls;
+- touch and trackpad scrolling;
+- restrained transitions;
+- no autoplay.
 
-- Eyebrow: `[Approved Factor One descriptor]`
-- Headline: `[Ownership-focused value proposition]`
-- Supporting copy: `[One sentence explaining how Factor One reduces ownership uncertainty]`
-- Primary action: `[Approved exploration action]`
-- Secondary action: `[Approved explanation action, when required]`
+### Product content
 
-**Media placeholder:** `[Approved original vehicle or product photography]`
+Use typed configuration outside presentation markup. Each item supports:
 
-Random stock imagery and third-party copyrighted vehicle imagery are
-prohibited.
+- stable ID;
+- name;
+- plain-language purpose;
+- availability or development state;
+- local visual and honest visual status;
+- optional Owner Built evidence.
 
-### 6.4 Featured Vehicle Collection
+Do not invent prices, ratings, reviews, discounts, stock, compatibility, or
+purchase destinations.
 
-**Purpose:** Let visitors begin with a vehicle because compatibility is central
-to confident product selection.
+### Initial products
 
-**Required content for each vehicle:**
+- Screen Guard
+- Rear Door Mud Guard
+- Mud Guards
+- Parcel Tray
+- Door Visor
 
-- approved vehicle name;
-- approved image;
-- explicit support or compatibility status;
-- real destination;
-- clear exploration label.
+Where final product photography is unavailable, label the image as a
+development visual.
 
-**Desktop layout:** A restrained grid with consistent image ratios, aligned
-content, and no more cards than approved vehicle data supports.
+## 9. Knowledge
 
-**Mobile layout:** Single-column cards with readable status information and
-44 × 44 pixel minimum targets.
+### Purpose
 
-**Empty-state rule:** If no approved vehicle collection is available, omit this
-section. Do not fabricate vehicle support or create placeholder vehicle routes.
+Show how Factor One will help owners understand fit, installation, protection,
+and everyday use.
 
-**Copy placeholders:**
+### Content
 
-- Heading: `[Vehicle-first discovery heading]`
-- Supporting copy: `[Explanation that correct product choice begins with the correct vehicle]`
-- Card status: `[Approved compatibility or support status]`
-- Action: `[Explore approved vehicle]`
+Use static, non-linking topics until approved destinations exist:
 
-### 6.5 Why Factor One
+- Fit before you buy
+- Install it properly
+- Protect what gets used
+- Learn from other owners
 
-**Purpose:** Explain why Factor One's judgment is different without relying on
-advertising claims.
+Do not invent articles, policies, support promises, or routes.
 
-**Required themes:**
+## 10. Built with Owners
 
-- genuine ownership problems;
-- vehicle-specific fit and usability;
-- thoughtful engineering;
-- long-term ownership value;
-- honest limitations and communication.
+### Purpose
 
-**Desktop layout:** Introductory copy paired with three to five concise
-principles or an editorial two-column composition.
+Preview a public product-development roadmap that shows how owner problems move
+through research, design, prototypes, and testing.
 
-**Mobile layout:** One continuous reading order: heading, explanation, then
-principles. Avoid dense multi-column cards.
+This is not a forum. The architecture must be ready to support future roadmap
+detail, idea submission, voting, discussions, beta testing, founder updates,
+prototype galleries, and product version history without implementing them now.
 
-**Copy placeholders:**
+### Initial roadmap data
 
-- Heading: `[Factor One difference stated in plain language]`
-- Introduction: `[Short explanation of the engineering-first selection standard]`
-- Principle title: `[Approved principle]`
-- Principle description: `[Evidence-based explanation without unsupported claims]`
+| Idea                        | Raised by  | Owners agree | Status       |
+| --------------------------- | ---------- | ------------ | ------------ |
+| Close the Parcel Tray Gap   | Keshav     | 184          | Designing    |
+| Need Better Moonroof Cover  | Factor Lab | —            | Research     |
+| Rear Door Mud Guard         | Factor Lab | 67           | Testing      |
+| Better Protection Mud Flaps | —          | 212          | Prototype    |
+| Frunk Organiser             | —          | 143          | Under Review |
 
-### 6.6 Featured Products — Conditional
+Counts are founder-provided evidence. Do not fabricate absent raisers or counts.
+Version 1 cards are read-only; do not render fake Vote, Discuss, or Beta Tester
+controls.
 
-**Purpose:** Demonstrate what Factor One offers using approved product data.
+## 11. Owner Built Badge
 
-**Required content for each product:**
+Products developed from documented owner feedback may display:
 
-- approved product name;
-- approved image;
-- approved vehicle compatibility;
-- approved price or an explicit non-purchasable state;
-- real product destination;
-- concise purpose statement.
+- badge: `OWNER BUILT`
+- supporting line: `Requested by [approved count] owners.`
 
-**Desktop layout:** Small, focused grid. Product photography remains the visual
-priority.
+The badge must be reusable, compact, premium, and must never appear without
+approved evidence.
 
-**Mobile layout:** Single-column or compact two-column layout only when names,
-compatibility, pricing, and touch targets remain readable.
+## 12. Why Factor One
 
-**Data rule:** Render only from approved product data. Do not fabricate
-products, pricing, discounts, ratings, reviews, stock status, or
-compatibility.
+### Purpose
 
-**Copy placeholders:**
+Explain the practical standard behind the products after visitors understand
+what Factor One offers.
 
-- Heading: `[Approved featured-products heading]`
-- Purpose statement: `[Why this product matters to ownership]`
-- Compatibility: `[Approved vehicle compatibility]`
-- Price state: `[Approved price or availability language]`
-- Action: `[Approved product-view action]`
+### Headline
 
-### 6.7 Engineering Philosophy
+`By the owners. For the owners.`
 
-**Purpose:** Build trust by explaining how Factor One thinks, selects, and
-improves products.
+### Proof themes
 
-**Required themes:**
+- Engineered to Fit
+- Designed to Belong
+- Built to Protect
 
-- engineering before marketing;
-- quality before quantity;
-- invisible integration with the vehicle;
-- continuous improvement;
-- long-term thinking.
+Descriptions must remain grounded in intent and current product direction.
+Unsupported testing, manufacturing, material, safety, or compatibility claims
+are prohibited.
 
-**Desktop layout:** Editorial composition with a controlled reading width and
-one approved supporting image when available.
+### PPF standard
 
-**Mobile layout:** Image first only when it adds evidence; otherwise prioritize
-text. Preserve short paragraphs and generous spacing.
+Introduce:
 
-**Copy placeholders:**
+- Purpose — solves a real ownership problem.
+- Protection — helps care for the parts of the car owners use.
+- Fit — designed around the intended car and how owners use it.
 
-- Heading: `[Engineering philosophy statement]`
-- Body: `[Approved explanation derived from PRODUCT.md]`
-- Supporting caption: `[Factual description of approved media]`
+Explicitly state that PPF is Factor One’s product standard in this context and
+does not mean Paint Protection Film.
 
-### 6.8 Product Experience — Conditional
+## 13. Visual System
 
-**Purpose:** Show product quality, installation, material, and fit through
-approved visual evidence.
+Use the existing design system with a charcoal-led extension:
 
-**Permitted media:**
+- charcoal;
+- warm white;
+- graphite;
+- white;
+- Factor One Red as a restrained accent.
 
-- installed product view;
-- material detail;
-- fitment detail;
-- accurate scale or use context;
-- approved installation sequence.
+Alternate section surfaces to create rhythm. Do not create an entirely dark
+website.
 
-**Desktop layout:** Large editorial media with a concise caption or a restrained
-two-part media composition.
+Avoid:
 
-**Mobile layout:** Full-width media within the content container. Avoid
-horizontal carousels unless a future approved specification requires them.
+- racing red-and-black styling;
+- carbon-fibre textures;
+- speedometer motifs;
+- decorative gradients;
+- glassmorphism;
+- excessive rounded cards;
+- excessive shadows;
+- theatrical motion.
 
-**Evidence rule:** Omit the section until accurate, approved photography exists.
-Do not use laboratory, manufacturing, or testing imagery to imply unsupported
-capabilities.
+Hierarchy must come from typography, spacing, composition, scale, image
+treatment, contrast, and section rhythm.
 
-**Copy placeholders:**
+## 14. Language
 
-- Heading: `[Product-experience heading]`
-- Caption: `[Factual explanation of what the image demonstrates]`
+Write like real owners speak.
 
-### 6.9 Customer Confidence — Conditional
+Prefer:
 
-**Purpose:** Reduce purchase uncertainty using approved operational facts.
+- Protect your car
+- Fits properly
+- Solves real ownership problems
+- Built because owners asked for it
 
-**Permitted topics when documented:**
+Use `car` instead of `vehicle` in customer-facing copy unless the context is
+technical.
 
-- compatibility guidance;
-- installation guidance;
-- approved warranty terms;
-- approved support channels;
-- approved shipping information;
-- approved returns or policy information.
+Do not use:
 
-**Desktop layout:** Concise confidence statements in a balanced grid or
-editorial list.
+- Less uncertainty
+- Better ownership decisions
+- Optimise
+- Leverage
+- Empower
+- unsupported corporate or promotional claims
 
-**Mobile layout:** Single-column reading order with clear labels and links to
-real policy or support routes.
+## 15. Component and Data Architecture
 
-**Truth rule:** Do not mention guarantees, warranties, secure checkout,
-shipping, returns, or support commitments until their terms and destinations
-are approved.
+Reuse:
 
-**Copy placeholders:**
+- `AppShell`
+- `Navbar`
+- `Footer`
+- `Container`
+- `Grid`
+- `Button`
+- `Card`
+- `Badge`
+- `ScrollLink`
 
-- Heading: `[Approved confidence heading]`
-- Item title: `[Approved operational commitment]`
-- Item detail: `[Accurate scope or limitation]`
-- Destination: `[Approved real policy or support route]`
+Keep navigation, products, knowledge topics, proof themes, and roadmap items in
+typed configuration.
 
-### 6.10 Final Call to Action
+New components are limited to repeated behaviour that existing primitives do
+not provide:
 
-**Purpose:** End the homepage with one calm, clear continuation.
+- manual featured-products carousel;
+- owner-roadmap card;
+- Owner Built evidence treatment.
 
-**Required content:**
+No CMS, API, global state, route, or dependency is authorized.
 
-- one concise heading;
-- optional single supporting sentence;
-- one primary action.
+## 16. Accessibility
 
-**Desktop layout:** Centered or editorially aligned within a narrow content
-width and generous vertical spacing.
+- One page-level `h1` and logical heading hierarchy.
+- Semantic header, navigation, main, sections, articles, and footer.
+- Keyboard access to every interactive element.
+- Visible focus at WCAG AA contrast.
+- Minimum 44 × 44 pixel targets.
+- Disabled destinations use the ADR-0001 pattern.
+- Carousel controls have descriptive names and expose position.
+- Horizontal carousel remains usable without drag gestures.
+- Colour never carries meaning alone.
+- Decorative media uses empty alternative text.
+- Product media uses accurate alternative text and identifies development
+  visuals in visible text.
+- Reduced motion disables smooth scrolling and transforms.
+- No autoplay or timed content.
 
-**Mobile layout:** Full-width primary action where appropriate, with a minimum
-44-pixel target and no competing secondary action.
+## 17. Performance
 
-**Destination rule:** The action must point to an existing approved route or a
-valid in-page anchor.
+- Server Components by default.
+- One focused client boundary for carousel interaction.
+- No homepage data fetching.
+- No new dependency.
+- Next Image with reserved geometry and responsive sizes.
+- Priority only for the hero visual.
+- Lazy-load below-the-fold images.
+- CSS-first motion.
+- No avoidable layout shift or horizontal page overflow.
 
-**Copy placeholders:**
+## 18. Out of Scope
 
-- Heading: `[Clear ownership-oriented closing statement]`
-- Supporting copy: `[One sentence clarifying the next step]`
-- Action: `[Approved next action]`
+- product purchases, prices, carts, and checkout;
+- authentication and garage functionality;
+- search;
+- product, knowledge, assistance, community, or VF6 routes;
+- compatibility engine;
+- backend services or APIs;
+- voting, discussions, beta applications, or roadmap detail;
+- Decals without approval;
+- final claims or photography not supplied by Product.
 
-### 6.11 Footer
+## 19. Acceptance Criteria
 
-**Purpose:** Conclude the experience with stable navigation and approved legal
-or support information.
+### Clarity and product intent
 
-**Implementation:** Reuse the existing shared Footer and centralized
-configuration.
+- [ ] The first viewport explains what Factor One is, who it serves, and why it
+      is different within five seconds.
+- [ ] `Built with Owners` is presented as the operating principle.
+- [ ] Product discovery precedes trust philosophy.
+- [ ] Both car and accessory entry paths are immediately understandable.
 
-**Desktop layout:** Restrained grouped links aligned to the global container.
+### Truth and scope
 
-**Mobile layout:** Stacked, readable groups with clear focus order.
+- [ ] No fake route, product fact, price, stock, rating, review, purchase state,
+      compatibility claim, or business commitment exists.
+- [ ] VF6, My Garage, and Assistance are truthfully unavailable.
+- [ ] Vehicles is architected but not exposed.
+- [ ] Decals is omitted.
+- [ ] Product visuals that require replacement are visibly identified.
 
-**Content rule:** Include only legitimate current routes. Do not invent
-policies, addresses, phone numbers, social profiles, certifications, payment
-methods, or legal entities.
+### Experience
 
-## 7. Component Mapping
+- [ ] The page alternates charcoal, warm white, graphite, and white surfaces
+      without a racing aesthetic.
+- [ ] The manual carousel shows adjacent products and has no autoplay.
+- [ ] Knowledge remains static and non-linking.
+- [ ] The owner roadmap preview uses only founder-approved data.
+- [ ] PPF is explained without confusion with Paint Protection Film.
 
-| Homepage responsibility       | Existing component or pattern         | Implementation rule                                                       |
-| ----------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
-| Global landmarks              | `AppShell`                            | Must wrap the route through the root layout.                              |
-| Header and navigation         | `Navbar` and navigation configuration | Must not be duplicated in the homepage.                                   |
-| Footer                        | `Footer` and navigation configuration | Must not be duplicated in the homepage.                                   |
-| Content alignment             | `Container`                           | Use for every principal section.                                          |
-| Responsive grids              | `Grid`                                | Reuse when its existing variants satisfy the layout.                      |
-| Primary and secondary actions | `Button`                              | Reuse variants; do not create a second button system.                     |
-| Static information groups     | `Card`                                | Use only when card grouping improves comprehension.                       |
-| Category presentation         | `CategoryCard`                        | Use only with approved content; static cards must not imply navigation.   |
-| Product presentation          | `ProductCard`                         | Use only with approved product data and real destinations.                |
-| In-page actions               | `ScrollLink` or semantic anchor       | Target an existing section and respect reduced motion.                    |
-| Optimized media               | Next.js `Image`                       | Provide dimensions or fill geometry, sizes, and meaningful alt treatment. |
+### Architecture
 
-New components are permitted only for repeated, homepage-specific patterns that
-cannot be expressed clearly with existing primitives. Page-specific copy and
-approved content should remain replaceable without restructuring the route.
+- [ ] Existing AppShell, shared primitives, and navigation configuration are
+      reused.
+- [ ] Only `/` content and supporting shared presentation/configuration change.
+- [ ] `/vehicles/vf7` remains functional.
+- [ ] No new route, API, dependency, or global state is introduced.
 
-## 8. Responsive Behaviour
+### Responsive and accessibility
 
-### 8.1 Breakpoint-independent requirements
+- [ ] The page works without horizontal overflow at 320, 390, 768, 1024, and
+      1440 pixels.
+- [ ] Header, entry paths, carousel, roadmap, and footer are intentionally
+      composed for mobile, tablet, and desktop.
+- [ ] Keyboard, focus, landmarks, headings, contrast, and reduced motion meet
+      the repository baseline.
 
-- Start with the mobile layout and enhance progressively.
-- Preserve one content hierarchy across all viewports.
-- Prevent horizontal overflow at 320 pixels and wider.
-- Maintain readable line lengths.
-- Preserve image aspect ratios and prevent layout shift.
-- Keep touch targets at least 44 × 44 CSS pixels.
-- Do not hide essential content solely to make a layout fit.
+### Validation
 
-### 8.2 Small mobile
-
-- Single-column section flow.
-- Compact but calm section spacing.
-- Stacked actions where horizontal placement reduces target size or clarity.
-- Images must not consume the experience before the visitor understands the
-  page.
-- Headings must wrap naturally without clipping.
-
-### 8.3 Large mobile and tablet
-
-- Introduce two-column grids only when content remains balanced.
-- Preserve logical DOM order when visual columns are introduced.
-- Maintain comfortable gutters using existing container rules.
-- Avoid controls positioned outside normal document flow.
-
-### 8.4 Laptop and desktop
-
-- Use the global maximum width and shared alignment grid.
-- Increase whitespace and type scale without increasing content density.
-- Use two- to four-column grids only as defined by the relevant section.
-- Keep the primary journey visually dominant on wide screens.
-
-### 8.5 Wide desktop
-
-- Content must remain bounded by the global container.
-- Text line lengths must not expand indefinitely.
-- Media may scale within approved aspect ratios but must not create empty,
-  decorative expanses without purpose.
-
-## 9. Copywriting Requirements
-
-All placeholder copy must be visibly identified in implementation data or
-content review until approved.
-
-Final copy must:
-
-- explain usefulness before promotion;
-- use plain, direct language;
-- avoid unnecessary superlatives;
-- distinguish intention from verified fact;
-- explain limitations when relevant;
-- avoid fake urgency, scarcity, or social proof;
-- avoid unsupported engineering, testing, manufacturing, compatibility,
-  warranty, shipping, or safety claims.
-
-Placeholder syntax in this specification uses square brackets. Square-bracketed
-copy must never ship to production.
-
-## 10. Accessibility Requirements
-
-The homepage must meet WCAG AA expectations and the repository accessibility
-baseline.
-
-Required:
-
-- one `main` landmark supplied by the AppShell;
-- one page-level `h1`;
-- logical `h2` and `h3` hierarchy;
-- a working skip link;
-- semantic `section`, `article`, `nav`, list, button, and link elements;
-- accessible names that describe action and destination;
-- keyboard access to every interactive element;
-- visible `:focus-visible` indication;
-- minimum 44 × 44 CSS-pixel touch targets;
-- sufficient text and interactive-state contrast;
-- no information conveyed by colour alone;
-- meaningful image alternative text;
-- empty alternative text for decorative images;
-- reduced-motion support;
-- no automatic movement that interferes with reading;
-- no focus traps outside an intentionally modal interaction;
-- stable focus order across responsive layouts.
-
-Static cards must not receive link or button semantics. Disabled destinations
-must follow the existing accessible pattern in ADR-0001.
-
-## 11. Performance Requirements
-
-- Render the homepage as a Server Component by default.
-- Add client components only for necessary browser interaction.
-- Reuse existing dependencies.
-- Use optimized local media through the framework image solution.
-- Prioritize only genuinely above-the-fold media.
-- Lazy-load below-the-fold media.
-- Reserve media geometry to prevent layout shift.
-- Avoid autoplay video.
-- Avoid new animation libraries.
-- Keep content understandable with motion disabled.
-- Do not fetch placeholder data or call unavailable APIs.
-
-## 12. Acceptance Criteria
-
-### 12.1 Business and comprehension
-
-- [ ] A first-time visitor can answer all five ten-second comprehension
-      questions without interacting with the page.
-- [ ] The homepage communicates an engineering-led ownership proposition rather
-      than a discount marketplace.
-- [ ] One primary next action is visually clear.
-- [ ] Every section contributes to trust, relevance, product understanding, or
-      continuation.
-
-### 12.2 Content integrity
-
-- [ ] No unsupported product, compatibility, engineering, testing, warranty,
-      shipping, support, review, rating, pricing, or certification claim is
-      present.
-- [ ] No fake products, prices, discounts, availability, or social proof are
-      present.
-- [ ] Conditional sections are omitted until their required data and media are
-      approved.
-- [ ] No square-bracketed placeholder copy appears in production.
-
-### 12.3 Architecture and components
-
-- [ ] The homepage inherits the existing AppShell, Navbar, and Footer.
-- [ ] Navigation comes only from the centralized configuration.
-- [ ] No placeholder route is created.
-- [ ] Every link targets a real approved route or valid in-page anchor.
-- [ ] Existing Container, Grid, Button, Card, and applicable content components
-      are reused.
-- [ ] No speculative dependency, API, data model, or global state is added.
-
-### 12.4 Responsive quality
-
-- [ ] The layout works without horizontal overflow at 320, 390, 768, 1024, and
-      1440 pixel viewport widths.
-- [ ] Mobile is intentionally composed rather than merely stacked from desktop.
-- [ ] Text remains readable and media remains proportionate at every required
-      width.
-- [ ] Interactive targets remain at least 44 × 44 CSS pixels.
-
-### 12.5 Accessibility
-
-- [ ] Landmark and heading structure is valid.
-- [ ] The page is fully operable using a keyboard.
-- [ ] Focus indicators are visible.
-- [ ] Images have appropriate alternative text.
-- [ ] Contrast meets WCAG AA.
-- [ ] Reduced-motion preferences are respected.
-- [ ] Automated and manual accessibility checks report no blocking issue.
-
-### 12.6 Performance and stability
-
-- [ ] Above-the-fold content renders without waiting for client-side data.
-- [ ] Media is optimized and does not cause avoidable layout shift.
-- [ ] Below-the-fold media is lazy-loaded.
-- [ ] The page remains functional with animation disabled.
-- [ ] No unnecessary homepage client state or JavaScript is introduced.
-
-### 12.7 Repository validation
-
-- [ ] Existing routes remain functional.
-- [ ] Lint passes.
-- [ ] Type checking passes.
-- [ ] Production build passes.
-- [ ] Formatting check passes.
-- [ ] Repository diff check passes.
-
-## 13. Out of Scope
-
-This specification does not authorize:
-
-- authentication or accounts;
-- garage functionality;
-- checkout or payment;
-- cart business logic;
-- search functionality;
-- recommendation engines;
-- vehicle compatibility engines;
-- backend services;
-- CMS integration;
-- analytics vendors;
-- new product, category, policy, or support routes;
-- invented products or commercial data;
-- promotional carousels, pop-ups, countdowns, or dark patterns.
-
-Any of these requires an approved specification or task before implementation.
+- [ ] `pnpm lint`
+- [ ] `pnpm typecheck`
+- [ ] `pnpm build`
+- [ ] `pnpm format:check`
+- [ ] `git diff --check`
+- [ ] Browser review at desktop, tablet, and mobile widths
+- [ ] Draft PR #5 updated and remains Draft

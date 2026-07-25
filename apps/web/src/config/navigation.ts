@@ -10,6 +10,12 @@ export interface UnavailableNavigationItem {
   unavailable: true;
 }
 
+export interface HiddenNavigationItem {
+  id: string;
+  label: string;
+  visible: false;
+}
+
 export type NavigationItem =
   | AvailableNavigationItem
   | UnavailableNavigationItem;
@@ -31,28 +37,82 @@ const vf7: AvailableNavigationItem = {
   label: 'VinFast VF7',
 };
 
+const knowledge: AvailableNavigationItem = {
+  href: '/#knowledge',
+  id: 'knowledge',
+  label: 'Knowledge',
+};
+
+const builtWithOwners: AvailableNavigationItem = {
+  href: '/#built-with-owners',
+  id: 'built-with-owners',
+  label: 'Built with Owners',
+};
+
+export const productNavigation: readonly AvailableNavigationItem[] = [
+  {
+    href: '/#product-screen-guard',
+    id: 'screen-guard',
+    label: 'Screen Guard',
+  },
+  {
+    href: '/#product-rear-door-mud-guard',
+    id: 'rear-door-mud-guard',
+    label: 'Rear Door Mud Guard',
+  },
+  {
+    href: '/#product-mud-guards',
+    id: 'mud-guards',
+    label: 'Mud Guards',
+  },
+  {
+    href: '/#product-parcel-tray',
+    id: 'parcel-tray',
+    label: 'Parcel Tray',
+  },
+  {
+    href: '/#product-door-visor',
+    id: 'door-visor',
+    label: 'Door Visor',
+  },
+];
+
 /**
- * Canonical V1 destinations remain disabled until their approved routes exist.
- * This avoids shipping misleading links while keeping the information
- * architecture ready for those routes.
+ * Current product destinations use real homepage anchors. Assistance remains
+ * disabled until an approved route exists. Vehicles is configured separately
+ * so it can be enabled later without changing the navigation model.
  */
-export const primaryNavigation: NavigationItem[] = [
-  { id: 'shop', label: 'Shop', unavailable: true },
-  { id: 'about', label: 'About', unavailable: true },
-  { id: 'contact', label: 'Contact', unavailable: true },
+export const primaryNavigation: readonly NavigationItem[] = [
+  productNavigation[3],
+  productNavigation[2],
+  productNavigation[0],
+  knowledge,
+  builtWithOwners,
+  { id: 'assistance', label: 'Assistance', unavailable: true },
 ];
 
-export const utilityNavigation: NavigationItem[] = [
-  { id: 'search', label: 'Search', unavailable: true },
-  { id: 'cart', label: 'Cart', unavailable: true },
+export const futureNavigation: readonly HiddenNavigationItem[] = [
+  { id: 'vehicles', label: 'Vehicles', visible: false },
 ];
 
-export const mobileNavigation: NavigationItem[] = [home, ...primaryNavigation];
+export const utilityNavigation: readonly NavigationItem[] = [
+  { id: 'garage', label: 'My Garage', unavailable: true },
+];
 
-export const footerNavigation: FooterNavigationGroup[] = [
+export const mobileNavigation: readonly NavigationItem[] = [
+  home,
+  ...primaryNavigation,
+  ...utilityNavigation,
+];
+
+export const footerNavigation: readonly FooterNavigationGroup[] = [
   {
     items: [home, vf7],
-    label: 'Navigation',
+    label: 'Explore',
+  },
+  {
+    items: [knowledge, builtWithOwners],
+    label: 'Factor One',
   },
 ];
 

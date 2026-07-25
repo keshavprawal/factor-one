@@ -19,6 +19,12 @@
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 222 47% 11%;
+    --charcoal: 218 18% 10%;
+    --charcoal-foreground: 42 30% 96%;
+    --graphite: 216 13% 17%;
+    --graphite-foreground: 42 30% 96%;
+    --warm: 40 24% 96%;
+    --factor-red: 1 68% 47%;
     --radius: 0.625rem;
     --font-sans: ui-sans-serif;
     --font-mono: ui-monospace;
@@ -67,6 +73,14 @@
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {

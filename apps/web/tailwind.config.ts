@@ -23,6 +23,16 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        charcoal: {
+          DEFAULT: 'hsl(var(--charcoal))',
+          foreground: 'hsl(var(--charcoal-foreground))',
+        },
+        graphite: {
+          DEFAULT: 'hsl(var(--graphite))',
+          foreground: 'hsl(var(--graphite-foreground))',
+        },
+        warm: 'hsl(var(--warm))',
+        'factor-red': 'hsl(var(--factor-red))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
