@@ -21,6 +21,7 @@ pnpm dev
 pnpm build
 pnpm lint
 pnpm typecheck
+pnpm test
 pnpm format:check
 ```
 

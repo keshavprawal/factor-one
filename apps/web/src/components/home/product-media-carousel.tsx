@@ -80,7 +80,7 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
   }
 
   return (
-    <div>
+    <div className="min-w-0">
       <div
         ref={trackRef}
         role="region"
@@ -98,10 +98,8 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
             data-hero-product-index={index}
             aria-current={index === activeIndex ? 'true' : undefined}
             className={cn(
-              'w-[86%] shrink-0 snap-center transition-[transform,opacity] duration-300 motion-reduce:transform-none motion-reduce:transition-none sm:w-[72%] lg:w-[78%]',
-              index === activeIndex
-                ? '-translate-y-1 opacity-100'
-                : 'opacity-60',
+              'w-[86%] shrink-0 snap-center transition-transform duration-300 motion-reduce:transform-none motion-reduce:transition-none sm:w-[72%] lg:w-[78%]',
+              index === activeIndex && '-translate-y-1',
             )}
           >
             <ProductMediaVisual
@@ -126,7 +124,11 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-5">
-        <p className="text-muted-foreground text-sm" aria-live="polite">
+        <p
+          className="text-muted-foreground text-sm"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {String(activeIndex + 1).padStart(2, '0')} /{' '}
           {String(products.length).padStart(2, '0')}
           <span className="sr-only">

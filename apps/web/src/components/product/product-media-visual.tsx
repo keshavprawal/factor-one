@@ -1,7 +1,7 @@
 'use client';
 
 import Image, { getImageProps } from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { ProductMediaItem } from '@/config/product-media';
 import { cn } from '@/lib/utils';
 
@@ -39,31 +39,10 @@ export function ProductMediaVisual({
   media,
   priority = false,
 }: ProductMediaVisualProps) {
-  const [hasLoaded, setHasLoaded] = useState(false);
   const [hasFailed, setHasFailed] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
   const hasConfiguredMedia = Boolean(
     media.desktopImage && media.mobileImage && media.mediaStatus !== 'missing',
   );
-
-  useEffect(() => {
-    setHasLoaded(false);
-    setHasFailed(false);
-  }, [media.id]);
-
-  useEffect(() => {
-    const image = imageRef.current;
-
-    if (!image?.complete) {
-      return;
-    }
-
-    if (image.naturalWidth > 0) {
-      setHasLoaded(true);
-    } else {
-      setHasFailed(true);
-    }
-  }, [media.id]);
 
   const desktopImage = hasConfiguredMedia
     ? getImageProps({
@@ -105,14 +84,8 @@ export function ProductMediaVisual({
 
       {desktopImage && mobileImage && !hasFailed ? (
         media.desktopImage === media.mobileImage ? (
-          <div
-            className={cn(
-              'absolute inset-0 transition-opacity duration-300 motion-reduce:transition-none',
-              hasLoaded ? 'opacity-100' : 'opacity-0',
-            )}
-          >
+          <div className="absolute inset-0">
             <Image
-              ref={imageRef}
               src={media.desktopImage!}
               alt={media.altText}
               fill
@@ -120,17 +93,11 @@ export function ProductMediaVisual({
               sizes="(min-width: 1280px) 44vw, (min-width: 1024px) 48vw, (min-width: 640px) 72vw, 88vw"
               className="object-cover"
               style={{ objectPosition: media.focalPoint }}
-              onLoad={() => setHasLoaded(true)}
               onError={() => setHasFailed(true)}
             />
           </div>
         ) : (
-          <picture
-            className={cn(
-              'absolute inset-0 transition-opacity duration-300 motion-reduce:transition-none',
-              hasLoaded ? 'opacity-100' : 'opacity-0',
-            )}
-          >
+          <picture className="absolute inset-0">
             <source
               media="(max-width: 639px)"
               srcSet={mobileImage.srcSet}
@@ -138,14 +105,12 @@ export function ProductMediaVisual({
             />
             <img
               {...desktopImage}
-              ref={imageRef}
               alt={media.altText}
               style={{
                 ...desktopImage.style,
                 objectFit: 'cover',
                 objectPosition: media.focalPoint,
               }}
-              onLoad={() => setHasLoaded(true)}
               onError={() => setHasFailed(true)}
             />
           </picture>
@@ -158,9 +123,7 @@ export function ProductMediaVisual({
           <p className="text-charcoal-foreground/70 mt-1 text-[0.65rem] uppercase tracking-[0.12em]">
             {!hasConfiguredMedia || hasFailed
               ? 'Photography pending'
-              : hasLoaded
-                ? 'Provisional photography'
-                : 'Loading product photography'}
+              : 'Provisional photography'}
           </p>
         </div>
         <span

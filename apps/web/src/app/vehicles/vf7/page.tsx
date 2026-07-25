@@ -12,10 +12,27 @@ import {
   vf7OverviewHighlights,
   vf7OwnershipResources,
 } from '@/config/vf7';
+import { getSiteUrl, siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'VinFast VF7',
-  description: 'Factor One products engineered for the VinFast VF7.',
+  description:
+    'Explore Factor One accessories and ownership resources for the VinFast VF7.',
+  alternates: getSiteUrl() ? { canonical: '/vehicles/vf7' } : undefined,
+  openGraph: {
+    description:
+      'Explore Factor One accessories and ownership resources for the VinFast VF7.',
+    siteName: siteConfig.name,
+    title: 'VinFast VF7',
+    type: 'website',
+    url: getSiteUrl() ? '/vehicles/vf7' : undefined,
+  },
+  twitter: {
+    card: 'summary',
+    description:
+      'Explore Factor One accessories and ownership resources for the VinFast VF7.',
+    title: 'VinFast VF7',
+  },
 };
 
 export default function VF7Page() {
@@ -69,7 +86,7 @@ export default function VF7Page() {
             <div className="bg-muted relative order-1 aspect-[4/3] overflow-hidden lg:order-2">
               <Image
                 src="/images/hero-suv.jpg"
-                alt="Graphite VinFast VF7 electric SUV outside a minimalist contemporary residence"
+                alt="White and graphite VinFast electric SUVs outside a minimalist contemporary residence"
                 fill
                 priority
                 sizes="(min-width: 1024px) 50vw, 100vw"
@@ -90,7 +107,7 @@ export default function VF7Page() {
             <div className="bg-muted relative aspect-[4/3] overflow-hidden">
               <Image
                 src="/images/hero-suv.jpg"
-                alt="Graphite VinFast VF7 electric SUV with minimalist contemporary architecture"
+                alt="White and graphite VinFast electric SUVs with minimalist contemporary architecture"
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="object-cover object-[78%_center]"
