@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { Wordmark } from '@/components/brand/wordmark';
 import { FeaturedProductsCarousel } from '@/components/home/featured-products-carousel';
 import { RoadmapCard } from '@/components/home/roadmap-card';
 import { Container } from '@/components/layout/container';
@@ -27,37 +28,33 @@ export default function Home() {
   return (
     <>
       <section
-        className="bg-charcoal text-charcoal-foreground overflow-hidden pb-20 pt-14 sm:pb-28 sm:pt-20 lg:pb-32"
+        className="bg-warm overflow-hidden pb-20 pt-14 sm:pb-28 sm:pt-16 lg:pb-32"
         aria-labelledby="homepage-hero-heading"
       >
         <Container>
-          <div className="border-charcoal-foreground/15 border-b pb-12 text-center sm:pb-16">
-            <p
-              className="text-[clamp(3.5rem,13vw,11rem)] font-semibold leading-[0.8] tracking-[-0.075em]"
-              aria-label="Factor One"
-            >
-              FACTOR ONE
-            </p>
-            <p className="text-factor-red mt-9 text-sm font-semibold uppercase tracking-[0.2em] sm:mt-12">
+          <div className="overflow-hidden pb-12 text-center sm:pb-12 lg:pb-10">
+            <Wordmark
+              as="p"
+              size="display"
+              className="mx-auto whitespace-nowrap"
+            />
+            <p className="text-factor-red mt-9 text-sm font-semibold uppercase tracking-[0.2em] sm:mt-8">
               Built with Owners
             </p>
-            <p className="text-charcoal-foreground/60 mt-4 text-sm leading-6 sm:text-base">
-              Started by VinFast owners. Built with owners.
+            <p className="text-muted-foreground mt-4 text-sm leading-6 sm:text-base">
+              By VinFast owners, for VinFast owners.
             </p>
           </div>
 
-          <div className="grid items-center gap-12 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-20">
+          <div className="border-border grid items-center gap-12 border-t pt-14 sm:pt-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-20 lg:pt-14">
             <div className="max-w-2xl">
-              <p className="text-charcoal-foreground/55 text-xs font-medium uppercase tracking-[0.16em]">
-                Accessories for VinFast owners
-              </p>
               <h1
                 id="homepage-hero-heading"
-                className="mt-5 text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl lg:text-7xl"
+                className="text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl lg:text-7xl"
               >
                 Accessories that belong on your car.
               </h1>
-              <p className="text-charcoal-foreground/70 mt-7 max-w-xl text-lg leading-8 sm:text-xl">
+              <p className="text-muted-foreground mt-7 max-w-xl text-lg leading-8 sm:text-xl">
                 Factor One designs accessories first for VinFast owners, shaped
                 by people who drive the same cars every day.
               </p>
@@ -76,7 +73,7 @@ export default function Home() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-charcoal-foreground/30 text-charcoal-foreground hover:bg-charcoal-foreground hover:text-charcoal rounded-full bg-transparent px-6"
+                  className="rounded-full bg-transparent px-6"
                 >
                   <ScrollLink href="#explore-accessories">
                     Explore Accessories
@@ -86,7 +83,7 @@ export default function Home() {
             </div>
 
             <figure>
-              <div className="bg-graphite relative aspect-[4/3] overflow-hidden rounded-lg">
+              <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-lg">
                 <Image
                   src="/images/essentials/screen-protector.jpg"
                   alt="Screen guard positioned over a car display"
@@ -96,8 +93,8 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <figcaption className="text-charcoal-foreground/55 mt-4 text-xs leading-5">
-                Development visual — final Factor One product photography
+              <figcaption className="text-muted-foreground mt-4 text-xs leading-5">
+                Repository product close-up — final Factor One photography
                 pending.
               </figcaption>
             </figure>
@@ -106,7 +103,7 @@ export default function Home() {
       </section>
 
       <section
-        className="section-space bg-warm"
+        className="section-space bg-white"
         aria-labelledby="discovery-heading"
       >
         <Container>
@@ -129,7 +126,7 @@ export default function Home() {
           <Grid columns={2} gap="lg" className="mt-12 lg:mt-16">
             <Card
               id="explore-my-car"
-              className="scroll-mt-36 border-0 bg-white p-6 shadow-none sm:p-9"
+              className="bg-warm scroll-mt-28 border-0 p-6 shadow-none sm:p-9"
             >
               <CardContent className="p-0">
                 <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
@@ -168,7 +165,7 @@ export default function Home() {
 
             <Card
               id="explore-accessories"
-              className="scroll-mt-36 border-0 bg-white p-6 shadow-none sm:p-9"
+              className="bg-warm scroll-mt-28 border-0 p-6 shadow-none sm:p-9"
             >
               <CardContent className="p-0">
                 <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
@@ -205,7 +202,7 @@ export default function Home() {
 
       <section
         id="featured-products"
-        className="section-space bg-graphite text-graphite-foreground scroll-mt-28 overflow-hidden"
+        className="section-space bg-muted/60 scroll-mt-28 overflow-hidden"
         aria-labelledby="featured-products-heading"
       >
         <Container>
@@ -221,7 +218,7 @@ export default function Home() {
                 Built around the problems owners notice.
               </h2>
             </div>
-            <p className="text-graphite-foreground/65 max-w-xl text-base leading-7 lg:justify-self-end">
+            <p className="text-muted-foreground max-w-xl text-base leading-7 lg:justify-self-end">
               These are the accessories Factor One is shaping now. Final
               photography, availability, and purchase details are not yet
               published.
@@ -234,8 +231,41 @@ export default function Home() {
       </section>
 
       <section
+        id="built-with-owners"
+        className="section-space bg-charcoal text-charcoal-foreground scroll-mt-28"
+        aria-labelledby="built-with-owners-heading"
+      >
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
+            <div>
+              <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.16em]">
+                Built with Owners
+              </p>
+              <h2
+                id="built-with-owners-heading"
+                className={`${sectionHeadingClassName} mt-4`}
+              >
+                See what owners want Factor One to solve next.
+              </h2>
+            </div>
+            <p className="text-charcoal-foreground/65 max-w-xl text-base leading-7 lg:justify-self-end">
+              This is a first look at the product roadmap. Owner ideas move
+              through research, design, prototypes, and testing before they
+              become products.
+            </p>
+          </div>
+
+          <Grid columns={3} gap="lg" className="mt-14 lg:mt-20">
+            {roadmapItems.map((item) => (
+              <RoadmapCard key={item.title} {...item} />
+            ))}
+          </Grid>
+        </Container>
+      </section>
+
+      <section
         id="knowledge"
-        className="section-space scroll-mt-28 bg-white"
+        className="section-space bg-warm scroll-mt-28"
         aria-labelledby="knowledge-heading"
       >
         <Container>
@@ -281,41 +311,8 @@ export default function Home() {
       </section>
 
       <section
-        id="built-with-owners"
-        className="section-space bg-warm scroll-mt-28"
-        aria-labelledby="built-with-owners-heading"
-      >
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
-            <div>
-              <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.16em]">
-                Built with Owners
-              </p>
-              <h2
-                id="built-with-owners-heading"
-                className={`${sectionHeadingClassName} mt-4`}
-              >
-                See what owners want Factor One to solve next.
-              </h2>
-            </div>
-            <p className="text-muted-foreground max-w-xl text-base leading-7 lg:justify-self-end">
-              This is a first look at the product roadmap. Owner ideas move
-              through research, design, prototypes, and testing before they
-              become products.
-            </p>
-          </div>
-
-          <Grid columns={3} gap="lg" className="mt-14 lg:mt-20">
-            {roadmapItems.map((item) => (
-              <RoadmapCard key={item.title} {...item} />
-            ))}
-          </Grid>
-        </Container>
-      </section>
-
-      <section
         id="why-factor-one"
-        className="section-space bg-charcoal text-charcoal-foreground scroll-mt-28"
+        className="section-space bg-muted/50 scroll-mt-28"
         aria-labelledby="why-factor-one-heading"
       >
         <Container>
@@ -330,22 +327,22 @@ export default function Home() {
               >
                 By the owners. For the owners.
               </h2>
-              <p className="text-charcoal-foreground/65 mt-6 text-lg leading-8">
+              <p className="text-muted-foreground mt-6 text-lg leading-8">
                 We start with the problems people notice while living with the
                 same cars—not with a target catalogue size.
               </p>
             </div>
 
-            <div className="border-charcoal-foreground/15 border-t">
+            <div className="border-border border-t">
               {proofPoints.map((point) => (
                 <article
                   key={point.title}
-                  className="border-charcoal-foreground/15 border-b py-7 sm:py-8"
+                  className="border-border border-b py-7 sm:py-8"
                 >
                   <h3 className="text-2xl font-medium tracking-[-0.035em]">
                     {point.title}
                   </h3>
-                  <p className="text-charcoal-foreground/60 mt-3 max-w-lg text-base leading-7">
+                  <p className="text-muted-foreground mt-3 max-w-lg text-base leading-7">
                     {point.description}
                   </p>
                 </article>
@@ -353,7 +350,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="border-charcoal-foreground/15 mt-16 border-t pt-12 sm:mt-24 sm:pt-16">
+          <div className="border-border mt-16 border-t pt-12 sm:mt-24 sm:pt-16">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] lg:gap-20">
               <div>
                 <p className="text-factor-red text-sm font-semibold uppercase tracking-[0.18em]">
@@ -362,7 +359,7 @@ export default function Home() {
                 <h3 className="mt-4 text-3xl font-medium tracking-[-0.045em]">
                   Our product standard.
                 </h3>
-                <p className="text-charcoal-foreground/50 mt-4 text-sm leading-6">
+                <p className="text-muted-foreground mt-4 text-sm leading-6">
                   Here, PPF means Purpose, Protection, Fit—not Paint Protection
                   Film.
                 </p>
@@ -386,7 +383,7 @@ export default function Home() {
                     <h4 className="text-xl font-medium tracking-[-0.025em]">
                       {title}
                     </h4>
-                    <p className="text-charcoal-foreground/60 mt-3 text-sm leading-6">
+                    <p className="text-muted-foreground mt-3 text-sm leading-6">
                       {description}
                     </p>
                   </article>

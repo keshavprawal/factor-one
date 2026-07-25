@@ -12,6 +12,40 @@ export interface FeaturedProductsCarouselProps {
   products: readonly FeaturedProduct[];
 }
 
+function ProductVisual({ product }: { product: FeaturedProduct }) {
+  if (product.image && product.imageAlt) {
+    return (
+      <Image
+        src={product.image}
+        alt={product.imageAlt}
+        fill
+        sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 46vw, (min-width: 640px) 64vw, 86vw"
+        className="object-cover"
+      />
+    );
+  }
+
+  return (
+    <div
+      className="bg-muted absolute inset-0 flex items-end overflow-hidden p-6 sm:p-8"
+      role="img"
+      aria-label={`${product.name} product photography pending`}
+    >
+      <div
+        className="border-foreground/10 absolute inset-[12%] rounded-[2rem] border"
+        aria-hidden="true"
+      />
+      <div
+        className="border-foreground/10 absolute inset-x-[22%] bottom-[22%] top-[30%] rounded-full border"
+        aria-hidden="true"
+      />
+      <p className="text-muted-foreground relative text-xs font-medium uppercase tracking-[0.14em]">
+        {product.name} · Product study
+      </p>
+    </div>
+  );
+}
+
 export function FeaturedProductsCarousel({
   products,
 }: FeaturedProductsCarouselProps) {
@@ -80,7 +114,7 @@ export function FeaturedProductsCarousel({
             key={product.id}
             id={`product-${product.id}`}
             className={cn(
-              'bg-warm w-[86%] shrink-0 snap-center scroll-mt-36 overflow-hidden rounded-lg transition-[transform,opacity] duration-300 sm:w-[64%] lg:w-[46%] xl:w-[40%]',
+              'w-[86%] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-lg bg-white transition-[transform,opacity] duration-300 sm:w-[64%] lg:w-[46%] xl:w-[40%]',
               index === activeIndex
                 ? '-translate-y-2 opacity-100'
                 : 'opacity-70',
@@ -88,13 +122,7 @@ export function FeaturedProductsCarousel({
             aria-current={index === activeIndex ? 'true' : undefined}
           >
             <div className="bg-muted relative aspect-[4/3] overflow-hidden">
-              <Image
-                src={product.image}
-                alt={product.imageAlt}
-                fill
-                sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 46vw, (min-width: 640px) 64vw, 86vw"
-                className="object-cover"
-              />
+              <ProductVisual product={product} />
               <p className="bg-charcoal/85 text-charcoal-foreground absolute bottom-3 left-3 right-3 rounded-sm px-3 py-2 text-xs leading-5 backdrop-blur-sm">
                 {product.visualStatus}
               </p>
@@ -122,7 +150,7 @@ export function FeaturedProductsCarousel({
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-6">
-        <p className="text-graphite-foreground/65 text-sm" aria-live="polite">
+        <p className="text-muted-foreground text-sm" aria-live="polite">
           {String(activeIndex + 1).padStart(2, '0')} /{' '}
           {String(products.length).padStart(2, '0')}
           <span className="sr-only">
@@ -134,7 +162,7 @@ export function FeaturedProductsCarousel({
             type="button"
             variant="outline"
             size="icon"
-            className="border-graphite-foreground/25 text-graphite-foreground hover:bg-graphite-foreground hover:text-graphite rounded-full bg-transparent"
+            className="rounded-full bg-transparent"
             aria-label="Show previous featured product"
             disabled={activeIndex === 0}
             onClick={() => scrollToProduct(activeIndex - 1)}
@@ -145,7 +173,7 @@ export function FeaturedProductsCarousel({
             type="button"
             variant="outline"
             size="icon"
-            className="border-graphite-foreground/25 text-graphite-foreground hover:bg-graphite-foreground hover:text-graphite rounded-full bg-transparent"
+            className="rounded-full bg-transparent"
             aria-label="Show next featured product"
             disabled={activeIndex === products.length - 1}
             onClick={() => scrollToProduct(activeIndex + 1)}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Wordmark } from '@/components/brand/wordmark';
 import { Container } from '@/components/layout/container';
 import { footerNavigation } from '@/config/navigation';
 
@@ -8,9 +9,7 @@ export function Footer() {
       <Container className="py-14 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,0.7fr))]">
           <div className="max-w-sm">
-            <p className="text-2xl font-semibold tracking-[-0.04em]">
-              Factor One
-            </p>
+            <Wordmark as="p" size="footer" />
             <p className="text-charcoal-foreground/60 mt-4 text-sm leading-6">
               Accessories for VinFast owners, shaped by the people who drive
               them.

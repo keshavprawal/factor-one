@@ -2,7 +2,7 @@
 
 **Document ID:** SPEC-001
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 
 **Status:** Implementation-ready, subject to final product photography
 
@@ -14,15 +14,16 @@
 
 ## 1. Authority and Intent
 
-This specification defines Homepage V2 for Factor One. It replaces the previous
-SPEC-001 homepage direction.
+This specification defines the founder-approved Homepage V2 direction. Version
+2.1 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
+and section-order requirements in earlier SPEC-001 versions.
 
-The homepage must communicate, within five seconds:
+Within five seconds the homepage must communicate:
 
 > Factor One helps VinFast owners discover thoughtfully designed accessories
 > built by people who own the same car.
 
-It must answer, in order:
+Every customer-facing experience must answer, in order:
 
 1. What problem exists?
 2. Why does this matter to an owner?
@@ -51,214 +52,230 @@ conversion. A visitor should understand:
 **Built with Owners** is the company operating principle and a permanent product
 capability. It is not a campaign or a generic community forum.
 
-The origin story supports, but does not replace, the operating principle:
+The origin statement is:
 
-> Started by VinFast owners. Built with owners.
+> By VinFast owners, for VinFast owners.
 
-“By VinFast owners, for VinFast owners” may be used only as supporting origin
-context.
+Required hierarchy:
+
+1. Factor One
+2. Built with Owners
+3. By VinFast owners, for VinFast owners.
+
+Each line must remain visually distinct.
 
 ## 4. Information Hierarchy
 
-The homepage must render in this order:
+Render in this order:
 
-1. Product strip
-2. Global navigation
-3. Large Factor One wordmark
-4. Built with Owners principle and origin
-5. Hero explanation
-6. Car and accessories entry paths
-7. Featured products
+1. Global navigation
+2. Large Factor One wordmark
+3. Built with Owners principle and origin
+4. Hero proposition
+5. Car and accessories entry paths
+6. Featured products
+7. Built with Owners roadmap preview
 8. Knowledge
-9. Built with Owners roadmap preview
-10. Why Factor One and PPF standard
-11. Shared footer
+9. Why Factor One and PPF standard
+10. Shared footer
 
-Trust-building proof follows product discovery. Philosophy must not obscure the
-initial explanation of the company.
+There is one header and one navigation layer. Product discovery precedes
+trust-building philosophy.
 
 ## 5. Global Header
 
 ### Purpose
 
-Give owners direct access to the current product ecosystem while remaining
-truthful about unavailable destinations.
+Provide one calm, configuration-driven navigation system without inventing
+routes.
 
-### Product strip
+### Desktop navigation
 
-Render above the main navigation and include current product concepts:
+Subject to truthful availability, the header contains:
 
-- Screen Guard
-- Rear Door Mud Guard
-- Mud Guards
 - Parcel Tray
+- Mud Guards
+  - Rear Door Mud Guard
+  - Bumper Mud Guard
+- Screen Guard
 - Door Visor
-
-Each available item must link to a valid in-page product anchor. The strip must
-remain horizontally usable on small screens.
-
-### Primary navigation
-
-Use the centralized navigation configuration:
-
-- Parcel Tray
-- Mud Guards
-- Screen Guard
 - Knowledge
 - Built with Owners
 - Assistance
+- My Garage
 
-Do not expose Decals without explicit approval. Configure Vehicles for future
-use but do not render it. Assistance must remain disabled until an approved
-route exists.
+Mud Guards is a compact, accessible submenu. It must:
 
-### Utility navigation
+- open reliably by click;
+- support keyboard navigation;
+- close with Escape;
+- restore focus to its trigger;
+- close after a destination is selected;
+- not depend on hover.
 
-Use the label **My Garage**. It remains disabled until garage functionality and
-an approved route exist.
+Assistance and My Garage remain visibly unavailable until approved routes
+exist. Vehicles remains configured for future use but is not rendered. Decals
+is omitted until approved.
 
-### Responsive behaviour
+### Mobile navigation
 
-- Desktop: product strip, wordmark, primary navigation, My Garage.
-- Mobile and tablet: product strip, wordmark, My Garage status, accessible menu.
-- Preserve keyboard order, visible focus, and the existing modal menu
-  behaviour.
+Use the existing accessible dialog. Mud Guards becomes one expandable item with
+both sub-options visible inside it. Avoid nested dialogs or touch-dependent
+hover behaviour.
 
-## 6. Brand Introduction and Hero
+### Architecture
+
+Navigation configuration must support available links, unavailable links, and
+groups with children so products can be regrouped later without rebuilding the
+header.
+
+## 6. Wordmark
+
+Use one reusable live-text wordmark component for the header, large brand
+introduction, and footer.
+
+Required text:
+
+> Factor One
+
+Requirements:
+
+- title case;
+- same identity and casing at every size;
+- live, accessible text;
+- no invented permanent logo;
+- display version sits in an invisible rectangular viewport;
+- clipping or masking may control scale without a visible box;
+- elegant and restrained rather than campaign-like.
+
+The founder’s future hand-drawn logo will replace this temporary wordmark.
+
+## 7. Brand Introduction and Hero
 
 ### Purpose
 
-Explain Factor One before asking the visitor to explore.
+Explain the company before asking the owner to explore.
 
-### Required content
+### Required copy
 
-- Large wordmark: `FACTOR ONE`
+- Wordmark: `Factor One`
 - Operating principle: `Built with Owners`
-- Origin: `Started by VinFast owners. Built with owners.`
+- Origin: `By VinFast owners, for VinFast owners.`
 - Headline: `Accessories that belong on your car.`
-- Supporting copy conveying: Factor One designs accessories first for VinFast
-  owners, informed by people who drive the cars every day.
+- Supporting copy: `Factor One designs accessories first for VinFast owners,
+shaped by people who drive the same cars every day.`
 - Primary action: `Explore My Car`
 - Secondary action: `Explore Accessories`
 
+Do not add another eyebrow or positioning statement above the headline.
+
 ### Visual
 
-Use approved local product photography or an explicitly identified development
-visual. Do not use a hero car, random stock photography, or third-party brand
-imagery.
+The homepage is product-led. Do not show a generic or unidentified car.
 
-### Desktop layout
+Permitted:
 
-Use a charcoal surface. The wordmark and operating principle establish identity
-before a two-column explanation and product visual. Keep copy widths controlled.
+- real Factor One product photographs;
+- approved VinFast imagery already in the repository;
+- close-up product compositions;
+- clearly labelled non-photographic development placeholders.
 
-### Mobile layout
+Until final photography is approved, the repository screen-guard close-up may
+serve as a clearly labelled provisional product composition. Generic exterior
+car images and composite accessory collages are prohibited on the homepage.
 
-Keep identity and message concise. Stack copy, actions, and visual without an
-artificial full-screen height. Ensure both actions remain easy to reach.
+### Responsive behaviour
 
-## 7. Two Entry Paths
+Desktop uses controlled brand scale followed by a balanced product proposition.
+Mobile keeps the complete hierarchy and both actions visible without an
+artificial full-screen height or horizontal overflow.
+
+## 8. Two Entry Paths
 
 ### Purpose
 
 Let visitors begin with either the car they drive or the accessory they need.
-Both paths remain visible rather than being hidden behind tabs.
+Both paths remain visible instead of being hidden behind tabs.
 
 ### My Car
 
-- VinFast VF7 links to the existing `/vehicles/vf7` route.
-- VinFast VF6 displays `Coming Soon` and has no navigation action.
+- VinFast VF7 links to `/vehicles/vf7`.
+- VinFast VF6 displays `Coming Soon` with no navigation action.
 
 ### Accessories
 
-List in this order:
+Display in this order:
 
 1. Screen Guard
 2. Rear Door Mud Guard
-3. Mud Guards
+3. Bumper Mud Guard
 4. Parcel Tray
 5. Door Visor
 
-Parcel Tray must remain second-last. Each item links to its matching featured
+Parcel Tray remains second-last. Each item links to the matching featured
 product anchor.
 
 ### Responsive behaviour
 
 - Desktop: balanced two-column paths.
-- Mobile: stacked paths with the car path first.
-- Disabled states must remain legible and unavailable without appearing broken.
+- Mobile: stacked paths with My Car first.
+- Disabled states remain legible and cannot navigate.
 
-## 8. Featured Products
+## 9. Featured Products
 
 ### Purpose
 
-Introduce the current product direction without pretending that commerce,
-pricing, or product pages are available.
+Introduce current product direction without pretending that commerce, pricing,
+or product pages exist.
+
+### Products
+
+- Screen Guard
+- Rear Door Mud Guard
+- Bumper Mud Guard
+- Parcel Tray
+- Door Visor
 
 ### Interaction
 
-Create a manual-first carousel with:
+Use a manual-first carousel with:
 
 - adjacent previews;
-- an active product that is subtly elevated;
+- subtly elevated active product;
 - previous and next controls;
 - touch and trackpad scrolling;
 - restrained transitions;
 - no autoplay.
 
-### Product content
+### Data and media
 
-Use typed configuration outside presentation markup. Each item supports:
+Typed configuration remains outside presentation markup. Each item supports:
 
 - stable ID;
 - name;
 - plain-language purpose;
-- availability or development state;
-- local visual and honest visual status;
+- development or availability state;
+- optional approved image;
+- honest visual status;
 - optional Owner Built evidence.
+
+Use the screen-guard close-up only for Screen Guard. Products without approved
+photography use a neutral, non-photographic placeholder. Never substitute a
+generic car image for a missing product photograph.
 
 Do not invent prices, ratings, reviews, discounts, stock, compatibility, or
 purchase destinations.
-
-### Initial products
-
-- Screen Guard
-- Rear Door Mud Guard
-- Mud Guards
-- Parcel Tray
-- Door Visor
-
-Where final product photography is unavailable, label the image as a
-development visual.
-
-## 9. Knowledge
-
-### Purpose
-
-Show how Factor One will help owners understand fit, installation, protection,
-and everyday use.
-
-### Content
-
-Use static, non-linking topics until approved destinations exist:
-
-- Fit before you buy
-- Install it properly
-- Protect what gets used
-- Learn from other owners
-
-Do not invent articles, policies, support promises, or routes.
 
 ## 10. Built with Owners
 
 ### Purpose
 
-Preview a public product-development roadmap that shows how owner problems move
+Preview a public product-development roadmap showing how owner problems move
 through research, design, prototypes, and testing.
 
-This is not a forum. The architecture must be ready to support future roadmap
-detail, idea submission, voting, discussions, beta testing, founder updates,
-prototype galleries, and product version history without implementing them now.
+This is not a forum. The architecture must be ready for future roadmap detail,
+idea submission, voting, discussions, beta testing, founder updates, prototype
+galleries, and product version history without implementing them now.
 
 ### Initial roadmap data
 
@@ -270,9 +287,10 @@ prototype galleries, and product version history without implementing them now.
 | Better Protection Mud Flaps | —          | 212          | Prototype    |
 | Frunk Organiser             | —          | 143          | Under Review |
 
-Counts are founder-provided evidence. Do not fabricate absent raisers or counts.
-Version 1 cards are read-only; do not render fake Vote, Discuss, or Beta Tester
-controls.
+Counts are founder-provided evidence. Version 1 cards are read-only. Do not
+render fake Vote, Discuss, or Beta Tester controls.
+
+This section uses charcoal as a selected high-impact surface.
 
 ## 11. Owner Built Badge
 
@@ -281,15 +299,30 @@ Products developed from documented owner feedback may display:
 - badge: `OWNER BUILT`
 - supporting line: `Requested by [approved count] owners.`
 
-The badge must be reusable, compact, premium, and must never appear without
-approved evidence.
+The badge is reusable and must never appear without approved evidence.
 
-## 12. Why Factor One
+## 12. Knowledge
 
 ### Purpose
 
-Explain the practical standard behind the products after visitors understand
-what Factor One offers.
+Show how Factor One will help owners understand fit, installation, protection,
+and everyday use.
+
+Use static, non-linking topics until approved destinations exist:
+
+- Fit before you buy
+- Install it properly
+- Protect what gets used
+- Learn from other owners
+
+Do not invent articles, policies, support promises, or routes.
+
+## 13. Why Factor One
+
+### Purpose
+
+Explain the practical standard after visitors understand what Factor One
+offers.
 
 ### Headline
 
@@ -301,51 +334,61 @@ what Factor One offers.
 - Designed to Belong
 - Built to Protect
 
-Descriptions must remain grounded in intent and current product direction.
-Unsupported testing, manufacturing, material, safety, or compatibility claims
-are prohibited.
+Descriptions remain grounded in current intent. Unsupported testing,
+manufacturing, material, safety, or compatibility claims are prohibited.
 
 ### PPF standard
-
-Introduce:
 
 - Purpose — solves a real ownership problem.
 - Protection — helps care for the parts of the car owners use.
 - Fit — designed around the intended car and how owners use it.
 
-Explicitly state that PPF is Factor One’s product standard in this context and
-does not mean Paint Protection Film.
+State that PPF is Factor One’s product standard in this context and does not
+mean Paint Protection Film.
 
-## 13. Visual System
+## 14. Visual System
 
-Use the existing design system with a charcoal-led extension:
+The homepage is light-led:
 
-- charcoal;
-- warm white;
-- graphite;
-- white;
-- Factor One Red as a restrained accent.
+- primary surface: warm white or off-white;
+- primary text: charcoal;
+- secondary surfaces: soft grey and warm neutrals;
+- accent: Factor One Red, used sparingly;
+- dark surfaces: Built with Owners and footer only.
 
-Alternate section surfaces to create rhythm. Do not create an entirely dark
-website.
+Required rhythm:
+
+1. Header — warm white
+2. Brand and hero — warm white
+3. Discovery — white or warm neutral
+4. Featured products — warm white or soft grey
+5. Built with Owners — charcoal
+6. Knowledge — warm white
+7. Why Factor One and PPF — soft grey or warm white
+8. Footer — charcoal
 
 Avoid:
 
-- racing red-and-black styling;
+- duplicated navigation layers;
+- generic black-and-red automotive styling;
+- dark automotive-template appearance;
 - carbon-fibre textures;
 - speedometer motifs;
 - decorative gradients;
 - glassmorphism;
 - excessive rounded cards;
 - excessive shadows;
-- theatrical motion.
+- theatrical motion;
+- compressed sections;
+- unnecessary borders or decorative noise.
 
-Hierarchy must come from typography, spacing, composition, scale, image
-treatment, contrast, and section rhythm.
+Hierarchy comes from typography, spacing, composition, scale, image treatment,
+contrast, and section rhythm.
 
-## 14. Language
+## 15. Language
 
-Write like real owners speak.
+Write like real owners speak. Use `car` instead of `vehicle` unless the context
+is technical.
 
 Prefer:
 
@@ -354,19 +397,18 @@ Prefer:
 - Solves real ownership problems
 - Built because owners asked for it
 
-Use `car` instead of `vehicle` in customer-facing copy unless the context is
-technical.
+Prohibited customer-facing phrases:
 
-Do not use:
-
-- Less uncertainty
-- Better ownership decisions
+- previously rejected corporate ownership slogans
 - Optimise
 - Leverage
 - Empower
-- unsupported corporate or promotional claims
+- generic consulting language
+- duplicated philosophy statements
 
-## 15. Component and Data Architecture
+Use the correct spelling `VinFast`.
+
+## 16. Component and Data Architecture
 
 Reuse:
 
@@ -383,98 +425,102 @@ Reuse:
 Keep navigation, products, knowledge topics, proof themes, and roadmap items in
 typed configuration.
 
-New components are limited to repeated behaviour that existing primitives do
-not provide:
+Approved focused components:
 
+- reusable live-text wordmark;
+- accessible grouped navigation;
 - manual featured-products carousel;
 - owner-roadmap card;
-- Owner Built evidence treatment.
+- Owner Built evidence treatment;
+- neutral product visual placeholder.
 
 No CMS, API, global state, route, or dependency is authorized.
 
-## 16. Accessibility
+## 17. Accessibility
 
 - One page-level `h1` and logical heading hierarchy.
 - Semantic header, navigation, main, sections, articles, and footer.
 - Keyboard access to every interactive element.
 - Visible focus at WCAG AA contrast.
 - Minimum 44 × 44 pixel targets.
-- Disabled destinations use the ADR-0001 pattern.
+- Disabled destinations follow ADR-0001.
+- Desktop submenu supports click, keyboard, Escape, and focus restoration.
+- Mobile Mud Guards item expands without a nested dialog.
 - Carousel controls have descriptive names and expose position.
-- Horizontal carousel remains usable without drag gestures.
+- Horizontal carousel works without drag gestures.
 - Colour never carries meaning alone.
-- Decorative media uses empty alternative text.
-- Product media uses accurate alternative text and identifies development
-  visuals in visible text.
+- Product media has accurate alternative text.
+- Development placeholders are visibly identified.
 - Reduced motion disables smooth scrolling and transforms.
 - No autoplay or timed content.
 
-## 17. Performance
+## 18. Performance
 
 - Server Components by default.
-- One focused client boundary for carousel interaction.
+- Client boundaries only for navigation interaction and the carousel.
 - No homepage data fetching.
 - No new dependency.
-- Next Image with reserved geometry and responsive sizes.
-- Priority only for the hero visual.
-- Lazy-load below-the-fold images.
+- Next Image with reserved geometry for the one approved provisional image.
+- CSS placeholders for missing media.
+- Priority only for the hero product composition.
 - CSS-first motion.
-- No avoidable layout shift or horizontal page overflow.
+- No avoidable layout shift or page-level horizontal overflow.
 
-## 18. Out of Scope
+## 19. Out of Scope
 
 - product purchases, prices, carts, and checkout;
 - authentication and garage functionality;
 - search;
-- product, knowledge, assistance, community, or VF6 routes;
+- product, Knowledge, Assistance, Built with Owners, or VF6 routes;
 - compatibility engine;
 - backend services or APIs;
 - voting, discussions, beta applications, or roadmap detail;
 - Decals without approval;
-- final claims or photography not supplied by Product.
+- final claims or photography not supplied by Product;
+- a permanent logo.
 
-## 19. Acceptance Criteria
+## 20. Acceptance Criteria
 
-### Clarity and product intent
+### Navigation
 
-- [ ] The first viewport explains what Factor One is, who it serves, and why it
-      is different within five seconds.
-- [ ] `Built with Owners` is presented as the operating principle.
-- [ ] Product discovery precedes trust philosophy.
-- [ ] Both car and accessory entry paths are immediately understandable.
+- [ ] Exactly one navigation layer is visible.
+- [ ] Door Visor appears in the primary header.
+- [ ] Mud Guards exposes Rear Door Mud Guard and Bumper Mud Guard.
+- [ ] Desktop submenu supports click, keyboard, Escape, and focus restoration.
+- [ ] Mobile Mud Guards expands to show both sub-options.
+- [ ] My Garage and Assistance remain truthfully unavailable.
+- [ ] No fake route exists.
 
-### Truth and scope
+### Brand and first viewport
 
-- [ ] No fake route, product fact, price, stock, rating, review, purchase state,
-      compatibility claim, or business commitment exists.
-- [ ] VF6, My Garage, and Assistance are truthfully unavailable.
-- [ ] Vehicles is architected but not exposed.
-- [ ] Decals is omitted.
-- [ ] Product visuals that require replacement are visibly identified.
+- [ ] The large live-text wordmark reads `Factor One` in title case.
+- [ ] Header, hero, and footer use the same wordmark component.
+- [ ] Brand hierarchy and approved origin copy are exact.
+- [ ] No redundant eyebrow appears above the proposition.
+- [ ] The first viewport is calm and explains the company within five seconds.
 
-### Experience
+### Imagery and visual system
 
-- [ ] The page alternates charcoal, warm white, graphite, and white surfaces
-      without a racing aesthetic.
-- [ ] The manual carousel shows adjacent products and has no autoplay.
-- [ ] Knowledge remains static and non-linking.
-- [ ] The owner roadmap preview uses only founder-approved data.
-- [ ] PPF is explained without confusion with Paint Protection Film.
+- [ ] No generic or unidentified car image appears on the homepage.
+- [ ] The homepage is predominantly light.
+- [ ] Charcoal is limited to Built with Owners and the footer.
+- [ ] Missing product photography uses neutral non-photographic placeholders.
+- [ ] Every provisional asset is recorded in the Build Review Package.
 
-### Architecture
+### Preserved behaviour
 
-- [ ] Existing AppShell, shared primitives, and navigation configuration are
-      reused.
-- [ ] Only `/` content and supporting shared presentation/configuration change.
-- [ ] `/vehicles/vf7` remains functional.
-- [ ] No new route, API, dependency, or global state is introduced.
+- [ ] Both discovery paths remain visible.
+- [ ] Product order is Screen Guard, Rear Door Mud Guard, Bumper Mud Guard,
+      Parcel Tray, Door Visor.
+- [ ] The manual carousel has no autoplay.
+- [ ] Built with Owners remains read-only and uses approved data.
+- [ ] Knowledge, Why Factor One, and PPF remain present.
 
 ### Responsive and accessibility
 
-- [ ] The page works without horizontal overflow at 320, 390, 768, 1024, and
-      1440 pixels.
-- [ ] Header, entry paths, carousel, roadmap, and footer are intentionally
-      composed for mobile, tablet, and desktop.
+- [ ] The page works without horizontal overflow at 390, 768, 1440, and large
+      desktop widths.
+- [ ] Mobile navigation exposes all approved destinations.
 - [ ] Keyboard, focus, landmarks, headings, contrast, and reduced motion meet
       the repository baseline.
 
@@ -485,5 +531,5 @@ No CMS, API, global state, route, or dependency is authorized.
 - [ ] `pnpm build`
 - [ ] `pnpm format:check`
 - [ ] `git diff --check`
-- [ ] Browser review at desktop, tablet, and mobile widths
+- [ ] Browser review at mobile, tablet, desktop, and large desktop
 - [ ] Draft PR #5 updated and remains Draft

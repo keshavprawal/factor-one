@@ -2,8 +2,8 @@ export interface FeaturedProduct {
   availability: string;
   description: string;
   id: string;
-  image: string;
-  imageAlt: string;
+  image?: string;
+  imageAlt?: string;
   name: string;
   ownerRequestCount?: number;
   visualStatus: string;
@@ -36,7 +36,8 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     availability: 'Product direction',
     image: '/images/essentials/screen-protector.jpg',
     imageAlt: 'Screen guard positioned over a car display',
-    visualStatus: 'Development visual — final product photography pending.',
+    visualStatus:
+      'Repository product close-up — final Factor One photography pending.',
   },
   {
     id: 'rear-door-mud-guard',
@@ -44,20 +45,16 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     description:
       'Made to address the spray and grime owners notice around the rear doors.',
     availability: 'In testing',
-    image: '/images/categories/protection.jpg',
-    imageAlt: 'Close view of a protected car exterior after rain',
-    visualStatus: 'Development visual — final product photography pending.',
+    visualStatus: 'Product photography pending.',
     ownerRequestCount: 67,
   },
   {
-    id: 'mud-guards',
-    name: 'Mud Guards',
+    id: 'bumper-mud-guard',
+    name: 'Bumper Mud Guard',
     description:
-      'A practical layer of protection for the parts of the car exposed every day.',
+      'A practical layer of protection for an exposed part of the car.',
     availability: 'Product direction',
-    image: '/images/categories/exterior.jpg',
-    imageAlt: 'Rear exterior of a car in warm light',
-    visualStatus: 'Development visual — final product photography pending.',
+    visualStatus: 'Product photography pending.',
   },
   {
     id: 'parcel-tray',
@@ -65,9 +62,7 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     description:
       'Designed to close the open cargo-area gap owners asked Factor One to solve.',
     availability: 'In design',
-    image: '/images/essentials/trunk-organizer.jpg',
-    imageAlt: 'Development collage of car protection and storage accessories',
-    visualStatus: 'Development visual — final product photography pending.',
+    visualStatus: 'Product photography pending.',
     ownerRequestCount: 184,
   },
   {
@@ -76,9 +71,7 @@ export const featuredProducts: readonly FeaturedProduct[] = [
     description:
       'A considered exterior addition for ventilation in everyday conditions.',
     availability: 'Product direction',
-    image: '/images/categories/exterior.jpg',
-    imageAlt: 'Side profile of a car showing the window line',
-    visualStatus: 'Development visual — final product photography pending.',
+    visualStatus: 'Product photography pending.',
   },
 ];
 

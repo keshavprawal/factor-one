@@ -10,6 +10,12 @@ export interface UnavailableNavigationItem {
   unavailable: true;
 }
 
+export interface GroupedNavigationItem {
+  children: readonly AvailableNavigationItem[];
+  id: string;
+  label: string;
+}
+
 export interface HiddenNavigationItem {
   id: string;
   label: string;
@@ -18,10 +24,11 @@ export interface HiddenNavigationItem {
 
 export type NavigationItem =
   | AvailableNavigationItem
+  | GroupedNavigationItem
   | UnavailableNavigationItem;
 
 export interface FooterNavigationGroup {
-  items: AvailableNavigationItem[];
+  items: readonly AvailableNavigationItem[];
   label: string;
 }
 
@@ -37,6 +44,36 @@ const vf7: AvailableNavigationItem = {
   label: 'VinFast VF7',
 };
 
+const screenGuard: AvailableNavigationItem = {
+  href: '/#product-screen-guard',
+  id: 'screen-guard',
+  label: 'Screen Guard',
+};
+
+const rearDoorMudGuard: AvailableNavigationItem = {
+  href: '/#product-rear-door-mud-guard',
+  id: 'rear-door-mud-guard',
+  label: 'Rear Door Mud Guard',
+};
+
+const bumperMudGuard: AvailableNavigationItem = {
+  href: '/#product-bumper-mud-guard',
+  id: 'bumper-mud-guard',
+  label: 'Bumper Mud Guard',
+};
+
+const parcelTray: AvailableNavigationItem = {
+  href: '/#product-parcel-tray',
+  id: 'parcel-tray',
+  label: 'Parcel Tray',
+};
+
+const doorVisor: AvailableNavigationItem = {
+  href: '/#product-door-visor',
+  id: 'door-visor',
+  label: 'Door Visor',
+};
+
 const knowledge: AvailableNavigationItem = {
   href: '/#knowledge',
   id: 'knowledge',
@@ -49,43 +86,17 @@ const builtWithOwners: AvailableNavigationItem = {
   label: 'Built with Owners',
 };
 
-export const productNavigation: readonly AvailableNavigationItem[] = [
-  {
-    href: '/#product-screen-guard',
-    id: 'screen-guard',
-    label: 'Screen Guard',
-  },
-  {
-    href: '/#product-rear-door-mud-guard',
-    id: 'rear-door-mud-guard',
-    label: 'Rear Door Mud Guard',
-  },
-  {
-    href: '/#product-mud-guards',
-    id: 'mud-guards',
-    label: 'Mud Guards',
-  },
-  {
-    href: '/#product-parcel-tray',
-    id: 'parcel-tray',
-    label: 'Parcel Tray',
-  },
-  {
-    href: '/#product-door-visor',
-    id: 'door-visor',
-    label: 'Door Visor',
-  },
-];
+export const mudGuardNavigation: GroupedNavigationItem = {
+  id: 'mud-guards',
+  label: 'Mud Guards',
+  children: [rearDoorMudGuard, bumperMudGuard],
+};
 
-/**
- * Current product destinations use real homepage anchors. Assistance remains
- * disabled until an approved route exists. Vehicles is configured separately
- * so it can be enabled later without changing the navigation model.
- */
 export const primaryNavigation: readonly NavigationItem[] = [
-  productNavigation[3],
-  productNavigation[2],
-  productNavigation[0],
+  parcelTray,
+  mudGuardNavigation,
+  screenGuard,
+  doorVisor,
   knowledge,
   builtWithOwners,
   { id: 'assistance', label: 'Assistance', unavailable: true },
@@ -120,6 +131,12 @@ export function isAvailableNavigationItem(
   item: NavigationItem,
 ): item is AvailableNavigationItem {
   return 'href' in item;
+}
+
+export function isGroupedNavigationItem(
+  item: NavigationItem,
+): item is GroupedNavigationItem {
+  return 'children' in item;
 }
 
 export function isCurrentNavigationItem(
