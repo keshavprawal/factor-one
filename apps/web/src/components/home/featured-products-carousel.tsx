@@ -1,49 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState, type UIEvent } from 'react';
 import { OwnerBuiltBadge } from '@/components/home/owner-built-badge';
+import { ProductMediaVisual } from '@/components/product/product-media-visual';
 import { Button } from '@/components/ui/button';
 import type { FeaturedProduct } from '@/config/homepage';
 import { cn } from '@/lib/utils';
 
 export interface FeaturedProductsCarouselProps {
   products: readonly FeaturedProduct[];
-}
-
-function ProductVisual({ product }: { product: FeaturedProduct }) {
-  if (product.image && product.imageAlt) {
-    return (
-      <Image
-        src={product.image}
-        alt={product.imageAlt}
-        fill
-        sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 46vw, (min-width: 640px) 64vw, 86vw"
-        className="object-cover"
-      />
-    );
-  }
-
-  return (
-    <div
-      className="bg-muted absolute inset-0 flex items-end overflow-hidden p-6 sm:p-8"
-      role="img"
-      aria-label={`${product.name} product photography pending`}
-    >
-      <div
-        className="border-foreground/10 absolute inset-[12%] rounded-[2rem] border"
-        aria-hidden="true"
-      />
-      <div
-        className="border-foreground/10 absolute inset-x-[22%] bottom-[22%] top-[30%] rounded-full border"
-        aria-hidden="true"
-      />
-      <p className="text-muted-foreground relative text-xs font-medium uppercase tracking-[0.14em]">
-        {product.name} · Product study
-      </p>
-    </div>
-  );
 }
 
 export function FeaturedProductsCarousel({
@@ -96,7 +62,8 @@ export function FeaturedProductsCarousel({
 
     const track = event.currentTarget;
     frameRef.current = requestAnimationFrame(() => {
-      const trackCenter = track.scrollLeft + track.clientWidth / 2;
+      const trackBounds = track.getBoundingClientRect();
+      const trackCenter = trackBounds.left + trackBounds.width / 2;
       let closestIndex = 0;
       let closestDistance = Number.POSITIVE_INFINITY;
 
@@ -105,7 +72,8 @@ export function FeaturedProductsCarousel({
         .forEach((child) => {
           const index = Number(child.dataset.productIndex);
 
-          const childCenter = child.offsetLeft + child.offsetWidth / 2;
+          const childBounds = child.getBoundingClientRect();
+          const childCenter = childBounds.left + childBounds.width / 2;
           const distance = Math.abs(trackCenter - childCenter);
 
           if (distance < closestDistance) {
@@ -144,12 +112,11 @@ export function FeaturedProductsCarousel({
             )}
             aria-current={index === activeIndex ? 'true' : undefined}
           >
-            <div className="bg-muted relative aspect-[4/3] overflow-hidden">
-              <ProductVisual product={product} />
-              <p className="bg-charcoal/85 text-charcoal-foreground absolute bottom-3 left-3 right-3 rounded-sm px-3 py-2 text-xs leading-5 backdrop-blur-sm">
-                {product.visualStatus}
-              </p>
-            </div>
+            <ProductMediaVisual
+              media={product}
+              priority={index === 0}
+              className="aspect-[4/3]"
+            />
             <div className="p-6 sm:p-8">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -165,7 +132,7 @@ export function FeaturedProductsCarousel({
                 ) : null}
               </div>
               <p className="text-muted-foreground mt-5 max-w-lg text-base leading-7">
-                {product.description}
+                {product.purpose}
               </p>
             </div>
           </article>

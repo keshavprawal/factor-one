@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Wordmark } from '@/components/brand/wordmark';
 import { FeaturedProductsCarousel } from '@/components/home/featured-products-carousel';
+import { ProductMediaCarousel } from '@/components/home/product-media-carousel';
 import { RoadmapCard } from '@/components/home/roadmap-card';
 import { Container } from '@/components/layout/container';
 import { Grid } from '@/components/layout/grid';
@@ -20,7 +20,7 @@ import {
   proofPoints,
   roadmapItems,
 } from '@/config/homepage';
-import { getProductAnchor } from '@/config/navigation';
+import { productMedia } from '@/config/product-media';
 
 const sectionHeadingClassName =
   'text-balance text-4xl font-semibold leading-[1.02] tracking-[-0.05em] sm:text-5xl lg:text-6xl';
@@ -78,22 +78,7 @@ export default function Home() {
               </div>
             </div>
 
-            <figure>
-              <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-lg">
-                <Image
-                  src="/images/essentials/screen-protector.jpg"
-                  alt="Screen guard positioned over a car display"
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <figcaption className="text-muted-foreground mt-4 text-xs leading-5">
-                Repository product close-up — final Factor One photography
-                pending.
-              </figcaption>
-            </figure>
+            <ProductMediaCarousel products={productMedia} />
           </div>
         </Container>
       </section>
@@ -178,7 +163,7 @@ export default function Home() {
                   {featuredProducts.map((product) => (
                     <li key={product.id} className="border-border border-b">
                       <ScrollLink
-                        href={getProductAnchor(product.id)}
+                        href={product.destination}
                         className="group flex min-h-14 items-center justify-between gap-4 py-2 text-sm font-medium"
                       >
                         {product.name}

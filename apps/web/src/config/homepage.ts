@@ -1,14 +1,7 @@
-import { productDestinations, type ProductId } from '@/config/navigation';
+import { productMedia, type ProductMediaItem } from '@/config/product-media';
 
-export interface FeaturedProduct {
-  availability: string;
-  description: string;
-  id: Exclude<ProductId, 'decals'>;
-  image?: string;
-  imageAlt?: string;
-  name: string;
+export interface FeaturedProduct extends ProductMediaItem {
   ownerRequestCount?: number;
-  visualStatus: string;
 }
 
 export interface KnowledgeTopic {
@@ -29,53 +22,16 @@ export interface RoadmapItem {
   title: string;
 }
 
-export const featuredProducts: readonly FeaturedProduct[] = [
-  {
-    id: productDestinations.screenGuard.id,
-    name: productDestinations.screenGuard.label,
-    description:
-      'Helps protect the display without getting in the way of everyday use.',
-    availability: 'Product direction',
-    image: '/images/essentials/screen-protector.jpg',
-    imageAlt: 'Screen guard positioned over a car display',
-    visualStatus:
-      'Repository product close-up — final Factor One photography pending.',
-  },
-  {
-    id: productDestinations.rearDoorMudGuard.id,
-    name: productDestinations.rearDoorMudGuard.label,
-    description:
-      'Made to address the spray and grime owners notice around the rear doors.',
-    availability: 'In testing',
-    visualStatus: 'Product photography pending.',
-    ownerRequestCount: 67,
-  },
-  {
-    id: productDestinations.bumperMudGuard.id,
-    name: productDestinations.bumperMudGuard.label,
-    description:
-      'A practical layer of protection for an exposed part of the car.',
-    availability: 'Product direction',
-    visualStatus: 'Product photography pending.',
-  },
-  {
-    id: productDestinations.parcelTray.id,
-    name: productDestinations.parcelTray.label,
-    description:
-      'Designed to close the open cargo-area gap owners asked Factor One to solve.',
-    availability: 'In design',
-    visualStatus: 'Product photography pending.',
-    ownerRequestCount: 184,
-  },
-  {
-    id: productDestinations.doorVisor.id,
-    name: productDestinations.doorVisor.label,
-    description:
-      'A considered exterior addition for ventilation in everyday conditions.',
-    availability: 'Product direction',
-    visualStatus: 'Product photography pending.',
-  },
-];
+export const featuredProducts: readonly FeaturedProduct[] = productMedia.map(
+  (product) => ({
+    ...product,
+    ...(product.id === 'rear-door-mud-guard'
+      ? { ownerRequestCount: 67 }
+      : product.id === 'parcel-tray'
+        ? { ownerRequestCount: 184 }
+        : {}),
+  }),
+);
 
 export const knowledgeTopics: readonly KnowledgeTopic[] = [
   {

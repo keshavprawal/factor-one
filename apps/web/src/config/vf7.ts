@@ -39,25 +39,46 @@ export const vf7Categories = [
     name: 'Screen & Cabin',
     description:
       'Protection and details for the places you use inside the car.',
-    products: [productDestinations.screenGuard.label],
-    study: 'cabin',
+    actionLabel: 'View Screen Guard',
+    products: [
+      {
+        name: productDestinations.screenGuard.label,
+        href: productDestinations.screenGuard.href,
+      },
+    ],
+    visual: 'cabin',
   },
   {
     name: 'Exterior Details',
     description: 'Products shaped around exposed areas and everyday weather.',
+    actionLabel: 'Explore Exterior Products',
     products: [
-      productDestinations.rearDoorMudGuard.label,
-      productDestinations.bumperMudGuard.label,
-      productDestinations.doorVisor.label,
-      productDestinations.decals.label,
+      {
+        name: productDestinations.rearDoorMudGuard.label,
+        href: productDestinations.rearDoorMudGuard.href,
+      },
+      {
+        name: productDestinations.bumperMudGuard.label,
+        href: productDestinations.bumperMudGuard.href,
+      },
+      {
+        name: productDestinations.doorVisor.label,
+        href: productDestinations.doorVisor.href,
+      },
     ],
-    study: 'exterior',
+    visual: 'exterior',
   },
   {
     name: 'Cargo & Storage',
     description: 'Purposeful solutions for the VF7 cargo area.',
-    products: [productDestinations.parcelTray.label],
-    study: 'cargo',
+    actionLabel: 'View Parcel Tray',
+    products: [
+      {
+        name: productDestinations.parcelTray.label,
+        href: productDestinations.parcelTray.href,
+      },
+    ],
+    visual: 'cargo',
   },
 ] as const;
 

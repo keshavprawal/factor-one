@@ -89,7 +89,7 @@ export const productDestinations = {
   decals: {
     id: 'decals',
     label: 'Decals',
-    unavailable: true,
+    visible: false,
   },
   rearDoorMudGuard: {
     href: getProductHref('rear-door-mud-guard'),
@@ -101,7 +101,7 @@ export const productDestinations = {
     id: 'bumper-mud-guard',
     label: 'Bumper Mud Guard',
   },
-} as const satisfies Record<string, NavigationLeaf>;
+} as const;
 
 const knowledge: AvailableNavigationItem = {
   href: '/#knowledge',
@@ -129,7 +129,6 @@ export const productNavigation: readonly NavigationItem[] = [
   mudGuardNavigation,
   productDestinations.screenGuard,
   productDestinations.doorVisor,
-  productDestinations.decals,
 ];
 
 export const companyNavigation: readonly NavigationItem[] = [

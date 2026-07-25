@@ -161,7 +161,7 @@ export default function VF7Page() {
 
       <section
         id="vehicle-categories"
-        className="scroll-mt-[4.5rem] py-20 sm:py-24 lg:py-24"
+        className="scroll-mt-[4.5rem] py-16 sm:py-20 lg:py-12"
         aria-labelledby="vehicle-categories-heading"
       >
         <Container>
@@ -178,7 +178,7 @@ export default function VF7Page() {
           </div>
 
           <div
-            className="mt-10 lg:mt-12"
+            className="mt-8"
             role="group"
             aria-label="VF7 accessory categories"
           >

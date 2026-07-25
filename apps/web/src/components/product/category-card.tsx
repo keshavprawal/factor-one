@@ -2,95 +2,96 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export interface CategoryCardProps {
-  description: string;
-  href?: string;
+interface CategoryProduct {
+  href: string;
   name: string;
-  products: readonly string[];
-  study: 'cabin' | 'cargo' | 'exterior';
 }
 
-const studyShapeClasses = {
-  cabin: 'left-[18%] right-[18%] top-[24%] bottom-[18%] rounded-[1.5rem]',
-  cargo: 'left-[14%] right-[14%] top-[34%] bottom-[16%] rounded-md',
-  exterior: 'left-[12%] right-[12%] top-[20%] bottom-[30%] rounded-full',
+export interface CategoryCardProps {
+  actionLabel: string;
+  description: string;
+  name: string;
+  products: readonly CategoryProduct[];
+  visual: 'cabin' | 'cargo' | 'exterior';
+}
+
+const visualShapeClasses = {
+  cabin:
+    'inset-x-[22%] bottom-[18%] top-[17%] rounded-[1.5rem] border before:absolute before:inset-x-[18%] before:bottom-[16%] before:h-px before:bg-foreground/10',
+  cargo:
+    'inset-x-[15%] bottom-[20%] top-[28%] rounded-lg border before:absolute before:inset-x-[22%] before:top-[22%] before:h-px before:bg-foreground/10',
+  exterior:
+    'inset-x-[13%] bottom-[28%] top-[18%] rounded-[45%] border before:absolute before:-bottom-4 before:left-[20%] before:right-[20%] before:h-px before:bg-foreground/10',
 };
 
-function CategoryContent({
-  description,
-  href,
-  name,
-  products,
-  study,
-}: CategoryCardProps) {
+function CategoryVisual({
+  count,
+  visual,
+}: {
+  count: number;
+  visual: CategoryCardProps['visual'];
+}) {
   return (
-    <>
-      <div className="bg-muted relative aspect-[16/8] overflow-hidden rounded-md">
-        <div
-          className={cn(
-            'border-foreground/10 absolute border',
-            studyShapeClasses[study],
-          )}
-          aria-hidden="true"
-        />
-        <div
-          className="border-foreground/10 absolute inset-x-[28%] bottom-[22%] h-px border-t"
-          aria-hidden="true"
-        />
-        <p className="text-muted-foreground absolute bottom-4 left-4 text-[0.65rem] font-semibold uppercase tracking-[0.14em]">
-          VF7 · Category study
+    <div className="bg-warm relative aspect-[16/6] overflow-hidden rounded-md">
+      <div
+        className={cn(
+          'border-foreground/10 absolute bg-white/35',
+          visualShapeClasses[visual],
+        )}
+        aria-hidden="true"
+      >
+        <span className="bg-factor-red/75 absolute right-3 top-3 size-1.5 rounded-full" />
+      </div>
+      <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-4">
+        <p className="text-muted-foreground text-[0.65rem] font-semibold uppercase tracking-[0.14em]">
+          For your VF7
+        </p>
+        <p className="text-foreground text-xs font-medium">
+          {count} {count === 1 ? 'product' : 'products'} available
         </p>
       </div>
-      <div className="flex flex-1 items-start justify-between gap-5 pt-4">
-        <div>
-          <h3 className="text-xl font-medium tracking-[-0.035em]">{name}</h3>
-          <p className="text-muted-foreground mt-1.5 text-sm leading-6">
-            {description}
-          </p>
-          <p className="text-muted-foreground mt-3 text-xs leading-5">
-            {products.join(' · ')}
-          </p>
-        </div>
-        {href ? (
-          <ArrowRight
-            className="mt-1 size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
-            aria-hidden="true"
-          />
-        ) : (
-          <span className="bg-muted shrink-0 rounded-full px-2.5 py-1 text-[0.625rem] font-semibold uppercase tracking-[0.08em]">
-            Coming soon
-          </span>
-        )}
-      </div>
-    </>
+    </div>
   );
 }
 
-export function CategoryCard(props: CategoryCardProps) {
-  const className =
-    'focus-visible:ring-ring group flex h-full w-full flex-col text-left transition-transform duration-300 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none';
-
-  if (props.href) {
-    return (
-      <Link
-        href={props.href}
-        className={cn(className, 'hover:-translate-y-1')}
-        aria-label={`Explore ${props.name}`}
-      >
-        <CategoryContent {...props} />
-      </Link>
-    );
-  }
-
+export function CategoryCard({
+  actionLabel,
+  description,
+  name,
+  products,
+  visual,
+}: CategoryCardProps) {
   return (
-    <button
-      type="button"
-      disabled
-      aria-disabled="true"
-      className="flex h-full w-full cursor-not-allowed flex-col text-left"
-      aria-label={`${props.name}. Category page coming soon.`}
-    >
-      <CategoryContent {...props} />
-    </button>
+    <article className="flex h-full flex-col">
+      <CategoryVisual count={products.length} visual={visual} />
+      <div className="flex flex-1 flex-col pt-5">
+        <h3 className="text-2xl font-medium tracking-[-0.04em]">{name}</h3>
+        <p className="text-muted-foreground mt-2 text-sm leading-6">
+          {description}
+        </p>
+
+        <div className="border-border mt-5 border-t">
+          <p className="text-muted-foreground py-3 text-[0.65rem] font-semibold uppercase tracking-[0.13em]">
+            {actionLabel}
+          </p>
+          <ul>
+            {products.map((product) => (
+              <li key={product.name} className="border-border border-t">
+                <Link
+                  href={product.href}
+                  className="group flex min-h-12 items-center justify-between gap-4 py-2 text-sm font-medium"
+                >
+                  {product.name}
+                  <ArrowRight
+                    className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </article>
   );
 }

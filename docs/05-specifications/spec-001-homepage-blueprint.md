@@ -2,7 +2,7 @@
 
 **Document ID:** SPEC-001
 
-**Version:** 2.3.0
+**Version:** 2.4.0
 
 **Status:** Implementation-ready, subject to final product photography
 
@@ -15,7 +15,7 @@
 ## 1. Authority and Intent
 
 This specification defines the founder-approved Homepage V2 direction. Version
-2.3 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
+2.4 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
 and section-order requirements in earlier SPEC-001 versions.
 
 Within five seconds the homepage must communicate:
@@ -100,7 +100,7 @@ Subject to truthful availability, the header contains:
   - Bumper Mud Guard
 - Screen Guard
 - Door Visor
-- Decals
+- Decals, only after a useful destination is approved
 - Built with Owners
 - Knowledge
 - My Garage
@@ -115,10 +115,10 @@ Mud Guards is a compact, accessible submenu. It must:
 - not depend on hover.
 
 Product destinations are followed by restrained spacing before Built with
-Owners and Knowledge. Decals remains visibly and truthfully unavailable until
-an approved route exists. Valid destinations use stronger contrast and must not
-resemble disabled controls. Vehicles remains configured for future use but is
-not rendered.
+Owners and Knowledge. Decals remains in typed configuration but is hidden until
+a useful destination is approved; it must not render as a disabled product.
+Valid destinations use stronger contrast and must not resemble disabled
+controls. Vehicles remains configured for future use but is not rendered.
 
 My Garage is the far-right account menu trigger. Its menu contains disabled,
 truthfully labelled My Garage and Assistance destinations until approved routes
@@ -190,11 +190,22 @@ Permitted:
 - close-up product compositions;
 - clearly labelled non-photographic development placeholders.
 
+The hero uses a manual-first multi-product media carousel representing Screen
+Guard, Rear Door Mud Guard, Bumper Mud Guard, Parcel Tray, and Door Visor. One
+product is prominent while adjacent products remain partially visible.
+
 Until final photography is approved, the repository screen-guard close-up may
-serve as a clearly labelled provisional product composition. Reusing it in both
-the hero and carousel is a launch-blocking limitation: production requires
-distinct approved hero and Screen Guard carousel photography. Generic exterior
-car images and composite accessory collages are prohibited on the homepage.
+serve as clearly labelled provisional media. Products without approved
+photography use intentional labelled placeholders. Reusing the Screen Guard
+image in both the hero and featured carousel is a launch-blocking limitation:
+production requires distinct approved hero and Screen Guard carousel
+photography. Generic exterior car images and composite accessory collages are
+prohibited on the homepage.
+
+Hero media is controlled by one typed product-media configuration containing
+stable product ID, product name, short purpose, desktop image, mobile image, alt
+text, media status, focal point, destination, and availability state. Replacing
+media must not require component restructuring.
 
 ### Responsive behaviour
 
@@ -229,14 +240,14 @@ product anchor.
 
 The stable product destinations are:
 
-| Product             | Destination/state                   |
-| ------------------- | ----------------------------------- |
-| Parcel Tray         | `/#product-parcel-tray`             |
-| Screen Guard        | `/#product-screen-guard`            |
-| Door Visor          | `/#product-door-visor`              |
-| Rear Door Mud Guard | `/#product-rear-door-mud-guard`     |
-| Bumper Mud Guard    | `/#product-bumper-mud-guard`        |
-| Decals              | `Coming soon`; no navigation action |
+| Product             | Destination/state               |
+| ------------------- | ------------------------------- |
+| Parcel Tray         | `/#product-parcel-tray`         |
+| Screen Guard        | `/#product-screen-guard`        |
+| Door Visor          | `/#product-door-visor`          |
+| Rear Door Mud Guard | `/#product-rear-door-mud-guard` |
+| Bumper Mud Guard    | `/#product-bumper-mud-guard`    |
+| Decals              | Hidden; no useful destination   |
 
 Labels, stable IDs, and destinations must come from the central typed
 configuration. Product discovery controls must not infer destinations from
@@ -287,8 +298,10 @@ Typed configuration remains outside presentation markup. Each item supports:
 - optional Owner Built evidence.
 
 Use the screen-guard close-up only for Screen Guard. Products without approved
-photography use a neutral, non-photographic placeholder. Never substitute a
-generic car image for a missing product photograph.
+photography use a neutral, non-photographic placeholder labelled `Photography
+pending`. Never substitute a generic car image for a missing product
+photograph. Homepage hero and featured-product media read from the same central
+typed product-media configuration.
 
 Do not invent prices, ratings, reviews, discounts, stock, compatibility, or
 purchase destinations.
@@ -512,7 +525,8 @@ No CMS, API, global state, route, or dependency is authorized.
 
 - [ ] Exactly one navigation layer is visible.
 - [ ] Door Visor appears in the primary header.
-- [ ] Decals appears after Door Visor with a truthful unavailable state.
+- [ ] Decals is absent from customer-facing navigation while it has no useful
+      destination.
 - [ ] Mud Guards exposes Rear Door Mud Guard and Bumper Mud Guard.
 - [ ] Desktop submenu supports click, keyboard, Escape, and focus restoration.
 - [ ] Mobile Mud Guards expands to show both sub-options.
@@ -538,6 +552,11 @@ No CMS, API, global state, route, or dependency is authorized.
 - [ ] The homepage is predominantly light.
 - [ ] Charcoal is limited to Built with Owners and the footer.
 - [ ] Missing product photography uses neutral non-photographic placeholders.
+- [ ] Hero media represents multiple product directions and supports manual,
+      swipe, and keyboard navigation.
+- [ ] Hero media paths, alt text, status, focal point, destination, and
+      availability come from one typed configuration.
+- [ ] Missing or failed hero media always shows a labelled intentional state.
 - [ ] Hero and carousel do not repeat the same product photograph at launch.
 - [ ] Every provisional asset is recorded in the Build Review Package.
 

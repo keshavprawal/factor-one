@@ -43,7 +43,7 @@ function ProductVisual({
         aria-hidden="true"
       />
       <p className="text-muted-foreground relative text-[0.65rem] font-semibold uppercase tracking-[0.12em]">
-        {name} · Product study
+        {name} · Photography pending
       </p>
     </div>
   );
