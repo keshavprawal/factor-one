@@ -32,21 +32,18 @@ export default function Home() {
         aria-labelledby="homepage-hero-heading"
       >
         <Container>
-          <div className="overflow-hidden pb-12 text-center sm:pb-12 lg:pb-10">
+          <div className="overflow-hidden pb-10 text-center">
             <Wordmark
               as="p"
               size="display"
               className="mx-auto whitespace-nowrap"
             />
-            <p className="text-factor-red mt-9 text-sm font-semibold uppercase tracking-[0.2em] sm:mt-8">
-              Built with Owners
-            </p>
-            <p className="text-muted-foreground mt-4 text-sm leading-6 sm:text-base">
-              By VinFast owners, for VinFast owners.
+            <p className="text-muted-foreground mt-5 text-sm leading-6 sm:mt-6 sm:text-base">
+              By The VinFast owners, for The VinFast owners.
             </p>
           </div>
 
-          <div className="border-border grid items-center gap-12 border-t pt-14 sm:pt-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-20 lg:pt-14">
+          <div className="border-border grid items-center gap-12 border-t pt-12 sm:pt-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-20">
             <div className="max-w-2xl">
               <h1
                 id="homepage-hero-heading"
@@ -55,25 +52,22 @@ export default function Home() {
                 Accessories that belong on your car.
               </h1>
               <p className="text-muted-foreground mt-7 max-w-xl text-lg leading-8 sm:text-xl">
-                Factor One designs accessories first for VinFast owners, shaped
-                by people who drive the same cars every day.
+                Designed by VinFast owners who understand it better.
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Button
                   asChild
+                  variant="outline"
                   size="lg"
-                  className="bg-factor-red hover:bg-factor-red/90 rounded-full px-6 text-white"
+                  className="min-w-48 rounded-full bg-transparent px-6"
                 >
-                  <ScrollLink href="#explore-my-car">
-                    Explore My Car
-                    <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-                  </ScrollLink>
+                  <ScrollLink href="#explore-my-car">Explore My Car</ScrollLink>
                 </Button>
                 <Button
                   asChild
                   variant="outline"
                   size="lg"
-                  className="rounded-full bg-transparent px-6"
+                  className="min-w-48 rounded-full bg-transparent px-6"
                 >
                   <ScrollLink href="#explore-accessories">
                     Explore Accessories

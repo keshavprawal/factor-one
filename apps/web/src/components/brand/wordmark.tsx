@@ -7,7 +7,7 @@ export interface WordmarkProps extends HTMLAttributes<HTMLElement> {
 }
 
 const sizeClasses = {
-  display: 'text-[clamp(3.25rem,12vw,8rem)] leading-[0.82] tracking-[-0.075em]',
+  display: 'text-[clamp(3rem,10.5vw,8rem)] leading-[0.82] tracking-[-0.075em]',
   footer: 'text-2xl tracking-[-0.04em]',
   header: 'text-base tracking-[-0.03em]',
 };

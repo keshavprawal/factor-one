@@ -24,7 +24,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const iconButtonClassName =
-  'inline-flex size-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-black/5 focus-visible:bg-black/5 disabled:cursor-not-allowed disabled:opacity-45';
+  'inline-flex size-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-black/5 focus-visible:bg-black/5 disabled:cursor-not-allowed';
 
 interface NavigationItemLinkProps {
   className: string;
@@ -109,7 +109,7 @@ function DesktopNavigationGroup({
       <button
         ref={triggerRef}
         type="button"
-        className="text-foreground/70 hover:text-foreground inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors"
+        className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors"
         aria-expanded={isOpen}
         aria-controls={`${group.id}-desktop-menu`}
         onClick={() => (isOpen ? onClose() : onOpen())}
@@ -257,11 +257,13 @@ export function Navbar() {
                       type="button"
                       disabled
                       aria-disabled="true"
-                      className="text-foreground/70 inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium opacity-40"
+                      className="text-muted-foreground inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap text-xs font-medium"
                       title={`${item.label} is not yet available`}
                     >
                       {item.label}
-                      <span className="sr-only"> (not yet available)</span>
+                      <span className="text-[0.6rem] font-semibold uppercase tracking-[0.1em]">
+                        Soon
+                      </span>
                     </button>
                   </li>
                 );
@@ -272,7 +274,7 @@ export function Navbar() {
                   <NavigationItemLink
                     item={item}
                     pathname={pathname}
-                    className="text-foreground/70 hover:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-colors"
+                    className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-colors"
                   />
                 </li>
               );
@@ -287,13 +289,15 @@ export function Navbar() {
             aria-disabled="true"
             className={cn(
               iconButtonClassName,
-              'hidden gap-2 px-3 sm:flex sm:w-auto',
+              'text-muted-foreground hidden gap-2 px-3 sm:flex sm:w-auto',
             )}
             title="My Garage is not yet available"
           >
             <CarFront className="size-4" aria-hidden="true" />
             <span className="text-xs font-medium">My Garage</span>
-            <span className="sr-only"> (not yet available)</span>
+            <span className="text-[0.6rem] font-semibold uppercase tracking-[0.1em]">
+              Soon
+            </span>
           </button>
           <button
             ref={menuTriggerRef}
@@ -397,11 +401,11 @@ export function Navbar() {
                         type="button"
                         disabled
                         aria-disabled="true"
-                        className="inline-flex min-h-11 w-full items-center rounded-md px-3 py-3 text-sm font-medium opacity-45"
+                        className="text-muted-foreground inline-flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-sm font-medium"
                         title={`${item.label} is not yet available`}
                       >
                         {item.label}
-                        <span className="sr-only"> (not yet available)</span>
+                        <span className="text-xs font-medium">Coming soon</span>
                       </button>
                     </li>
                   );

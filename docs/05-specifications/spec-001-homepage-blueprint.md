@@ -2,7 +2,7 @@
 
 **Document ID:** SPEC-001
 
-**Version:** 2.1.0
+**Version:** 2.2.0
 
 **Status:** Implementation-ready, subject to final product photography
 
@@ -15,7 +15,7 @@
 ## 1. Authority and Intent
 
 This specification defines the founder-approved Homepage V2 direction. Version
-2.1 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
+2.2 supersedes conflicting navigation, wordmark, imagery, colour, hierarchy,
 and section-order requirements in earlier SPEC-001 versions.
 
 Within five seconds the homepage must communicate:
@@ -52,17 +52,18 @@ conversion. A visitor should understand:
 **Built with Owners** is the company operating principle and a permanent product
 capability. It is not a campaign or a generic community forum.
 
-The origin statement is:
+The homepage origin statement is:
 
-> By VinFast owners, for VinFast owners.
+> By The VinFast owners, for The VinFast owners.
 
-Required hierarchy:
+Required homepage brand statement:
 
 1. Factor One
-2. Built with Owners
-3. By VinFast owners, for VinFast owners.
+2. By The VinFast owners, for The VinFast owners.
 
-Each line must remain visually distinct.
+The two lines must read as one cohesive statement. **Built with Owners** remains
+the operating principle and roadmap capability but is not repeated between the
+homepage wordmark and origin statement.
 
 ## 4. Information Hierarchy
 
@@ -70,7 +71,7 @@ Render in this order:
 
 1. Global navigation
 2. Large Factor One wordmark
-3. Built with Owners principle and origin
+3. Owner origin statement
 4. Hero proposition
 5. Car and accessories entry paths
 6. Featured products
@@ -113,9 +114,10 @@ Mud Guards is a compact, accessible submenu. It must:
 - close after a destination is selected;
 - not depend on hover.
 
-Assistance and My Garage remain visibly unavailable until approved routes
-exist. Vehicles remains configured for future use but is not rendered. Decals
-is omitted until approved.
+Assistance and My Garage remain visibly and truthfully labelled as unavailable
+until approved routes exist. Valid destinations use stronger contrast and must
+not resemble disabled controls. Vehicles remains configured for future use but
+is not rendered. Decals is omitted until approved.
 
 ### Mobile navigation
 
@@ -159,15 +161,15 @@ Explain the company before asking the owner to explore.
 ### Required copy
 
 - Wordmark: `Factor One`
-- Operating principle: `Built with Owners`
-- Origin: `By VinFast owners, for VinFast owners.`
+- Origin: `By The VinFast owners, for The VinFast owners.`
 - Headline: `Accessories that belong on your car.`
-- Supporting copy: `Factor One designs accessories first for VinFast owners,
-shaped by people who drive the same cars every day.`
-- Primary action: `Explore My Car`
-- Secondary action: `Explore Accessories`
+- Supporting copy: `Designed by VinFast owners who understand it better.`
+- Discovery action: `Explore My Car`
+- Discovery action: `Explore Accessories`
 
 Do not add another eyebrow or positioning statement above the headline.
+Both actions have equal visual weight. Neither may imply that Factor One sells
+cars.
 
 ### Visual
 
@@ -181,7 +183,9 @@ Permitted:
 - clearly labelled non-photographic development placeholders.
 
 Until final photography is approved, the repository screen-guard close-up may
-serve as a clearly labelled provisional product composition. Generic exterior
+serve as a clearly labelled provisional product composition. Reusing it in both
+the hero and carousel is a launch-blocking limitation: production requires
+distinct approved hero and Screen Guard carousel photography. Generic exterior
 car images and composite accessory collages are prohibited on the homepage.
 
 ### Responsive behaviour
@@ -496,6 +500,7 @@ No CMS, API, global state, route, or dependency is authorized.
 - [ ] The large live-text wordmark reads `Factor One` in title case.
 - [ ] Header, hero, and footer use the same wordmark component.
 - [ ] Brand hierarchy and approved origin copy are exact.
+- [ ] The two discovery actions have equal visual weight.
 - [ ] No redundant eyebrow appears above the proposition.
 - [ ] The first viewport is calm and explains the company within five seconds.
 
@@ -505,6 +510,7 @@ No CMS, API, global state, route, or dependency is authorized.
 - [ ] The homepage is predominantly light.
 - [ ] Charcoal is limited to Built with Owners and the footer.
 - [ ] Missing product photography uses neutral non-photographic placeholders.
+- [ ] Hero and carousel do not repeat the same product photograph at launch.
 - [ ] Every provisional asset is recorded in the Build Review Package.
 
 ### Preserved behaviour
