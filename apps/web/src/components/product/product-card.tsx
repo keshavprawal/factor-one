@@ -62,7 +62,6 @@ export function ProductCard({
       <Link
         href={href}
         className="focus-visible:ring-ring flex h-full flex-col transition-transform duration-300 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
-        aria-label={`View ${name}`}
       >
         <div className="bg-muted relative aspect-square overflow-hidden rounded-md">
           <ProductVisual image={image} imageAlt={imageAlt} name={name} />

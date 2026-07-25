@@ -21,9 +21,19 @@ commands.
 ```bash
 pnpm lint
 pnpm typecheck
+pnpm test
 pnpm build
 pnpm format:check
 ```
+
+`pnpm test` builds the application and exercises the production routes, crawl
+controls, error response, and security headers.
+
+## Production configuration
+
+Set `SITE_URL` to the verified HTTPS production origin before deployment. This
+enables canonical URLs, the public sitemap, and search-engine indexing. Builds
+without `SITE_URL` remain intentionally excluded from indexing.
 
 ## Branch and pull-request workflow
 

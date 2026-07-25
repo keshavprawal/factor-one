@@ -33,6 +33,7 @@ const config: Config = {
         },
         warm: 'hsl(var(--warm))',
         'factor-red': 'hsl(var(--factor-red))',
+        'factor-red-contrast': 'hsl(var(--factor-red-contrast))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',

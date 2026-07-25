@@ -92,6 +92,8 @@ export function FeaturedProductsCarousel({
       <div
         ref={trackRef}
         className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 pt-3 sm:-mx-6 sm:gap-6 sm:px-6 lg:-mx-8 lg:px-8"
+        role="region"
+        aria-roledescription="carousel"
         aria-label="Featured products"
         onScroll={updateActiveProduct}
       >
@@ -105,18 +107,12 @@ export function FeaturedProductsCarousel({
             id={`product-${product.id}`}
             data-product-index={index}
             className={cn(
-              'w-[86%] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-lg bg-white transition-[transform,opacity] duration-300 sm:w-[64%] lg:w-[46%] xl:w-[40%]',
-              index === activeIndex
-                ? '-translate-y-2 opacity-100'
-                : 'opacity-70',
+              'w-[86%] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-lg bg-white transition-transform duration-300 motion-reduce:transform-none motion-reduce:transition-none sm:w-[64%] lg:w-[46%] xl:w-[40%]',
+              index === activeIndex && '-translate-y-2',
             )}
             aria-current={index === activeIndex ? 'true' : undefined}
           >
-            <ProductMediaVisual
-              media={product}
-              priority={index === 0}
-              className="aspect-[4/3]"
-            />
+            <ProductMediaVisual media={product} className="aspect-[4/3]" />
             <div className="p-6 sm:p-8">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -144,7 +140,11 @@ export function FeaturedProductsCarousel({
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-6">
-        <p className="text-muted-foreground text-sm" aria-live="polite">
+        <p
+          className="text-muted-foreground text-sm"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {String(activeIndex + 1).padStart(2, '0')} /{' '}
           {String(products.length).padStart(2, '0')}
           <span className="sr-only">

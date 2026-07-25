@@ -45,7 +45,7 @@ export default function Home() {
           </div>
 
           <div className="border-border grid items-center gap-12 border-t pt-12 sm:pt-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-20">
-            <div className="max-w-2xl">
+            <div className="min-w-0 max-w-2xl">
               <h1
                 id="homepage-hero-heading"
                 className="text-balance text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl lg:text-7xl"
@@ -219,7 +219,7 @@ export default function Home() {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
             <div>
-              <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.16em]">
+              <p className="text-factor-red-contrast text-xs font-semibold uppercase tracking-[0.16em]">
                 Built with Owners
               </p>
               <h2
