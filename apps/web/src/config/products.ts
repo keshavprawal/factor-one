@@ -18,6 +18,8 @@ export type ProductStatus =
   | 'launch-ready'
   | 'retired';
 
+export type ProductLaunchScope = 'v1' | 'deferred';
+
 export type ContentApprovalStatus = 'pending' | 'draft' | 'approved';
 
 export interface ContentField<T> {
@@ -74,6 +76,7 @@ export interface ProductBadge {
 }
 
 export interface ProductAvailability {
+  approvalStatus: ContentApprovalStatus;
   label: string;
   purchasable: boolean;
   state: 'unavailable' | 'coming-soon' | 'available';
@@ -97,6 +100,7 @@ export interface Product {
   installationDifficulty: ContentField<InstallationDifficulty>;
   installationMethod: ContentField<string>;
   keyBenefits: ContentField<readonly string[]>;
+  launchScope: ProductLaunchScope;
   materials: ContentField<readonly string[]>;
   media: readonly string[];
   name: string;
@@ -121,6 +125,10 @@ function draft<T>(value: T): ContentField<T> {
   return { status: 'draft', value };
 }
 
+export function getPublicContentValue<T>(field: ContentField<T>): T | null {
+  return field.status === 'pending' ? null : field.value;
+}
+
 const vf7Compatibility = [
   {
     make: 'VinFast',
@@ -139,6 +147,7 @@ export const products = [
     vehicleCompatibility: vf7Compatibility,
     category: 'interior',
     status: 'direction',
+    launchScope: 'v1',
     shortDescription: draft(
       'A clear layer of protection for the central display and daily touch use.',
     ),
@@ -159,6 +168,7 @@ export const products = [
     honestLimitations: pending(),
     price: pending(),
     availability: {
+      approvalStatus: 'approved',
       state: 'unavailable',
       purchasable: false,
       label: 'Product direction',
@@ -179,6 +189,7 @@ export const products = [
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'testing',
+    launchScope: 'v1',
     shortDescription: draft(
       'A product direction focused on the spray owners notice around the rear doors.',
     ),
@@ -199,6 +210,7 @@ export const products = [
     honestLimitations: pending(),
     price: pending(),
     availability: {
+      approvalStatus: 'approved',
       state: 'unavailable',
       purchasable: false,
       label: 'In testing',
@@ -227,6 +239,7 @@ export const products = [
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'direction',
+    launchScope: 'v1',
     shortDescription: draft(
       'A separate product direction for protection around the exposed bumper area.',
     ),
@@ -247,6 +260,7 @@ export const products = [
     honestLimitations: pending(),
     price: pending(),
     availability: {
+      approvalStatus: 'approved',
       state: 'unavailable',
       purchasable: false,
       label: 'Product direction',
@@ -267,6 +281,7 @@ export const products = [
     vehicleCompatibility: vf7Compatibility,
     category: 'storage',
     status: 'design',
+    launchScope: 'v1',
     shortDescription: draft(
       'A cargo-area solution shaped around the gap owners asked us to solve.',
     ),
@@ -287,6 +302,7 @@ export const products = [
     honestLimitations: pending(),
     price: pending(),
     availability: {
+      approvalStatus: 'approved',
       state: 'unavailable',
       purchasable: false,
       label: 'In design',
@@ -315,6 +331,7 @@ export const products = [
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'direction',
+    launchScope: 'v1',
     shortDescription: draft(
       'A considered exterior addition for ventilation in everyday conditions.',
     ),
@@ -335,6 +352,7 @@ export const products = [
     honestLimitations: pending(),
     price: pending(),
     availability: {
+      approvalStatus: 'approved',
       state: 'unavailable',
       purchasable: false,
       label: 'Product direction',

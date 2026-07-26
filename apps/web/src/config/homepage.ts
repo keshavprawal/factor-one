@@ -98,7 +98,7 @@ export const roadmapItems: readonly RoadmapItem[] = [
     status: 'Research',
   },
   {
-    title: 'Rear Door Mud Guard',
+    title: getProduct('rear-door-mud-guard').name,
     raisedBy: 'Factor Lab',
     agreementCount: 67,
     status: 'Testing',

@@ -1,5 +1,6 @@
 import { getProductHref } from './product-routes';
 import {
+  getPublicContentValue,
   getProduct,
   products,
   type ProductId,
@@ -39,6 +40,21 @@ export interface ProductMediaAsset {
   sourceName: string | null;
   viewport: 'all' | 'desktop' | 'mobile';
 }
+
+export type ProductMediaFallbackVisual =
+  | 'screen'
+  | 'rear-mud-guard'
+  | 'bumper-mud-guard'
+  | 'parcel-tray'
+  | 'door-visor';
+
+const productFallbackVisuals: Record<ProductId, ProductMediaFallbackVisual> = {
+  'screen-guard': 'screen',
+  'rear-door-mud-guard': 'rear-mud-guard',
+  'bumper-mud-guard': 'bumper-mud-guard',
+  'parcel-tray': 'parcel-tray',
+  'door-visor': 'door-visor',
+};
 
 export const productMediaManifest = [
   {
@@ -262,6 +278,7 @@ export interface ProductMediaItem {
   desktopImage?: string;
   destination: string;
   focalPoint: string;
+  fallbackVisual: ProductMediaFallbackVisual;
   id: ProductId;
   mediaId: string;
   mediaStatus: ProductMediaStatus;
@@ -295,6 +312,9 @@ export function getProductMediaItem(
     media.find((item) => item.viewport === 'all');
   const representativeMedia = desktopMedia ?? mobileMedia;
   const hasMedia = Boolean(desktopMedia?.sourcePath && mobileMedia?.sourcePath);
+  const purpose =
+    getPublicContentValue(product.problemSolved) ??
+    getPublicContentValue(product.shortDescription);
   const mediaStatus: ProductMediaStatus = !hasMedia
     ? 'missing'
     : media.every(
@@ -311,19 +331,23 @@ export function getProductMediaItem(
     );
   }
 
+  if (!purpose) {
+    throw new Error(
+      `No publishable presentation copy exists for ${productId}.`,
+    );
+  }
+
   return {
     id: product.id,
     mediaId: representativeMedia.id,
     name: product.name,
-    purpose:
-      product.problemSolved.value ??
-      product.shortDescription.value ??
-      'Product content pending.',
+    purpose,
     desktopImage: desktopMedia?.sourcePath ?? undefined,
     mobileImage: mobileMedia?.sourcePath ?? undefined,
     altText: representativeMedia.altText,
     mediaStatus,
     focalPoint: representativeMedia.focalPoint,
+    fallbackVisual: productFallbackVisuals[product.id],
     destination: getProductHref(product.id),
     availability: product.availability.label,
     availabilityState: product.status,

@@ -27,6 +27,15 @@ Every field that requires approval uses one of these states:
 Product identity, category, lifecycle status, availability, and compatibility
 are explicit fields rather than implied by customer-facing copy.
 
+`launchScope` controls strict launch validation:
+
+- `v1` — the product must satisfy every launch requirement.
+- `deferred` — draft completeness does not block the current launch, while
+  structural integrity rules still apply.
+
+Changing a product's launch scope is a product decision and requires founder
+approval.
+
 ### Required for launch
 
 - Unique id and slug
@@ -105,4 +114,6 @@ pnpm content:check:launch
 ```
 
 Strict mode converts launch warnings into failures. A product is ready only when
-strict validation passes and its deployed presentation has been reviewed.
+strict validation passes for every `v1` product and its deployed presentation
+has been reviewed. Deliberately deferred products remain subject to structural
+validation but do not block the current launch.

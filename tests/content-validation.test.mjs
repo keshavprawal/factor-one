@@ -4,6 +4,7 @@ import { test } from 'node:test';
 
 const require = createRequire(import.meta.url);
 const {
+  getPublicContentValue,
   products,
 } = require('../apps/web/.content-check/src/config/products.js');
 const {
@@ -134,4 +135,77 @@ test('pending fields cannot carry publishable values', () => {
     issues.some((issue) => issue.code === 'CONTENT_STATE_MISMATCH'),
     true,
   );
+  assert.equal(getPublicContentValue(invalidProducts[0].fullDescription), null);
+});
+
+test('approved content cannot be empty', () => {
+  const invalidProducts = structuredClone(products);
+
+  invalidProducts[0].fullDescription = {
+    status: 'approved',
+    value: '   ',
+  };
+
+  const issues = validateProductContent(invalidProducts, productMediaManifest, {
+    mediaPathExists: localMediaExists,
+    strict: false,
+  });
+
+  assert.equal(
+    issues.some((issue) => issue.code === 'APPROVED_CONTENT_EMPTY'),
+    true,
+  );
+});
+
+test('final media requires approval and resolved rights', () => {
+  const invalidMedia = structuredClone(productMediaManifest);
+
+  invalidMedia[0].lifecycleStatus = 'final';
+
+  const issues = validateProductContent(products, invalidMedia, {
+    mediaPathExists: localMediaExists,
+    strict: false,
+  });
+
+  assert.equal(
+    issues.some((issue) => issue.code === 'FINAL_MEDIA_UNRESOLVED'),
+    true,
+  );
+});
+
+test('purchasable products require approved commercial and compatibility data', () => {
+  const invalidProducts = structuredClone(products);
+
+  invalidProducts[0].status = 'launch-ready';
+  invalidProducts[0].availability = {
+    approvalStatus: 'pending',
+    label: 'Available',
+    purchasable: true,
+    state: 'available',
+  };
+
+  const issues = validateProductContent(invalidProducts, productMediaManifest, {
+    mediaPathExists: localMediaExists,
+    strict: false,
+  });
+
+  assert.equal(
+    issues.some((issue) => issue.code === 'PURCHASABLE_CONTENT_INCOMPLETE'),
+    true,
+  );
+});
+
+test('strict launch validation ignores deliberately deferred products', () => {
+  const deferredProduct = structuredClone(products[0]);
+  deferredProduct.launchScope = 'deferred';
+  const deferredMedia = productMediaManifest.filter(
+    (media) => media.productId === deferredProduct.id,
+  );
+
+  const issues = validateProductContent([deferredProduct], deferredMedia, {
+    mediaPathExists: localMediaExists,
+    strict: true,
+  });
+
+  assert.deepEqual(issues, []);
 });

@@ -160,22 +160,3 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
     label: 'Factor One',
   },
 ];
-
-export function isAvailableNavigationItem(
-  item: NavigationItem | NavigationLeaf,
-): item is AvailableNavigationItem {
-  return 'href' in item;
-}
-
-export function isGroupedNavigationItem(
-  item: NavigationItem,
-): item is GroupedNavigationItem {
-  return 'children' in item;
-}
-
-export function isCurrentNavigationItem(
-  item: AvailableNavigationItem,
-  pathname: string,
-) {
-  return item.href === pathname;
-}

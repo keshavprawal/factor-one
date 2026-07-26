@@ -11,20 +11,24 @@ interface ProductMediaVisualProps {
   priority?: boolean;
 }
 
-function ProductSilhouette({ id }: { id: ProductMediaItem['id'] }) {
+function ProductSilhouette({
+  visual,
+}: {
+  visual: ProductMediaItem['fallbackVisual'];
+}) {
   return (
     <div
       className={cn(
         'border-foreground/10 absolute border',
-        id === 'screen-guard' &&
+        visual === 'screen' &&
           'inset-x-[20%] bottom-[25%] top-[20%] rounded-[1.75rem]',
-        id === 'rear-door-mud-guard' &&
+        visual === 'rear-mud-guard' &&
           'bottom-[19%] left-[24%] top-[18%] w-[30%] rounded-bl-[2.5rem] rounded-tr-[1.5rem]',
-        id === 'bumper-mud-guard' &&
+        visual === 'bumper-mud-guard' &&
           'inset-x-[15%] bottom-[22%] top-[31%] rounded-b-[3rem] rounded-t-xl',
-        id === 'parcel-tray' &&
+        visual === 'parcel-tray' &&
           'inset-x-[13%] bottom-[24%] top-[28%] rounded-[45%_45%_1rem_1rem]',
-        id === 'door-visor' &&
+        visual === 'door-visor' &&
           'inset-x-[14%] bottom-[40%] top-[28%] skew-x-[-8deg] rounded-full',
       )}
       aria-hidden="true"
@@ -78,7 +82,7 @@ export function ProductMediaVisual({
           className="bg-factor-red/5 absolute right-[12%] top-[12%] size-16 rounded-full"
           aria-hidden="true"
         />
-        <ProductSilhouette id={media.id} />
+        <ProductSilhouette visual={media.fallbackVisual} />
         <div className="bg-foreground/10 absolute inset-x-[18%] bottom-[18%] h-px" />
       </div>
 

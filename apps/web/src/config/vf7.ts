@@ -1,7 +1,11 @@
 import { productDestinations } from '@/config/navigation';
 import { getProductHref } from '@/config/product-routes';
 import { getProductMediaItem } from '@/config/product-media';
-import { getProduct, type ProductId } from '@/config/products';
+import {
+  getPublicContentValue,
+  getProduct,
+  type ProductId,
+} from '@/config/products';
 
 const vf7FeaturedProductIds = [
   'screen-guard',
@@ -14,13 +18,15 @@ export const vf7FeaturedProducts = vf7FeaturedProductIds.map((productId) => {
   const product = getProduct(productId);
   const media = getProductMediaItem(productId, 'vehicle-featured');
 
-  if (!product.shortDescription.value) {
+  const description = getPublicContentValue(product.shortDescription);
+
+  if (!description) {
     throw new Error(`Missing VF7 card description for ${product.id}.`);
   }
 
   return {
     name: product.name,
-    description: product.shortDescription.value,
+    description,
     href: getProductHref(product.id),
     ...(media.desktopImage && media.altText
       ? { image: media.desktopImage, imageAlt: media.altText }
@@ -37,7 +43,7 @@ export const vf7Categories = [
     name: 'Screen & Cabin',
     description:
       'Protection and details for the places you use inside the car.',
-    actionLabel: 'View Screen Guard',
+    actionLabel: `View ${productDestinations.screenGuard.label}`,
     products: [
       {
         name: productDestinations.screenGuard.label,
@@ -69,7 +75,7 @@ export const vf7Categories = [
   {
     name: 'Cargo & Storage',
     description: 'Purposeful solutions for the VF7 cargo area.',
-    actionLabel: 'View Parcel Tray',
+    actionLabel: `View ${productDestinations.parcelTray.label}`,
     products: [
       {
         name: productDestinations.parcelTray.label,

@@ -15,12 +15,32 @@ export interface ContentValidationOptions {
   strict: boolean;
 }
 
-function hasApprovedValue(field: { status: string; value: unknown }): boolean {
-  if (field.status !== 'approved' || field.value === null) {
+function hasContentValue(value: unknown): boolean {
+  if (value === null) {
     return false;
   }
 
-  return !Array.isArray(field.value) || field.value.length > 0;
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
+  }
+
+  if (Array.isArray(value)) {
+    return value.length > 0 && value.every(hasContentValue);
+  }
+
+  if (typeof value === 'object') {
+    const values = Object.values(value).filter(
+      (nestedValue) => nestedValue !== null,
+    );
+
+    return values.length > 0 && values.every(hasContentValue);
+  }
+
+  return true;
+}
+
+function hasApprovedValue(field: { status: string; value: unknown }): boolean {
+  return field.status === 'approved' && hasContentValue(field.value);
 }
 
 function launchSeverity(strict: boolean): ContentIssueSeverity {
@@ -103,6 +123,19 @@ export function validateProductContent(
           severity: 'error',
         });
       }
+
+      if (
+        field.status === 'approved' &&
+        field.value !== null &&
+        !hasContentValue(field.value)
+      ) {
+        issues.push({
+          code: 'APPROVED_CONTENT_EMPTY',
+          message: `${label} is approved but empty.`,
+          productId: product.id,
+          severity: 'error',
+        });
+      }
     }
 
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.slug)) {
@@ -122,6 +155,7 @@ export function validateProductContent(
         severity: 'error',
       });
     } else if (
+      product.launchScope === 'v1' &&
       product.vehicleCompatibility.some(
         (compatibility) => compatibility.verificationStatus !== 'verified',
       )
@@ -178,6 +212,53 @@ export function validateProductContent(
       });
     }
 
+    const hasApprovedCompatibility =
+      product.vehicleCompatibility.length > 0 &&
+      product.vehicleCompatibility.every(
+        (compatibility) => compatibility.verificationStatus === 'verified',
+      );
+
+    if (
+      product.availability.purchasable &&
+      (!hasApprovedValue(product.price) ||
+        product.availability.approvalStatus !== 'approved' ||
+        !hasApprovedCompatibility)
+    ) {
+      issues.push({
+        code: 'PURCHASABLE_CONTENT_INCOMPLETE',
+        message:
+          'Purchasable products require an approved price, approved availability, and verified compatibility.',
+        productId: product.id,
+        severity: 'error',
+      });
+    }
+
+    const productMedia = mediaManifest.filter(
+      (media) => media.productId === product.id,
+    );
+
+    if (
+      product.status === 'launch-ready' &&
+      productMedia.some(
+        (media) =>
+          media.lifecycleStatus !== 'final' ||
+          media.approvalStatus !== 'approved' ||
+          !['owned', 'official', 'licensed'].includes(media.rightsStatus),
+      )
+    ) {
+      issues.push({
+        code: 'UNAPPROVED_LAUNCH_MEDIA',
+        message:
+          'A launch-ready product cannot use temporary, unapproved, or rights-unresolved imagery.',
+        productId: product.id,
+        severity: 'error',
+      });
+    }
+
+    if (product.launchScope !== 'v1') {
+      continue;
+    }
+
     const launchFields = [
       ['short description', product.shortDescription],
       ['full description', product.fullDescription],
@@ -197,11 +278,10 @@ export function validateProductContent(
       .filter(([, field]) => !hasApprovedValue(field))
       .map(([label]) => label);
 
-    if (!hasApprovedValue(product.seo)) {
-      incompleteLaunchFields.push('SEO metadata');
-    } else if (
-      !product.seo.value?.title.trim() ||
-      !product.seo.value.description.trim()
+    if (
+      product.seo.status === 'approved' &&
+      (!product.seo.value?.title.trim() ||
+        !product.seo.value?.description.trim())
     ) {
       issues.push({
         code: 'INVALID_SEO_METADATA',
@@ -209,6 +289,10 @@ export function validateProductContent(
         productId: product.id,
         severity: 'error',
       });
+    }
+
+    if (!hasApprovedValue(product.seo)) {
+      incompleteLaunchFields.push('SEO metadata');
     }
 
     if (
@@ -231,9 +315,6 @@ export function validateProductContent(
       });
     }
 
-    const productMedia = mediaManifest.filter(
-      (media) => media.productId === product.id,
-    );
     const unresolvedMedia = productMedia.filter(
       (media) =>
         !media.sourcePath ||
@@ -248,23 +329,6 @@ export function validateProductContent(
         message: `${unresolvedMedia.length} media record(s) are missing, temporary, unapproved, or have unresolved rights.`,
         productId: product.id,
         severity: launchSeverity(options.strict),
-      });
-    }
-
-    if (
-      product.status === 'launch-ready' &&
-      productMedia.some(
-        (media) =>
-          media.lifecycleStatus !== 'final' ||
-          media.approvalStatus !== 'approved',
-      )
-    ) {
-      issues.push({
-        code: 'UNAPPROVED_LAUNCH_MEDIA',
-        message:
-          'A launch-ready product cannot use temporary or unapproved imagery.',
-        productId: product.id,
-        severity: 'error',
       });
     }
 
@@ -332,6 +396,19 @@ export function validateProductContent(
       issues.push({
         code: 'MEDIA_STATE_MISMATCH',
         message: `Media "${media.id}" lifecycle status does not match whether a source path exists.`,
+        productId: media.productId,
+        severity: 'error',
+      });
+    }
+
+    if (
+      media.lifecycleStatus === 'final' &&
+      (media.approvalStatus !== 'approved' ||
+        !['owned', 'official', 'licensed'].includes(media.rightsStatus))
+    ) {
+      issues.push({
+        code: 'FINAL_MEDIA_UNRESOLVED',
+        message: `Final media "${media.id}" requires approved status and resolved usage rights.`,
         productId: media.productId,
         severity: 'error',
       });
