@@ -23,7 +23,7 @@ function ProductVisual({
         alt={imageAlt}
         fill
         sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transform-none"
+        className="motion-media-transition object-cover transition-transform group-hover:scale-[1.03] motion-reduce:transform-none"
       />
     );
   }
@@ -61,7 +61,7 @@ export function ProductCard({
     <article className="group h-full">
       <Link
         href={href}
-        className="focus-visible:ring-ring flex h-full flex-col transition-transform duration-300 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none"
+        className="motion-safe-transition focus-visible:ring-ring flex h-full flex-col transition-transform hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-4 active:translate-y-0 motion-reduce:transform-none"
       >
         <div className="bg-muted relative aspect-square overflow-hidden rounded-md">
           <ProductVisual image={image} imageAlt={imageAlt} name={name} />
@@ -77,7 +77,7 @@ export function ProductCard({
           <span className="text-foreground mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium">
             View product direction
             <ArrowUpRight
-              className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
+              className="motion-safe-transition size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
               aria-hidden="true"
             />
           </span>

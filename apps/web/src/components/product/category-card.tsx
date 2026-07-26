@@ -79,11 +79,11 @@ export function CategoryCard({
               <li key={product.name} className="border-border border-t">
                 <Link
                   href={product.href}
-                  className="group flex min-h-12 items-center justify-between gap-4 py-2 text-sm font-medium"
+                  className="motion-safe-transition hover:bg-warm focus-visible:bg-warm group -mx-3 flex min-h-12 items-center justify-between gap-4 rounded-md px-3 py-2 text-sm font-medium transition-[background-color,transform] active:translate-y-px"
                 >
                   {product.name}
                   <ArrowRight
-                    className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
+                    className="motion-safe-transition size-4 shrink-0 transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
                     aria-hidden="true"
                   />
                 </Link>

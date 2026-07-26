@@ -29,7 +29,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const iconButtonClassName =
-  'inline-flex size-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-black/5 focus-visible:bg-black/5 disabled:cursor-not-allowed';
+  'motion-safe-transition inline-flex size-11 items-center justify-center rounded-full text-foreground transition-[color,background-color,transform] hover:bg-black/5 focus-visible:bg-black/5 active:scale-[0.97] disabled:cursor-not-allowed motion-reduce:transform-none';
 
 interface NavigationItemLinkProps {
   className: string;
@@ -71,7 +71,7 @@ function UnavailableNavigationControl({
       disabled
       aria-disabled="true"
       className={cn(
-        'text-muted-foreground inline-flex min-h-11 items-center justify-between gap-3 rounded-md text-left font-medium',
+        'text-muted-foreground inline-flex min-h-11 cursor-not-allowed select-none items-center justify-between gap-3 rounded-md text-left font-medium',
         compact ? 'w-full px-3 text-sm' : 'whitespace-nowrap text-xs',
       )}
       title={`${item.label} is not yet available`}
@@ -142,7 +142,7 @@ function DesktopNavigationGroup({
       <button
         ref={triggerRef}
         type="button"
-        className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors"
+        className="motion-safe-transition text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center gap-1 whitespace-nowrap text-xs font-medium transition-[color,transform] active:translate-y-px"
         aria-expanded={isOpen}
         aria-controls={`${group.id}-desktop-menu`}
         onClick={() => (isOpen ? onClose() : onOpen())}
@@ -151,7 +151,7 @@ function DesktopNavigationGroup({
         {group.label}
         <ChevronDown
           className={cn(
-            'size-3.5 transition-transform duration-200',
+            'motion-safe-transition size-3.5 transition-transform',
             isOpen && 'rotate-180',
           )}
           aria-hidden="true"
@@ -161,7 +161,7 @@ function DesktopNavigationGroup({
       {isOpen ? (
         <div
           id={`${group.id}-desktop-menu`}
-          className="border-border bg-warm absolute left-1/2 top-[calc(100%+0.5rem)] w-64 -translate-x-1/2 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
+          className="motion-menu-in border-border bg-warm absolute left-1/2 top-[calc(100%+0.5rem)] w-64 -translate-x-1/2 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
         >
           <p className="text-muted-foreground px-3 pb-2 pt-1 text-[0.65rem] font-medium uppercase tracking-[0.14em]">
             {group.label}
@@ -189,7 +189,7 @@ function DesktopNavigationGroup({
                         ? 'page'
                         : undefined
                     }
-                    className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-colors"
+                    className="motion-safe-transition hover:bg-muted focus-visible:bg-muted flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-[color,background-color,transform] active:translate-y-px"
                     onClick={() => onClose()}
                     onKeyDown={(event) => {
                       if (event.key === 'Escape') {
@@ -270,7 +270,7 @@ function DesktopGarageMenu({
         <span className="text-xs font-medium">My Garage</span>
         <ChevronDown
           className={cn(
-            'size-3.5 transition-transform duration-200',
+            'motion-safe-transition size-3.5 transition-transform',
             isOpen && 'rotate-180',
           )}
           aria-hidden="true"
@@ -280,7 +280,7 @@ function DesktopGarageMenu({
       {isOpen ? (
         <div
           id="garage-desktop-menu"
-          className="border-border bg-warm absolute right-0 top-[calc(100%+0.5rem)] w-72 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
+          className="motion-menu-in border-border bg-warm absolute right-0 top-[calc(100%+0.5rem)] w-72 rounded-lg border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.1)]"
           onKeyDown={(event) => {
             if (event.key === 'Escape') {
               event.preventDefault();
@@ -395,7 +395,7 @@ export function Navbar() {
         <NavigationItemLink
           item={item}
           pathname={pathname}
-          className="text-foreground/85 hover:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-colors"
+          className="motion-safe-transition text-foreground/85 hover:text-foreground aria-[current=page]:text-foreground inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium transition-[color,transform] active:translate-y-px aria-[current=page]:font-semibold"
         />
       </li>
     );
@@ -409,7 +409,7 @@ export function Navbar() {
         <li key={item.id}>
           <button
             type="button"
-            className="hover:bg-muted flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm font-medium transition-colors"
+            className="motion-safe-transition hover:bg-muted focus-visible:bg-muted flex min-h-11 w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm font-medium transition-[color,background-color,transform] active:translate-y-px"
             aria-expanded={isOpen}
             aria-controls={`${item.id}-mobile-menu`}
             onClick={() => setMobileGroupOpen(isOpen ? null : item.id)}
@@ -417,7 +417,7 @@ export function Navbar() {
             {item.label}
             <ChevronDown
               className={cn(
-                'size-4 transition-transform duration-200',
+                'motion-safe-transition size-4 transition-transform',
                 isOpen && 'rotate-180',
               )}
               aria-hidden="true"
@@ -426,7 +426,7 @@ export function Navbar() {
           {isOpen ? (
             <ul
               id={`${item.id}-mobile-menu`}
-              className="border-border ml-3 border-l pl-3"
+              className="motion-menu-in border-border ml-3 border-l pl-3"
             >
               {item.children.map((child) => (
                 <li key={child.id}>
@@ -435,7 +435,7 @@ export function Navbar() {
                       item={child}
                       pathname={pathname}
                       onNavigate={() => setIsMenuOpen(false)}
-                      className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
+                      className="motion-safe-transition hover:bg-muted focus-visible:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-[color,background-color,transform] active:translate-y-px"
                     />
                   ) : (
                     <UnavailableNavigationControl item={child} compact />
@@ -462,7 +462,7 @@ export function Navbar() {
           item={item}
           pathname={pathname}
           onNavigate={() => setIsMenuOpen(false)}
-          className="hover:bg-muted flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-colors"
+          className="motion-safe-transition hover:bg-muted focus-visible:bg-muted aria-[current=page]:text-foreground flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-medium transition-[color,background-color,transform] active:translate-y-px aria-[current=page]:font-semibold"
         />
       </li>
     );
@@ -471,14 +471,14 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'border-border bg-warm/95 animate-hero-fade sticky top-0 z-40 border-b backdrop-blur transition-shadow duration-300',
+        'motion-safe-transition border-border bg-warm/95 animate-hero-fade sticky top-0 z-40 border-b backdrop-blur transition-[background-color,box-shadow]',
         isScrolled && 'shadow-[0_1px_18px_rgba(15,23,42,0.08)]',
       )}
     >
       <Container className="flex h-[4.5rem] items-center justify-between">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center"
+          className="motion-safe-transition inline-flex min-h-11 items-center transition-opacity hover:opacity-75 active:opacity-60"
           aria-label="Factor One home"
           aria-current={pathname === '/' ? 'page' : undefined}
         >
@@ -532,7 +532,7 @@ export function Navbar() {
         id="mobile-navigation"
         aria-labelledby="mobile-navigation-heading"
         aria-modal="true"
-        className="bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 xl:hidden"
+        className="motion-dialog-in bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 xl:hidden"
         onCancel={(event) => {
           event.preventDefault();
           setIsMenuOpen(false);

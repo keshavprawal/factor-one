@@ -30,6 +30,10 @@
     --font-sans: ui-sans-serif;
     --font-mono: ui-monospace;
     --space-section: clamp(4.5rem, 8vw, 8rem);
+    --motion-duration-fast: 160ms;
+    --motion-duration-base: 240ms;
+    --motion-duration-slow: 420ms;
+    --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dark {
@@ -58,6 +62,10 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
+  ::selection {
+    @apply bg-factor-red/15 text-foreground;
+  }
+
   :focus-visible {
     @apply ring-ring ring-offset-background outline-none ring-2 ring-offset-2;
   }
@@ -69,7 +77,28 @@
   }
 
   .motion-safe-transition {
-    @apply duration-200 ease-out;
+    transition-duration: var(--motion-duration-base);
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .motion-media-transition {
+    transition-duration: var(--motion-duration-slow);
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .motion-menu-in {
+    animation: menu-in var(--motion-duration-fast) var(--motion-ease-standard)
+      both;
+    transform-origin: top;
+  }
+
+  .motion-dialog-in[open] {
+    animation: dialog-in var(--motion-duration-base) var(--motion-ease-standard)
+      both;
+  }
+
+  .motion-dialog-in[open]::backdrop {
+    animation: backdrop-in var(--motion-duration-base) ease-out both;
   }
 
   .text-balance {
@@ -84,10 +113,49 @@
     display: none;
   }
 
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      scale: 0.985;
+      translate: 0 -0.25rem;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.985;
+      translate: 0 0.5rem;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .motion-safe-transition,
     .motion-safe-transition::before,
     .motion-safe-transition::after,
+    .motion-media-transition,
+    .motion-menu-in,
+    .motion-dialog-in,
+    .motion-dialog-in::backdrop,
     .animate-hero-fade,
     .animate-hero-rise {
       animation-duration: 0.01ms !important;

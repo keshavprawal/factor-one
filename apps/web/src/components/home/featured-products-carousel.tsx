@@ -55,6 +55,15 @@ export function FeaturedProductsCarousel({
     return () => window.removeEventListener('hashchange', activateHashProduct);
   }, [products, scrollToProduct]);
 
+  useEffect(
+    () => () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    },
+    [],
+  );
+
   function updateActiveProduct(event: UIEvent<HTMLDivElement>) {
     if (frameRef.current !== null) {
       cancelAnimationFrame(frameRef.current);
@@ -90,8 +99,9 @@ export function FeaturedProductsCarousel({
   return (
     <div>
       <div
+        id="featured-products-carousel"
         ref={trackRef}
-        className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-8 pt-3 sm:-mx-6 sm:gap-6 sm:px-6 lg:-mx-8 lg:px-8"
+        className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain scroll-smooth px-5 pb-8 pt-3 motion-reduce:scroll-auto sm:-mx-6 sm:gap-6 sm:px-6 lg:-mx-8 lg:px-8"
         role="region"
         aria-roledescription="carousel"
         aria-label="Featured products"
@@ -107,7 +117,7 @@ export function FeaturedProductsCarousel({
             id={`product-${product.id}`}
             data-product-index={index}
             className={cn(
-              'w-[86%] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-lg bg-white transition-transform duration-300 motion-reduce:transform-none motion-reduce:transition-none sm:w-[64%] lg:w-[46%] xl:w-[40%]',
+              'motion-safe-transition w-[86%] shrink-0 snap-center snap-always scroll-mt-28 overflow-hidden rounded-lg bg-white transition-transform motion-reduce:transform-none motion-reduce:transition-none sm:w-[64%] lg:w-[46%] xl:w-[40%]',
               index === activeIndex && '-translate-y-2',
             )}
             aria-current={index === activeIndex ? 'true' : undefined}
@@ -157,7 +167,12 @@ export function FeaturedProductsCarousel({
             variant="outline"
             size="icon"
             className="rounded-full bg-transparent"
-            aria-label="Show previous featured product"
+            aria-controls="featured-products-carousel"
+            aria-label={
+              products[activeIndex - 1]
+                ? `Show previous featured product: ${products[activeIndex - 1].name}`
+                : 'No previous featured product'
+            }
             disabled={activeIndex === 0}
             onClick={() => scrollToProduct(activeIndex - 1)}
           >
@@ -168,7 +183,12 @@ export function FeaturedProductsCarousel({
             variant="outline"
             size="icon"
             className="rounded-full bg-transparent"
-            aria-label="Show next featured product"
+            aria-controls="featured-products-carousel"
+            aria-label={
+              products[activeIndex + 1]
+                ? `Show next featured product: ${products[activeIndex + 1].name}`
+                : 'No next featured product'
+            }
             disabled={activeIndex === products.length - 1}
             onClick={() => scrollToProduct(activeIndex + 1)}
           >
