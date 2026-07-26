@@ -1,7 +1,13 @@
 'use client';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useRef, useState, type KeyboardEvent, type UIEvent } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type UIEvent,
+} from 'react';
 import { ProductMediaVisual } from '@/components/product/product-media-visual';
 import { Button } from '@/components/ui/button';
 import type { ProductMediaItem } from '@/config/product-media';
@@ -15,6 +21,15 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    },
+    [],
+  );
 
   function showProduct(index: number) {
     const nextIndex = Math.min(Math.max(index, 0), products.length - 1);
@@ -82,12 +97,13 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
   return (
     <div className="min-w-0">
       <div
+        id="hero-product-carousel"
         ref={trackRef}
         role="region"
         aria-roledescription="carousel"
         aria-label="Factor One product directions"
         tabIndex={0}
-        className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-3 sm:-mx-6 sm:gap-4 sm:px-6 lg:-mx-4 lg:px-4"
+        className="scrollbar-none -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-5 pb-3 focus-visible:rounded-lg motion-reduce:scroll-auto sm:-mx-6 sm:gap-4 sm:px-6 lg:-mx-4 lg:px-4"
         onScroll={updateActiveProduct}
         onKeyDown={handleKeyDown}
       >
@@ -98,7 +114,7 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
             data-hero-product-index={index}
             aria-current={index === activeIndex ? 'true' : undefined}
             className={cn(
-              'w-[86%] shrink-0 snap-center transition-transform duration-300 motion-reduce:transform-none motion-reduce:transition-none sm:w-[72%] lg:w-[78%]',
+              'motion-safe-transition w-[86%] shrink-0 snap-center snap-always transition-transform motion-reduce:transform-none motion-reduce:transition-none sm:w-[72%] lg:w-[78%]',
               index === activeIndex && '-translate-y-1',
             )}
           >
@@ -141,7 +157,12 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
             variant="outline"
             size="icon"
             className="rounded-full bg-transparent"
-            aria-label="Show previous hero product"
+            aria-controls="hero-product-carousel"
+            aria-label={
+              products[activeIndex - 1]
+                ? `Show previous hero product: ${products[activeIndex - 1].name}`
+                : 'No previous hero product'
+            }
             disabled={activeIndex === 0}
             onClick={() => showProduct(activeIndex - 1)}
           >
@@ -152,7 +173,12 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
             variant="outline"
             size="icon"
             className="rounded-full bg-transparent"
-            aria-label="Show next hero product"
+            aria-controls="hero-product-carousel"
+            aria-label={
+              products[activeIndex + 1]
+                ? `Show next hero product: ${products[activeIndex + 1].name}`
+                : 'No next hero product'
+            }
             disabled={activeIndex === products.length - 1}
             onClick={() => showProduct(activeIndex + 1)}
           >

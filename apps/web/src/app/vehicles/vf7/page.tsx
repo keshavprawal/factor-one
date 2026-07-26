@@ -40,7 +40,7 @@ export default function VF7Page() {
     <>
       <section
         id="vehicle-hero"
-        className="section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-24"
         aria-labelledby="vehicle-hero-heading"
       >
         <Container>
@@ -99,7 +99,7 @@ export default function VF7Page() {
 
       <section
         id="vehicle-overview"
-        className="section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-24"
         aria-labelledby="vehicle-overview-heading"
       >
         <Container>
@@ -151,7 +151,7 @@ export default function VF7Page() {
 
       <section
         id="featured-products"
-        className="section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-24"
         aria-labelledby="featured-products-heading"
       >
         <Container>
@@ -178,7 +178,7 @@ export default function VF7Page() {
 
       <section
         id="vehicle-categories"
-        className="scroll-mt-[4.5rem] py-16 sm:py-20 lg:py-12"
+        className="scroll-mt-24 py-16 sm:py-20 lg:py-12"
         aria-labelledby="vehicle-categories-heading"
       >
         <Container>
@@ -212,7 +212,7 @@ export default function VF7Page() {
 
       <section
         id="ownership-resources"
-        className="section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-24"
         aria-labelledby="ownership-resources-heading"
       >
         <Container>
@@ -239,7 +239,7 @@ export default function VF7Page() {
 
       <section
         id="vehicle-cta"
-        className="section-space scroll-mt-[4.5rem]"
+        className="section-space scroll-mt-24"
         aria-labelledby="vehicle-cta-heading"
       >
         <Container>

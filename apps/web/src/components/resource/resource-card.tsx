@@ -18,7 +18,7 @@ function ResourceContent({ description, href, title }: ResourceCardProps) {
       </div>
       {href ? (
         <ArrowRight
-          className="mt-8 size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none"
+          className="motion-safe-transition mt-8 size-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
           aria-hidden="true"
         />
       ) : (
@@ -32,13 +32,13 @@ function ResourceContent({ description, href, title }: ResourceCardProps) {
 
 export function ResourceCard(props: ResourceCardProps) {
   const className =
-    'border-border focus-visible:ring-ring group flex h-full min-h-44 flex-col justify-between border-t py-6 transition-transform duration-300 ease-out focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none sm:py-7';
+    'motion-safe-transition border-border focus-visible:ring-ring group flex h-full min-h-44 flex-col justify-between border-t py-6 transition-transform focus-visible:ring-2 focus-visible:ring-offset-4 motion-reduce:transform-none sm:py-7';
 
   if (props.href) {
     return (
       <Link
         href={props.href}
-        className={`${className} hover:-translate-y-1 focus-visible:-translate-y-1`}
+        className={`${className} hover:-translate-y-1 focus-visible:-translate-y-1 active:translate-y-0`}
       >
         <ResourceContent {...props} />
       </Link>

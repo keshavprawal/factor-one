@@ -31,7 +31,7 @@ export function Footer() {
                   <li key={item.id}>
                     <Link
                       href={item.href}
-                      className="text-charcoal-foreground/60 hover:text-charcoal-foreground focus-visible:ring-charcoal-foreground focus-visible:ring-offset-charcoal inline-flex min-h-11 items-center text-sm transition-colors"
+                      className="motion-safe-transition text-charcoal-foreground/60 hover:text-charcoal-foreground focus-visible:ring-charcoal-foreground focus-visible:ring-offset-charcoal inline-flex min-h-11 min-w-11 items-center text-sm transition-[color,transform] active:translate-y-px"
                     >
                       {item.label}
                     </Link>

@@ -123,11 +123,11 @@ export default function Home() {
                 <div className="border-border mt-8 border-t">
                   <Link
                     href="/vehicles/vf7"
-                    className="group flex min-h-16 items-center justify-between gap-4 border-b py-3 font-medium"
+                    className="motion-safe-transition group -mx-3 flex min-h-16 items-center justify-between gap-4 rounded-md border-b px-3 py-3 font-medium transition-[background-color,transform] hover:bg-white/70 focus-visible:bg-white/70 active:translate-y-px"
                   >
                     VinFast VF7
                     <ArrowUpRight
-                      className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
+                      className="motion-safe-transition size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
                       aria-hidden="true"
                     />
                   </Link>
@@ -164,11 +164,11 @@ export default function Home() {
                     <li key={product.id} className="border-border border-b">
                       <ScrollLink
                         href={product.destination}
-                        className="group flex min-h-14 items-center justify-between gap-4 py-2 text-sm font-medium"
+                        className="motion-safe-transition group -mx-3 flex min-h-14 items-center justify-between gap-4 rounded-md px-3 py-2 text-sm font-medium transition-[background-color,transform] hover:bg-white/70 focus-visible:bg-white/70 active:translate-y-px"
                       >
                         {product.name}
                         <ArrowRight
-                          className="size-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
+                          className="motion-safe-transition size-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none"
                           aria-hidden="true"
                         />
                       </ScrollLink>

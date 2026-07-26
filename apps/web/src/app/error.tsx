@@ -10,7 +10,10 @@ interface ErrorPageProps {
 
 export default function ErrorPage({ reset }: ErrorPageProps) {
   return (
-    <main className="section-space" id="main-content">
+    <main
+      className="section-space flex min-h-[calc(100svh-4.5rem)] items-center"
+      id="main-content"
+    >
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.16em]">
