@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "content:check": "tsc -p tsconfig.content.json && node .content-check/scripts/content-check.js",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"

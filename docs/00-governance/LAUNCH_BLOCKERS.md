@@ -17,8 +17,8 @@
 
 | ID    | Status | Blocker                             | Resolution evidence required                                                                                                | Related pull requests |
 | ----- | ------ | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| B-001 | Open   | Approved product photography        | Founder-approved original, official, or licensed product photography is present for every customer-facing product visual.   | PR #6, PR #7          |
-| B-002 | Open   | Repeated Screen Guard image         | The primary hero visual and carousel content use distinct approved assets; the same Screen Guard image is not repeated.     | PR #6, PR #7          |
+| B-001 | Open   | Approved product photography        | Founder-approved original, official, or licensed product photography is present for every customer-facing product visual.   | PR #6, PR #7, PR #8   |
+| B-002 | Open   | Repeated Screen Guard image         | The primary hero visual and carousel content use distinct approved assets; the same Screen Guard image is not repeated.     | PR #6, PR #7, PR #8   |
 | B-003 | Open   | Production domain and `SITE_URL`    | The production domain is confirmed and `SITE_URL` is configured in the deployed environment.                                | PR #6                 |
 | B-004 | Open   | Approved Open Graph image           | An approved Open Graph image is configured and renders correctly in production metadata previews.                           | PR #6                 |
 | B-005 | Open   | Deployed-environment verification   | The production deployment passes route, metadata, security-header, crawl-control, and error-state verification.             | PR #6                 |

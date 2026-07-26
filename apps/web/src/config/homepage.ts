@@ -1,4 +1,8 @@
-import { productMedia, type ProductMediaItem } from '@/config/product-media';
+import {
+  getProductMediaItems,
+  type ProductMediaItem,
+} from '@/config/product-media';
+import { getProduct } from '@/config/products';
 
 export interface FeaturedProduct extends ProductMediaItem {
   ownerRequestCount?: number;
@@ -22,16 +26,19 @@ export interface RoadmapItem {
   title: string;
 }
 
-export const featuredProducts: readonly FeaturedProduct[] = productMedia.map(
-  (product) => ({
-    ...product,
-    ...(product.id === 'rear-door-mud-guard'
-      ? { ownerRequestCount: 67 }
-      : product.id === 'parcel-tray'
-        ? { ownerRequestCount: 184 }
+export const featuredProducts: readonly FeaturedProduct[] =
+  getProductMediaItems('homepage-featured').map((product) => {
+    const ownerBuiltBadge = getProduct(product.id).badges.find(
+      (badge) => badge.id === 'owner-built',
+    );
+
+    return {
+      ...product,
+      ...(ownerBuiltBadge?.ownerRequestCount
+        ? { ownerRequestCount: ownerBuiltBadge.ownerRequestCount }
         : {}),
-  }),
-);
+    };
+  });
 
 export const knowledgeTopics: readonly KnowledgeTopic[] = [
   {
