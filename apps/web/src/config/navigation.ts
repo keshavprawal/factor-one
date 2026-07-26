@@ -1,4 +1,4 @@
-import { getProductAnchor, getProductHref } from './product-routes';
+import { getProductHref } from './product-routes';
 import { getProduct, type ProductId } from './products';
 
 export interface AvailableNavigationItem {
@@ -45,7 +45,6 @@ export interface NavigationSection {
   label: string;
 }
 
-export { getProductAnchor };
 export type { ProductId };
 
 const home: AvailableNavigationItem = {
