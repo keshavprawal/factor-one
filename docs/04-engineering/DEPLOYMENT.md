@@ -17,12 +17,28 @@ domain.
 No application secrets are currently required. `.env.example` lists every
 application-owned variable without credentials or production values.
 
+`SITE_URL` is the candidate canonical public origin. It is not the URL of the
+server currently handling a request. The deployment origin, canonical origin,
+and indexing state remain separate:
+
+- `getConfiguredSiteUrl()` parses the configured canonical candidate.
+- `isIndexingEnabled()` reads the independent launch switch.
+- `getCanonicalSiteUrl()` returns an origin only when indexing is enabled and
+  the candidate is safe for public canonical output.
+
+No current route needs an absolute runtime deployment origin. Internal links are
+relative, host redirects belong at the hosting layer, and the application does
+not yet create share or transactional links. A future runtime feature should
+derive and validate its request origin for that specific use case rather than
+reusing `SITE_URL` implicitly.
+
 Invalid values fail clearly during the Next.js build:
 
 - `SITE_INDEXING_ENABLED` accepts only `true` or `false`.
 - `SITE_URL`, when present, must be an HTTP(S) origin without credentials,
   query, fragment, or path.
 - An indexable build requires an HTTPS `SITE_URL`.
+- Localhost and loopback origins cannot be made publicly indexable.
 
 ## Crawl and Origin Policy
 
@@ -40,6 +56,9 @@ Invalid values fail clearly during the Next.js build:
   before indexing is enabled.
 - An Open Graph image remains intentionally absent until an approved asset is
   supplied.
+- Preview metadata behavior is verified through configuration tests and local
+  example-origin builds. Preview deployments never expose canonical output
+  merely because `SITE_URL` is present.
 
 ## Supported Hosting Requirements
 

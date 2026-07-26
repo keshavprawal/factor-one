@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { AppShell } from '@/components/layout/app-shell';
-import { getSiteUrl, siteConfig } from '@/config/site';
+import { getCanonicalSiteUrl, siteConfig } from '@/config/site';
 import './globals.css';
 
-const siteUrl = getSiteUrl();
+const canonicalSiteUrl = getCanonicalSiteUrl();
 
 export const metadata: Metadata = {
   title: {
@@ -12,21 +12,21 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  metadataBase: siteUrl ?? undefined,
-  alternates: siteUrl ? { canonical: '/' } : undefined,
+  metadataBase: canonicalSiteUrl ?? undefined,
+  alternates: canonicalSiteUrl ? { canonical: '/' } : undefined,
   openGraph: {
     description: siteConfig.description,
     siteName: siteConfig.name,
     title: siteConfig.name,
     type: 'website',
-    url: siteUrl ?? undefined,
+    url: canonicalSiteUrl ?? undefined,
   },
   twitter: {
     card: 'summary',
     description: siteConfig.description,
     title: siteConfig.name,
   },
-  robots: siteUrl
+  robots: canonicalSiteUrl
     ? { follow: true, index: true }
     : { follow: false, index: false },
 };
@@ -34,12 +34,12 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const websiteStructuredData = siteUrl
+  const websiteStructuredData = canonicalSiteUrl
     ? {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: siteConfig.name,
-        url: siteUrl.toString(),
+        url: canonicalSiteUrl.toString(),
       }
     : null;
 

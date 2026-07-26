@@ -8,7 +8,9 @@ interface DeploymentEnvironment {
   readonly [key: string]: string | undefined;
 }
 
-function readIndexingEnabled(environment: DeploymentEnvironment) {
+export function isIndexingEnabled(
+  environment: DeploymentEnvironment = process.env,
+) {
   const configuredValue = environment.SITE_INDEXING_ENABLED?.trim();
 
   if (!configuredValue || configuredValue === 'false') {
@@ -24,7 +26,9 @@ function readIndexingEnabled(environment: DeploymentEnvironment) {
   );
 }
 
-function readConfiguredSiteUrl(environment: DeploymentEnvironment) {
+export function getConfiguredSiteUrl(
+  environment: DeploymentEnvironment = process.env,
+) {
   const configuredUrl = environment.SITE_URL?.trim();
 
   if (!configuredUrl) {
@@ -45,16 +49,31 @@ function readConfiguredSiteUrl(environment: DeploymentEnvironment) {
     siteUrl.pathname !== '/'
   ) {
     throw new Error(
-      'SITE_URL must be an origin without credentials or a path.',
+      'SITE_URL must be an origin without credentials, a path, a query, or a fragment.',
     );
   }
 
   return siteUrl;
 }
 
-export function getSiteUrl(environment: DeploymentEnvironment = process.env) {
-  const indexingEnabled = readIndexingEnabled(environment);
-  const siteUrl = readConfiguredSiteUrl(environment);
+function isLocalOrigin(siteUrl: URL) {
+  const hostname = siteUrl.hostname.toLowerCase().replace(/\.$/, '');
+
+  return (
+    hostname === 'localhost' ||
+    hostname.endsWith('.localhost') ||
+    hostname === '0.0.0.0' ||
+    hostname === '::1' ||
+    hostname === '[::1]' ||
+    /^127(?:\.\d{1,3}){3}$/.test(hostname)
+  );
+}
+
+export function getCanonicalSiteUrl(
+  environment: DeploymentEnvironment = process.env,
+) {
+  const indexingEnabled = isIndexingEnabled(environment);
+  const siteUrl = getConfiguredSiteUrl(environment);
 
   if (!indexingEnabled) {
     return null;
@@ -69,6 +88,12 @@ export function getSiteUrl(environment: DeploymentEnvironment = process.env) {
   if (siteUrl.protocol !== 'https:') {
     throw new Error(
       'SITE_URL must use HTTPS when SITE_INDEXING_ENABLED is set to "true".',
+    );
+  }
+
+  if (isLocalOrigin(siteUrl)) {
+    throw new Error(
+      'SITE_URL cannot use localhost or a loopback origin when SITE_INDEXING_ENABLED is set to "true".',
     );
   }
 

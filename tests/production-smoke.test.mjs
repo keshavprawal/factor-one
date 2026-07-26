@@ -134,12 +134,14 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(robotsResponse.status, 200);
     assert.match(robots, /Disallow: \//);
+    assert.doesNotMatch(robots, /Sitemap:/);
 
     const sitemapResponse = await fetch(`${baseUrl}/sitemap.xml`);
     const sitemap = await sitemapResponse.text();
 
     assert.equal(sitemapResponse.status, 200);
-    assert.doesNotMatch(sitemap, /localhost|127\.0\.0\.1/);
+    assert.doesNotMatch(sitemap, /<loc>/);
+    assert.doesNotMatch(sitemap, /preview\.example\.com/);
   } finally {
     server.kill('SIGTERM');
     await new Promise((resolve) => {

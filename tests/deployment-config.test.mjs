@@ -3,24 +3,33 @@ import { createRequire } from 'node:module';
 import { test } from 'node:test';
 
 const require = createRequire(import.meta.url);
-const { getSiteUrl } = require('../apps/web/.content-check/src/config/site.js');
+const {
+  getCanonicalSiteUrl,
+  getConfiguredSiteUrl,
+  isIndexingEnabled,
+} = require('../apps/web/.content-check/src/config/site.js');
 const {
   onRequestError,
 } = require('../apps/web/.content-check/src/instrumentation.js');
 
 test('preview deployments remain non-indexable even when an origin is present', () => {
-  const siteUrl = getSiteUrl({
+  const environment = {
     SITE_INDEXING_ENABLED: 'false',
     SITE_URL: 'https://preview.example.com',
-  });
+  };
 
-  assert.equal(siteUrl, null);
+  assert.equal(isIndexingEnabled(environment), false);
+  assert.equal(
+    getConfiguredSiteUrl(environment)?.toString(),
+    'https://preview.example.com/',
+  );
+  assert.equal(getCanonicalSiteUrl(environment), null);
 });
 
 test('public indexing requires an approved HTTPS origin', () => {
   assert.throws(
     () =>
-      getSiteUrl({
+      getCanonicalSiteUrl({
         SITE_INDEXING_ENABLED: 'true',
         SITE_URL: undefined,
       }),
@@ -29,7 +38,7 @@ test('public indexing requires an approved HTTPS origin', () => {
 
   assert.throws(
     () =>
-      getSiteUrl({
+      getCanonicalSiteUrl({
         SITE_INDEXING_ENABLED: 'true',
         SITE_URL: 'http://example.com',
       }),
@@ -40,7 +49,7 @@ test('public indexing requires an approved HTTPS origin', () => {
 test('deployment configuration rejects ambiguous values', () => {
   assert.throws(
     () =>
-      getSiteUrl({
+      getCanonicalSiteUrl({
         SITE_INDEXING_ENABLED: 'yes',
         SITE_URL: 'https://example.com',
       }),
@@ -49,21 +58,62 @@ test('deployment configuration rejects ambiguous values', () => {
 
   assert.throws(
     () =>
-      getSiteUrl({
+      getConfiguredSiteUrl({
         SITE_INDEXING_ENABLED: 'false',
         SITE_URL: 'https://example.com/path',
       }),
     /must be an origin/,
   );
+
+  for (const siteUrl of [
+    'https://user:password@example.com',
+    'https://example.com?preview=true',
+    'https://example.com#preview',
+  ]) {
+    assert.throws(
+      () =>
+        getConfiguredSiteUrl({
+          SITE_INDEXING_ENABLED: 'false',
+          SITE_URL: siteUrl,
+        }),
+      /must be an origin/,
+    );
+  }
+});
+
+test('localhost and loopback origins cannot become publicly indexable', () => {
+  for (const siteUrl of [
+    'https://localhost',
+    'https://preview.localhost',
+    'https://127.0.0.1',
+    'https://0.0.0.0',
+    'https://[::1]',
+  ]) {
+    assert.throws(
+      () =>
+        getCanonicalSiteUrl({
+          SITE_INDEXING_ENABLED: 'true',
+          SITE_URL: siteUrl,
+        }),
+      /cannot use localhost or a loopback origin/,
+    );
+  }
 });
 
 test('approved indexing resolves the single canonical origin', () => {
-  const siteUrl = getSiteUrl({
+  const siteUrl = getCanonicalSiteUrl({
     SITE_INDEXING_ENABLED: 'true',
     SITE_URL: 'https://example.com',
   });
 
   assert.equal(siteUrl?.toString(), 'https://example.com/');
+
+  const siteUrlWithSlash = getCanonicalSiteUrl({
+    SITE_INDEXING_ENABLED: 'true',
+    SITE_URL: 'https://example.com/',
+  });
+
+  assert.equal(siteUrlWithSlash?.toString(), siteUrl?.toString());
 });
 
 test('server error events exclude sensitive request and error details', () => {
