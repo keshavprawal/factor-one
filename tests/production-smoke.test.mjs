@@ -148,6 +148,17 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(garage, /Your car, in one clear place/);
     assert.match(garage, /name="robots" content="noindex, nofollow"/);
 
+    const compatibilityResponse = await fetch(`${baseUrl}/compatibility`);
+    const compatibility = await compatibilityResponse.text();
+
+    assert.equal(compatibilityResponse.status, 200);
+    assert.match(compatibility, /Know what is listed for your car/);
+    assert.match(compatibility, /Verification pending/);
+    assert.match(compatibility, /href="\/garage"/);
+    assert.match(compatibility, /href="\/#product-screen-guard"/);
+    assert.match(compatibility, /name="robots" content="noindex, nofollow"/);
+    assert.doesNotMatch(compatibility, /rel="canonical"/);
+
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();
 
@@ -166,6 +177,7 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(sitemapResponse.status, 200);
     assert.doesNotMatch(sitemap, /<loc>/);
+    assert.doesNotMatch(sitemap, /compatibility/);
     assert.doesNotMatch(sitemap, /preview\.example\.com/);
   } finally {
     server.kill('SIGTERM');

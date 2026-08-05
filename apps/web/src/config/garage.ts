@@ -1,6 +1,7 @@
 import { getProductHref } from '@/config/product-routes';
 import {
   getPublicContentValue,
+  getVehicleCompatibility,
   products,
   vinfastVf7VehicleId,
   type ProductId,
@@ -39,9 +40,7 @@ const categoryLabels = {
 } as const;
 
 function getVf7Compatibility() {
-  const compatibility = products
-    .flatMap((product) => product.vehicleCompatibility)
-    .find((candidate) => candidate.vehicleId === vinfastVf7VehicleId);
+  const compatibility = getVehicleCompatibility(vinfastVf7VehicleId);
 
   if (!compatibility) {
     throw new Error(

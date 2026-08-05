@@ -12,6 +12,7 @@
   },
   "include": [
     "scripts/content-check.ts",
+    "src/config/compatibility.ts",
     "src/config/knowledge.ts",
     "src/config/navigation.ts",
     "src/config/product-media.ts",

@@ -375,3 +375,11 @@ export function getProduct(productId: ProductId): Product {
 
   return product;
 }
+
+export function getVehicleCompatibility(vehicleId: string) {
+  return (
+    products
+      .flatMap((product) => product.vehicleCompatibility)
+      .find((compatibility) => compatibility.vehicleId === vehicleId) ?? null
+  );
+}

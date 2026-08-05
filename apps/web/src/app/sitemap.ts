@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getCanonicalSiteUrl } from '@/config/site';
+import { getCanonicalSiteUrl, indexableSitePaths } from '@/config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const canonicalSiteUrl = getCanonicalSiteUrl();
@@ -8,9 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [];
   }
 
-  return [
-    { url: new URL('/', canonicalSiteUrl).toString() },
-    { url: new URL('/knowledge', canonicalSiteUrl).toString() },
-    { url: new URL('/vehicles/vf7', canonicalSiteUrl).toString() },
-  ];
+  return indexableSitePaths.map((path) => ({
+    url: new URL(path, canonicalSiteUrl).toString(),
+  }));
 }

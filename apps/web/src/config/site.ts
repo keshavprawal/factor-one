@@ -4,6 +4,13 @@ export const siteConfig = {
   name: 'Factor One',
 } as const;
 
+export const indexableSitePaths = [
+  '/',
+  '/compatibility',
+  '/knowledge',
+  '/vehicles/vf7',
+] as const;
+
 interface DeploymentEnvironment {
   readonly [key: string]: string | undefined;
 }
