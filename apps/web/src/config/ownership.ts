@@ -46,9 +46,10 @@ export const ownershipPolicies = [
     publicationStatus: 'approved',
     sections: [
       {
-        heading: '12-Month Limited Manufacturer Warranty',
+        heading: 'Product-specific warranty coverage',
         paragraphs: [
-          'Factor One provides a limited manufacturer warranty for 12 months from delivery. It covers manufacturing defects in materials or workmanship.',
+          'This policy applies to Factor One products whose product page, packaging or order documentation states that a limited manufacturer warranty is included. The applicable warranty duration is the duration stated for that product.',
+          'The VF7 Parcel Tray carries a 12-month limited manufacturer warranty from the date of delivery. It covers manufacturing defects in materials or workmanship.',
           'Where a covered issue is confirmed, Factor One may repair, replace or refund the product where appropriate.',
         ],
       },
@@ -455,7 +456,7 @@ export const ownershipPolicies = [
       {
         heading: 'Is there a warranty?',
         paragraphs: [
-          'The Limited Warranty Policy covers manufacturing defects in materials or workmanship for 12 months from delivery, subject to its terms and assessment process.',
+          'Warranty coverage is product-specific. The VF7 Parcel Tray carries a 12-month limited manufacturer warranty. Check the relevant product page or order documentation for the warranty applicable to another product.',
         ],
         links: [
           { href: ownershipPath('warranty'), label: 'Limited Warranty Policy' },

@@ -193,8 +193,28 @@ test('production routes, crawl controls and security headers are ready', async (
     const warranty = await warrantyResponse.text();
 
     assert.match(warranty, /Limited Warranty Policy/);
-    assert.match(warranty, /12 months from delivery/);
+    assert.match(
+      warranty,
+      /This policy applies to Factor One products whose product page, packaging or order documentation states that a limited manufacturer warranty is included\./,
+    );
+    assert.match(
+      warranty,
+      /The VF7 Parcel Tray carries a 12-month limited manufacturer warranty from the date of delivery\./,
+    );
+    assert.doesNotMatch(
+      warranty,
+      /Factor One provides a limited manufacturer warranty for 12 months from delivery\./,
+    );
     assert.match(warranty, /Accidental damage, misuse or excessive loading/);
+
+    const faqResponse = await fetch(`${baseUrl}/ownership/faq`);
+    const faq = await faqResponse.text();
+
+    assert.match(faq, /Warranty coverage is product-specific/);
+    assert.match(
+      faq,
+      /Check the relevant product page or order documentation for the warranty applicable to another product\./,
+    );
 
     const returnsResponse = await fetch(`${baseUrl}/ownership/returns`);
     const returns = await returnsResponse.text();

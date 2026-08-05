@@ -625,6 +625,42 @@ test('ownership policies are repository-driven and provisional policies stay non
   assert.deepEqual(validateOwnershipContent(ownershipPolicies), []);
 });
 
+test('warranty policy and FAQ describe product-specific coverage', () => {
+  const warranty = getOwnershipPolicy('warranty');
+  const faq = getOwnershipPolicy('faq');
+
+  assert.ok(warranty);
+  assert.ok(faq);
+
+  const warrantyText = JSON.stringify(warranty);
+  const faqText = JSON.stringify(faq);
+
+  assert.match(
+    warrantyText,
+    /This policy applies to Factor One products whose product page, packaging or order documentation states that a limited manufacturer warranty is included\./,
+  );
+  assert.match(
+    warrantyText,
+    /The applicable warranty duration is the duration stated for that product\./,
+  );
+  assert.match(
+    warrantyText,
+    /The VF7 Parcel Tray carries a 12-month limited manufacturer warranty from the date of delivery\./,
+  );
+  assert.doesNotMatch(
+    warrantyText,
+    /Factor One provides a limited manufacturer warranty for 12 months from delivery\./,
+  );
+  assert.match(
+    faqText,
+    /Warranty coverage is product-specific\. The VF7 Parcel Tray carries a 12-month limited manufacturer warranty\./,
+  );
+  assert.match(
+    faqText,
+    /Check the relevant product page or order documentation for the warranty applicable to another product\./,
+  );
+});
+
 test('ownership navigation stays centralized across the header and footer', () => {
   assert.deepEqual(ownershipNavigation, {
     href: '/ownership',
