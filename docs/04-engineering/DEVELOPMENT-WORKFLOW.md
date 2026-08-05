@@ -9,7 +9,7 @@
 
 ```bash
 corepack enable
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
@@ -31,9 +31,14 @@ controls, error response, and security headers.
 
 ## Production configuration
 
-Set `SITE_URL` to the verified HTTPS production origin before deployment. This
-enables canonical URLs, the public sitemap, and search-engine indexing. Builds
-without `SITE_URL` remain intentionally excluded from indexing.
+Preview and local builds remain non-indexable by default. Leave
+`SITE_INDEXING_ENABLED` unset or set it to `false`.
+
+For public launch, set `SITE_URL` to the verified HTTPS canonical origin and set
+`SITE_INDEXING_ENABLED=true`. Enabling indexing without a valid HTTPS
+`SITE_URL` fails the build. See
+[`DEPLOYMENT.md`](DEPLOYMENT.md) and the
+[production deployment checklist](../00-governance/PRODUCTION_DEPLOYMENT_CHECKLIST.md).
 
 ## Branch and pull-request workflow
 

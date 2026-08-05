@@ -1,16 +1,16 @@
 import type { MetadataRoute } from 'next';
-import { getSiteUrl } from '@/config/site';
+import { getCanonicalSiteUrl } from '@/config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = getSiteUrl();
+  const canonicalSiteUrl = getCanonicalSiteUrl();
 
-  if (!siteUrl) {
+  if (!canonicalSiteUrl) {
     return [];
   }
 
   return [
-    { url: new URL('/', siteUrl).toString() },
-    { url: new URL('/knowledge', siteUrl).toString() },
-    { url: new URL('/vehicles/vf7', siteUrl).toString() },
+    { url: new URL('/', canonicalSiteUrl).toString() },
+    { url: new URL('/knowledge', canonicalSiteUrl).toString() },
+    { url: new URL('/vehicles/vf7', canonicalSiteUrl).toString() },
   ];
 }
