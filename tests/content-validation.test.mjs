@@ -23,6 +23,7 @@ const {
   searchKnowledgeArticles,
 } = require('../apps/web/.content-check/src/config/knowledge.js');
 const {
+  getProductDetailMediaItem,
   getProductMediaItem,
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
@@ -75,7 +76,12 @@ const {
 } = require('../apps/web/.content-check/src/features/garage/garage-state.js');
 
 const localMediaExists = (sourcePath) =>
-  sourcePath === '/images/essentials/screen-protector.jpg';
+  [
+    '/images/essentials/screen-protector.jpg',
+    '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
+    '/images/products/parcel-tray/parcel-tray-temporary-lifestyle.png',
+    '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
+  ].includes(sourcePath);
 
 test('draft content is structurally valid and exposes launch warnings', () => {
   const issues = validateProductContent(products, productMediaManifest, {
@@ -267,22 +273,66 @@ test('product warranty summaries require approved canonical content', () => {
   assert.equal(getProductWarrantySummary(draftProduct), null);
 });
 
-test('Parcel Tray can project an approved 12-month warranty when its record is approved', () => {
-  const parcelTray = structuredClone(
-    products.find((product) => product.id === 'parcel-tray'),
-  );
-  parcelTray.warranty = {
-    status: 'approved',
-    value: {
-      durationMonths: 12,
-      summary: 'Covered against approved manufacturing defects.',
-    },
-  };
+test('Parcel Tray projects its approved 12-month warranty without affecting other products', () => {
+  const parcelTray = products.find((product) => product.id === 'parcel-tray');
 
+  assert.ok(parcelTray);
+  assert.deepEqual(getProductWarrantySummary(parcelTray), {
+    heading: '12-Month Limited Manufacturer Warranty',
+    summary:
+      'Covered against manufacturing defects in materials or workmanship for 12 months from delivery.',
+  });
+  assert.equal(getProductWarrantySummary(products[0]), null);
+});
+
+test('the VF7 Parcel Tray uses approved canonical content and verified compatibility', () => {
+  const parcelTray = products.find((product) => product.id === 'parcel-tray');
+
+  assert.ok(parcelTray);
+  assert.equal(parcelTray.name, 'VF7 Parcel Tray');
+  assert.equal(parcelTray.internalCode, 'FO-VF7-PT-001');
+  assert.equal(parcelTray.category, 'cargo-storage');
+  assert.deepEqual(getPublicContentValue(parcelTray.price), {
+    amountMinor: 299900,
+    currency: 'INR',
+  });
+  assert.deepEqual(getPublicContentValue(parcelTray.launchDate), {
+    date: '2026-08-15',
+    label: '15 August 2026',
+  });
+  assert.equal(parcelTray.availability.purchasable, false);
   assert.equal(
-    getProductWarrantySummary(parcelTray)?.heading,
-    '12-Month Limited Manufacturer Warranty',
+    parcelTray.vehicleCompatibility[0]?.verificationStatus,
+    'verified',
   );
+  assert.equal(parcelTray.vehicleCompatibility[0]?.yearStart, 2025);
+  assert.deepEqual(parcelTray.vehicleCompatibility[0]?.variants, [
+    'Earth',
+    'Wind',
+    'Wind Infinity',
+    'Sky',
+    'Sky Infinity',
+  ]);
+  assert.equal(parcelTray.vehicleCompatibility[0]?.evidence?.length, 5);
+  assert.equal('dimensions' in parcelTray, false);
+
+  const publicContent = JSON.stringify(getProductPageContent(parcelTray));
+  for (const prohibitedClaim of [
+    'noise dampening',
+    'acoustic',
+    'load capacity',
+    'impact resistance',
+    'UV resistance',
+    'security',
+    'perfect fit',
+    'OEM mounting',
+    'laser scanned',
+  ]) {
+    assert.doesNotMatch(
+      publicContent.toLowerCase(),
+      new RegExp(prohibitedClaim),
+    );
+  }
 });
 
 test('product pages use only approved media and remain non-indexable until launch-ready', () => {
@@ -300,6 +350,71 @@ test('product pages use only approved media and remain non-indexable until launc
   assert.equal(
     getProductStructuredData(products[0], new URL('https://example.com')),
     null,
+  );
+});
+
+test('Parcel Tray media uses approved temporary visuals and disclosed prototype evidence', () => {
+  const parcelTrayDetail = getProductDetailMediaItem('parcel-tray');
+  const parcelTrayEvidence = productMediaManifest.filter(
+    (media) => media.productId === 'parcel-tray' && media.evidenceOnly === true,
+  );
+
+  assert.equal(parcelTrayDetail.mediaId, 'parcel-tray-temporary-hero');
+  assert.equal(parcelTrayDetail.disclosure, 'Representative visualisation');
+  assert.equal(
+    parcelTrayDetail.desktopImage,
+    '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
+  );
+  assert.deepEqual(
+    parcelTrayEvidence.map((media) => media.lifecycleStatus),
+    ['temporary'],
+  );
+  assert.equal(parcelTrayEvidence[0]?.id, 'parcel-tray-prototype-installed');
+  assert.equal(
+    parcelTrayEvidence[0]?.sourcePath,
+    '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
+  );
+  assert.equal(
+    parcelTrayEvidence[0]?.caption,
+    'Prototype installed during product development.',
+  );
+  assert.equal(
+    parcelTrayEvidence[0]?.disclosure,
+    'Development evidence · Prototype photography',
+  );
+  assert.equal(
+    getApprovedProductMedia('parcel-tray', 'product-gallery').length,
+    2,
+  );
+  assert.equal(
+    getApprovedProductMedia('parcel-tray', 'product-gallery').some(
+      (media) => media.id === 'parcel-tray-temporary-lifestyle',
+    ),
+    true,
+  );
+  assert.equal(
+    productMediaManifest.some((media) => media.id.includes('infographic')),
+    false,
+  );
+  assert.equal(
+    getProductPageContent(
+      products.find((product) => product.id === 'parcel-tray'),
+    ).careInstructions,
+    'Clean using a soft, damp cloth. Use a mild automotive interior cleaner only when required. Avoid abrasive pads, harsh chemicals and strong solvents. Dry before reinstalling, and inspect the support strings periodically for wear or damage.',
+  );
+  assert.equal(
+    parcelTrayEvidence.some(
+      (media) => media.rightsStatus === 'user-confirmed-commercial-use',
+    ),
+    false,
+  );
+  assert.equal(
+    productMediaManifest.some(
+      (media) =>
+        media.id === 'parcel-tray-temporary-hero' &&
+        media.rightsStatus === 'user-confirmed-commercial-use',
+    ),
+    true,
   );
 });
 
@@ -396,7 +511,13 @@ test('compatibility results derive every product from the canonical registry', (
     products.map((product) => product.id),
   );
   assert.equal(
-    compatibilityVehicles[0].products.every(
+    compatibilityVehicles[0].products.find(
+      (product) => product.id === 'parcel-tray',
+    )?.status,
+    'verified',
+  );
+  assert.equal(
+    compatibilityVehicles[0].products.some(
       (product) => product.status === 'pending',
     ),
     true,
@@ -544,9 +665,50 @@ test('ownership policies are repository-driven and provisional policies stay non
   assert.equal(isOwnershipPolicyIndexable(privacy), false);
   assert.deepEqual(getIndexableOwnershipPolicyPaths(), [
     '/ownership/warranty',
+    '/ownership/returns',
+    '/ownership/cancellation',
+    '/ownership/shipping',
     '/ownership/installation',
+    '/ownership/contact',
+    '/ownership/faq',
   ]);
   assert.deepEqual(validateOwnershipContent(ownershipPolicies), []);
+});
+
+test('warranty policy and FAQ describe product-specific coverage', () => {
+  const warranty = getOwnershipPolicy('warranty');
+  const faq = getOwnershipPolicy('faq');
+
+  assert.ok(warranty);
+  assert.ok(faq);
+
+  const warrantyText = JSON.stringify(warranty);
+  const faqText = JSON.stringify(faq);
+
+  assert.match(
+    warrantyText,
+    /This policy applies to Factor One products whose product page, packaging or order documentation states that a limited manufacturer warranty is included\./,
+  );
+  assert.match(
+    warrantyText,
+    /The applicable warranty duration is the duration stated for that product\./,
+  );
+  assert.match(
+    warrantyText,
+    /The VF7 Parcel Tray carries a 12-month limited manufacturer warranty from the date of delivery\./,
+  );
+  assert.doesNotMatch(
+    warrantyText,
+    /Factor One provides a limited manufacturer warranty for 12 months from delivery\./,
+  );
+  assert.match(
+    faqText,
+    /Warranty coverage is product-specific\. The VF7 Parcel Tray carries a 12-month limited manufacturer warranty\./,
+  );
+  assert.match(
+    faqText,
+    /Check the relevant product page or order documentation for the warranty applicable to another product\./,
+  );
 });
 
 test('ownership navigation stays centralized across the header and footer', () => {
@@ -568,11 +730,13 @@ test('ownership navigation stays centralized across the header and footer', () =
       '/ownership',
       '/ownership/warranty',
       '/ownership/returns',
+      '/ownership/cancellation',
       '/ownership/shipping',
       '/ownership/installation',
       '/ownership/contact',
       '/ownership/privacy',
       '/ownership/terms',
+      '/ownership/faq',
     ],
   );
 });

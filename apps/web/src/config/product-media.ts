@@ -19,7 +19,8 @@ export type ProductMediaRightsStatus =
   | 'unknown'
   | 'owned'
   | 'official'
-  | 'licensed';
+  | 'licensed'
+  | 'user-confirmed-commercial-use';
 
 export type ProductMediaApprovalStatus = 'pending' | 'approved' | 'rejected';
 
@@ -29,7 +30,10 @@ export interface ProductMediaAsset {
   altText: string;
   approvalStatus: ProductMediaApprovalStatus;
   aspectRatio: '1:1' | '4:3' | '16:9';
+  caption?: string;
   credit: string | null;
+  disclosure?: string;
+  evidenceOnly?: boolean;
   focalPoint: string;
   id: string;
   intendedPlacement: ProductMediaPlacement;
@@ -238,6 +242,61 @@ export const productMediaManifest = [
     focalPoint: 'center',
   },
   {
+    id: 'parcel-tray-temporary-hero',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-detail',
+    viewport: 'all',
+    sourcePath: '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
+    aspectRatio: '1:1',
+    altText:
+      'Representative visualisation of the Factor One VF7 Parcel Tray inside a vehicle luggage compartment.',
+    sourceName: 'Gemini-generated visualisation',
+    credit: 'Factor One',
+    disclosure: 'Representative visualisation',
+    rightsStatus: 'user-confirmed-commercial-use',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-temporary-lifestyle',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-gallery',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/parcel-tray-temporary-lifestyle.png',
+    aspectRatio: '1:1',
+    altText:
+      'Representative lifestyle visualisation showing a parcel tray in use inside a vehicle luggage compartment.',
+    sourceName: 'Gemini-generated visualisation',
+    credit: 'Factor One',
+    disclosure: 'Representative visualisation',
+    rightsStatus: 'user-confirmed-commercial-use',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-installed',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-gallery',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
+    aspectRatio: '4:3',
+    altText:
+      'Prototype parcel tray installed in a VinFast VF7 during product development.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype installed during product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
     id: 'door-visor-homepage-hero',
     productId: 'door-visor',
     intendedPlacement: 'homepage-hero',
@@ -277,6 +336,8 @@ export interface ProductMediaItem {
   availabilityState: ProductStatus;
   desktopImage?: string;
   destination: string;
+  disclosure?: string;
+  evidenceOnly?: boolean;
   focalPoint: string;
   fallbackVisual: ProductMediaFallbackVisual;
   id: ProductId;
@@ -285,6 +346,7 @@ export interface ProductMediaItem {
   mobileImage?: string;
   name: string;
   purpose?: string;
+  caption?: string;
 }
 
 export function getProductMediaAssets(
@@ -335,6 +397,15 @@ export function getProductMediaItem(
     id: product.id,
     mediaId: representativeMedia.id,
     name: product.name,
+    ...(representativeMedia.caption
+      ? { caption: representativeMedia.caption }
+      : {}),
+    ...(representativeMedia.disclosure
+      ? { disclosure: representativeMedia.disclosure }
+      : {}),
+    ...(representativeMedia.evidenceOnly
+      ? { evidenceOnly: representativeMedia.evidenceOnly }
+      : {}),
     ...(purpose ? { purpose } : {}),
     desktopImage: desktopMedia?.sourcePath ?? undefined,
     mobileImage: mobileMedia?.sourcePath ?? undefined,
@@ -384,6 +455,13 @@ export function getProductDetailMediaItem(
     id: product.id,
     mediaId: desktopMedia?.id ?? `product-${product.id}-fallback`,
     name: product.name,
+    ...(desktopMedia?.caption ? { caption: desktopMedia.caption } : {}),
+    ...(desktopMedia?.disclosure
+      ? { disclosure: desktopMedia.disclosure }
+      : {}),
+    ...(desktopMedia?.evidenceOnly
+      ? { evidenceOnly: desktopMedia.evidenceOnly }
+      : {}),
     altText: hasApprovedDetailMedia
       ? desktopMedia!.altText
       : `${product.name} photography pending`,

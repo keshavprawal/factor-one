@@ -160,6 +160,20 @@ export function ProductDetailSections({
                   className="object-cover"
                   style={{ objectPosition: media.focalPoint }}
                 />
+                {media.disclosure || media.caption ? (
+                  <figcaption className="bg-charcoal/85 text-charcoal-foreground absolute inset-x-0 bottom-0 px-4 py-3 text-xs leading-5 backdrop-blur-sm">
+                    {media.disclosure ? (
+                      <span className="block font-medium">
+                        {media.disclosure}
+                      </span>
+                    ) : null}
+                    {media.caption ? (
+                      <span className="text-charcoal-foreground/75 block">
+                        {media.caption}
+                      </span>
+                    ) : null}
+                  </figcaption>
+                ) : null}
               </figure>
             ))}
           </Grid>

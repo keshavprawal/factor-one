@@ -20,6 +20,7 @@ export interface ProductPageContent {
   installationDifficulty: Product['installationDifficulty']['value'] | null;
   installationMethod: string | null;
   keyBenefits: readonly string[] | null;
+  launchDate: Product['launchDate']['value'] | null;
   materials: readonly string[] | null;
   price: Product['price']['value'] | null;
   problemSolved: string | null;
@@ -72,6 +73,7 @@ export function getProductPageContent(product: Product): ProductPageContent {
     ),
     installationMethod: getPublicContentValue(product.installationMethod),
     keyBenefits: getPublicContentValue(product.keyBenefits),
+    launchDate: getPublicContentValue(product.launchDate),
     materials: getPublicContentValue(product.materials),
     price: getPublicContentValue(product.price),
     problemSolved: getPublicContentValue(product.problemSolved),
@@ -164,9 +166,12 @@ export function getIndexableProductPaths() {
 
 export function getProductCompatibilitySummary(product: Product) {
   return product.vehicleCompatibility.map((compatibility) => ({
-    label: `${compatibility.make} ${compatibility.model}`,
+    label: `${compatibility.make} ${compatibility.model}${
+      compatibility.yearStart ? ` (${compatibility.yearStart} onwards)` : ''
+    }`,
     status: getProductCompatibilityStatus(product, compatibility.vehicleId),
     vehicleId: compatibility.vehicleId,
+    variants: compatibility.variants,
     years: compatibility.years,
   }));
 }

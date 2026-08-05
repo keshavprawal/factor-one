@@ -125,11 +125,14 @@ export function ProductMediaVisual({
         <div>
           <p className="text-sm font-medium">{media.name}</p>
           <p className="text-charcoal-foreground/70 mt-1 text-[0.65rem] uppercase tracking-[0.12em]">
-            {!hasConfiguredMedia || hasFailed || media.mediaStatus === 'missing'
-              ? 'Photography pending'
-              : media.mediaStatus === 'approved'
-                ? 'Product photography'
-                : 'Provisional photography'}
+            {media.disclosure ??
+              (!hasConfiguredMedia ||
+              hasFailed ||
+              media.mediaStatus === 'missing'
+                ? 'Photography pending'
+                : media.mediaStatus === 'approved'
+                  ? 'Product photography'
+                  : 'Provisional photography')}
           </p>
         </div>
         <span

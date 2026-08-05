@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { OwnershipPolicy } from '@/config/ownership';
 
 export function OwnershipPolicySections({
@@ -28,6 +29,20 @@ export function OwnershipPolicySections({
                 <ul className="list-disc space-y-3 pl-5">
                   {section.items.map((item) => (
                     <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              ) : null}
+              {section.links?.length ? (
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 pt-1 text-sm font-medium">
+                  {section.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               ) : null}

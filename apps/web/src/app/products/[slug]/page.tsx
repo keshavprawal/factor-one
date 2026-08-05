@@ -65,10 +65,12 @@ export async function generateMetadata({
   const isIndexable =
     isProductPageIndexable(product) && Boolean(canonicalSiteUrl);
   const seo = product.seo.status === 'approved' ? product.seo.value : null;
+  const openGraphTitle = seo?.openGraphTitle ?? seo?.title;
+  const openGraphDescription = seo?.openGraphDescription ?? seo?.description;
   const canonicalPath = getProductCanonicalPath(product);
 
   return {
-    title: seo?.title ?? product.name,
+    title: seo ? { absolute: seo.title } : product.name,
     ...(seo ? { description: seo.description } : {}),
     alternates: isIndexable
       ? { canonical: canonicalPath }
@@ -76,9 +78,9 @@ export async function generateMetadata({
     openGraph:
       isIndexable && seo
         ? {
-            description: seo.description,
+            description: openGraphDescription,
             siteName: siteConfig.name,
-            title: seo.title,
+            title: openGraphTitle,
             type: 'website',
             url: canonicalPath,
           }
@@ -90,8 +92,8 @@ export async function generateMetadata({
       isIndexable && seo
         ? {
             card: 'summary',
-            description: seo.description,
-            title: seo.title,
+            description: openGraphDescription,
+            title: openGraphTitle,
           }
         : null,
   };
@@ -175,6 +177,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               ) : null}
 
+              {content.launchDate ? (
+                <p className="text-muted-foreground mt-3 text-sm leading-6">
+                  Launch date: {content.launchDate.label}
+                </p>
+              ) : null}
+
               {!product.availability.purchasable ? (
                 <p className="text-muted-foreground mt-6 text-base leading-7">
                   This product is not currently available to purchase.
@@ -189,7 +197,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       key={item.vehicleId}
                       className="flex flex-wrap items-center justify-between gap-3 text-sm"
                     >
-                      <span>{item.label}</span>
+                      <span>
+                        <span className="block">{item.label}</span>
+                        {item.variants?.length ? (
+                          <span className="text-muted-foreground mt-1 block text-xs leading-5">
+                            Variants: {item.variants.join(', ')}
+                          </span>
+                        ) : null}
+                      </span>
                       <span className="text-muted-foreground inline-flex items-center gap-2">
                         <span
                           className="bg-factor-red size-1.5 rounded-full"

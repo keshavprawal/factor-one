@@ -37,6 +37,7 @@ const categoryLabels = {
   interior: 'Interior',
   protection: 'Protection',
   storage: 'Storage',
+  'cargo-storage': 'Cargo & Storage',
 } as const;
 
 function getVf7Compatibility() {

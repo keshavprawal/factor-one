@@ -9,7 +9,8 @@ export type ProductCategory =
   | 'interior'
   | 'exterior'
   | 'protection'
-  | 'storage';
+  | 'storage'
+  | 'cargo-storage';
 
 export type ProductStatus =
   | 'direction'
@@ -30,10 +31,13 @@ export interface ContentField<T> {
 }
 
 export interface VehicleCompatibility {
+  evidence: readonly string[] | null;
   make: string;
   model: string;
   vehicleId: string;
   verificationStatus: 'pending' | 'verified';
+  variants: readonly string[] | null;
+  yearStart: number | null;
   years: readonly number[] | null;
 }
 
@@ -64,6 +68,11 @@ export interface ProductWarranty {
   summary: string;
 }
 
+export interface ProductLaunchDate {
+  date: string;
+  label: string;
+}
+
 export interface ProductPrice {
   amountMinor: number;
   currency: string;
@@ -86,6 +95,8 @@ export interface ProductAvailability {
 
 export interface ProductSeoMetadata {
   description: string;
+  openGraphDescription?: string;
+  openGraphTitle?: string;
   title: string;
 }
 
@@ -99,9 +110,11 @@ export interface Product {
   honestLimitations: ContentField<readonly string[]>;
   id: ProductId;
   includedItems: ContentField<readonly string[]>;
+  internalCode: string | null;
   installationDifficulty: ContentField<InstallationDifficulty>;
   installationMethod: ContentField<string>;
   keyBenefits: ContentField<readonly string[]>;
+  launchDate: ContentField<ProductLaunchDate>;
   launchScope: ProductLaunchScope;
   materials: ContentField<readonly string[]>;
   media: readonly string[];
@@ -127,6 +140,10 @@ function draft<T>(value: T): ContentField<T> {
   return { status: 'draft', value };
 }
 
+function approved<T>(value: T): ContentField<T> {
+  return { status: 'approved', value };
+}
+
 export function getPublicContentValue<T>(field: ContentField<T>): T | null {
   return field.status === 'approved' ? field.value : null;
 }
@@ -137,7 +154,10 @@ const vf7Compatibility = [
     model: 'VF7',
     vehicleId: vinfastVf7VehicleId,
     verificationStatus: 'pending',
+    variants: null,
+    yearStart: null,
     years: null,
+    evidence: null,
   },
 ] as const satisfies readonly VehicleCompatibility[];
 
@@ -146,6 +166,7 @@ export const products = [
     id: 'screen-guard',
     slug: 'screen-guard',
     name: 'Screen Guard',
+    internalCode: null,
     vehicleCompatibility: vf7Compatibility,
     category: 'interior',
     status: 'direction',
@@ -158,6 +179,7 @@ export const products = [
       'Helps protect the display without getting in the way of everyday use.',
     ),
     keyBenefits: pending(),
+    launchDate: pending(),
     specifications: pending(),
     materials: pending(),
     variants: pending(),
@@ -188,6 +210,7 @@ export const products = [
     id: 'rear-door-mud-guard',
     slug: 'rear-door-mud-guard',
     name: 'Rear Door Mud Guard',
+    internalCode: null,
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'testing',
@@ -200,6 +223,7 @@ export const products = [
       'Made to address the spray and grime owners notice around the rear doors.',
     ),
     keyBenefits: pending(),
+    launchDate: pending(),
     specifications: pending(),
     materials: pending(),
     variants: pending(),
@@ -238,6 +262,7 @@ export const products = [
     id: 'bumper-mud-guard',
     slug: 'bumper-mud-guard',
     name: 'Bumper Mud Guard',
+    internalCode: null,
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'direction',
@@ -250,6 +275,7 @@ export const products = [
       'A practical layer of protection for an exposed part of the car.',
     ),
     keyBenefits: pending(),
+    launchDate: pending(),
     specifications: pending(),
     materials: pending(),
     variants: pending(),
@@ -279,35 +305,81 @@ export const products = [
   {
     id: 'parcel-tray',
     slug: 'parcel-tray',
-    name: 'Parcel Tray',
-    vehicleCompatibility: vf7Compatibility,
-    category: 'storage',
-    status: 'design',
+    name: 'VF7 Parcel Tray',
+    internalCode: 'FO-VF7-PT-001',
+    vehicleCompatibility: [
+      {
+        make: 'VinFast',
+        model: 'VF7',
+        vehicleId: vinfastVf7VehicleId,
+        verificationStatus: 'verified',
+        variants: ['Earth', 'Wind', 'Wind Infinity', 'Sky', 'Sky Infinity'],
+        yearStart: 2025,
+        years: null,
+        evidence: [
+          'Full vehicle scanning and modelling during development.',
+          'CAD design.',
+          'Fitted wooden prototype.',
+          'Manufacturer fit confirmation.',
+          'Manufacturer dynamic testing.',
+        ],
+      },
+    ],
+    category: 'cargo-storage',
+    status: 'testing',
     launchScope: 'v1',
-    shortDescription: draft(
-      'A cargo-area solution shaped around the gap owners asked us to solve.',
+    shortDescription: approved(
+      'Vehicle-specific rear-seat coverage for the VinFast VF7 cargo area.',
     ),
-    fullDescription: pending(),
-    problemSolved: draft(
-      'Designed to close the open cargo-area gap owners asked Factor One to solve.',
+    fullDescription: approved(
+      'Designed for the VinFast VF7, the Parcel Tray extends coverage behind the rear seats while keeping daily cargo access straightforward. It can be removed and reinstalled without additional mounting hardware or vehicle modification.',
     ),
-    keyBenefits: pending(),
-    specifications: pending(),
-    materials: pending(),
+    problemSolved: approved(
+      'The open gap behind the rear seats leaves part of the cargo area uncovered. The VF7 Parcel Tray adds extended coverage there while retaining tailgate and rear-seat operation.',
+    ),
+    keyBenefits: approved([
+      'Extended coverage behind the rear seats.',
+      'Correct edge alignment around the cargo area.',
+      'Tailgate movement without interference.',
+      'Rear-seat folding and reclining without interference.',
+      'Stable and rattle-free behaviour during manufacturer dynamic testing.',
+      'Straightforward removal and reinstallation.',
+    ]),
+    specifications: approved([
+      { label: 'Material', value: 'ABS plastic', unit: null },
+      { label: 'Colour', value: 'Black', unit: null },
+      { label: 'Finish', value: 'Rough textured', unit: null },
+      { label: 'Weight', value: '900', unit: 'g' },
+      { label: 'Fit type', value: 'Vehicle-specific fit', unit: null },
+      {
+        label: 'Additional mounting hardware',
+        value: 'None required',
+        unit: null,
+      },
+      { label: 'Vehicle modification', value: 'None required', unit: null },
+    ]),
+    materials: approved(['ABS plastic', 'Black rough textured finish']),
     variants: pending(),
-    includedItems: pending(),
-    installationMethod: pending(),
+    includedItems: approved(['Parcel tray', 'Two support strings']),
+    installationMethod: approved('Self-installation'),
     installationDifficulty: pending(),
     estimatedInstallationTime: pending(),
-    careInstructions: pending(),
-    warranty: pending(),
+    careInstructions: approved(
+      'Clean using a soft, damp cloth. Use a mild automotive interior cleaner only when required. Avoid abrasive pads, harsh chemicals and strong solvents. Dry before reinstalling, and inspect the support strings periodically for wear or damage.',
+    ),
+    warranty: approved({
+      durationMonths: 12,
+      summary:
+        'Covered against manufacturing defects in materials or workmanship for 12 months from delivery.',
+    }),
     honestLimitations: pending(),
-    price: pending(),
+    price: approved({ amountMinor: 299900, currency: 'INR' }),
+    launchDate: approved({ date: '2026-08-15', label: '15 August 2026' }),
     availability: {
       approvalStatus: 'approved',
-      state: 'unavailable',
+      state: 'coming-soon',
       purchasable: false,
-      label: 'In design',
+      label: 'Launching 15 August 2026',
     },
     badges: [
       {
@@ -322,14 +394,25 @@ export const products = [
       'parcel-tray-homepage-hero',
       'parcel-tray-homepage-featured',
       'parcel-tray-vf7-featured',
+      'parcel-tray-temporary-hero',
+      'parcel-tray-temporary-lifestyle',
+      'parcel-tray-prototype-installed',
     ],
-    seo: pending(),
+    seo: approved({
+      title: 'VF7 Parcel Tray with Extended Rear Coverage | Factor One',
+      description:
+        'Vehicle-specific parcel tray for the VinFast VF7 with extended coverage behind the rear seats, removable construction and a clean integrated appearance.',
+      openGraphTitle: 'Factor One VF7 Parcel Tray',
+      openGraphDescription:
+        'Designed for the VinFast VF7 with extended rear-seat coverage, self-installation and a removable vehicle-specific design.',
+    }),
     relatedProductIds: [],
   },
   {
     id: 'door-visor',
     slug: 'door-visor',
     name: 'Door Visor',
+    internalCode: null,
     vehicleCompatibility: vf7Compatibility,
     category: 'exterior',
     status: 'direction',
@@ -342,6 +425,7 @@ export const products = [
       'A considered exterior addition for ventilation in everyday conditions.',
     ),
     keyBenefits: pending(),
+    launchDate: pending(),
     specifications: pending(),
     materials: pending(),
     variants: pending(),
@@ -376,9 +460,13 @@ export function getProduct(productId: ProductId): Product {
   return product;
 }
 
-export function getVehicleCompatibility(vehicleId: string) {
+export function getVehicleCompatibility(
+  vehicleId: string,
+): VehicleCompatibility | null {
+  const productRegistry: readonly Product[] = products;
+
   return (
-    products
+    productRegistry
       .flatMap((product) => product.vehicleCompatibility)
       .find((compatibility) => compatibility.vehicleId === vehicleId) ?? null
   );
