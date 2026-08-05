@@ -126,7 +126,7 @@ function draft<T>(value: T): ContentField<T> {
 }
 
 export function getPublicContentValue<T>(field: ContentField<T>): T | null {
-  return field.status === 'pending' ? null : field.value;
+  return field.status === 'approved' ? field.value : null;
 }
 
 const vf7Compatibility = [

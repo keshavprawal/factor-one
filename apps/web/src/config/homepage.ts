@@ -29,7 +29,8 @@ export interface RoadmapItem {
 export const featuredProducts: readonly FeaturedProduct[] =
   getProductMediaItems('homepage-featured').map((product) => {
     const ownerBuiltBadge = getProduct(product.id).badges.find(
-      (badge) => badge.id === 'owner-built',
+      (badge) =>
+        badge.id === 'owner-built' && badge.approvalStatus === 'approved',
     );
 
     return {

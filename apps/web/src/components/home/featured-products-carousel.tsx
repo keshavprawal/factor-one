@@ -127,9 +127,11 @@ export function FeaturedProductsCarousel({
             <div className="p-6 sm:p-8">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
-                    {product.availability}
-                  </p>
+                  {product.availability ? (
+                    <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
+                      {product.availability}
+                    </p>
+                  ) : null}
                   <h3 className="mt-3 text-3xl font-medium tracking-[-0.045em]">
                     {product.name}
                   </h3>
@@ -138,9 +140,11 @@ export function FeaturedProductsCarousel({
                   <OwnerBuiltBadge count={product.ownerRequestCount} />
                 ) : null}
               </div>
-              <p className="text-muted-foreground mt-5 max-w-lg text-base leading-7">
-                {product.purpose}
-              </p>
+              {product.purpose ? (
+                <p className="text-muted-foreground mt-5 max-w-lg text-base leading-7">
+                  {product.purpose}
+                </p>
+              ) : null}
             </div>
           </article>
         ))}

@@ -20,13 +20,9 @@ export const vf7FeaturedProducts = vf7FeaturedProductIds.map((productId) => {
 
   const description = getPublicContentValue(product.shortDescription);
 
-  if (!description) {
-    throw new Error(`Missing VF7 card description for ${product.id}.`);
-  }
-
   return {
     name: product.name,
-    description,
+    ...(description ? { description } : {}),
     href: getProductHref(product.id),
     ...(media.desktopImage && media.altText
       ? { image: media.desktopImage, imageAlt: media.altText }

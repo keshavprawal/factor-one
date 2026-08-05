@@ -8,6 +8,7 @@ const {
   products,
 } = require('../apps/web/.content-check/src/config/products.js');
 const {
+  getProductMediaItem,
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
 const {
@@ -136,6 +137,31 @@ test('pending fields cannot carry publishable values', () => {
     true,
   );
   assert.equal(getPublicContentValue(invalidProducts[0].fullDescription), null);
+});
+
+test('public projections expose approved content only', () => {
+  assert.equal(getPublicContentValue({ status: 'pending', value: null }), null);
+  assert.equal(
+    getPublicContentValue({
+      status: 'draft',
+      value: 'Working copy awaiting approval.',
+    }),
+    null,
+  );
+  assert.equal(
+    getPublicContentValue({
+      status: 'approved',
+      value: 'Founder-approved public copy.',
+    }),
+    'Founder-approved public copy.',
+  );
+});
+
+test('product presentation omits unapproved draft copy', () => {
+  const product = getProductMediaItem('screen-guard', 'homepage-featured');
+
+  assert.equal(product.purpose, undefined);
+  assert.equal(product.availability, 'Product direction');
 });
 
 test('approved content cannot be empty', () => {

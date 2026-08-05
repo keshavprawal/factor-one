@@ -273,7 +273,7 @@ export type ProductMediaStatus = 'approved' | 'provisional' | 'missing';
 
 export interface ProductMediaItem {
   altText: string;
-  availability: string;
+  availability?: string;
   availabilityState: ProductStatus;
   desktopImage?: string;
   destination: string;
@@ -284,7 +284,7 @@ export interface ProductMediaItem {
   mediaStatus: ProductMediaStatus;
   mobileImage?: string;
   name: string;
-  purpose: string;
+  purpose?: string;
 }
 
 export function getProductMediaAssets(
@@ -331,17 +331,11 @@ export function getProductMediaItem(
     );
   }
 
-  if (!purpose) {
-    throw new Error(
-      `No publishable presentation copy exists for ${productId}.`,
-    );
-  }
-
   return {
     id: product.id,
     mediaId: representativeMedia.id,
     name: product.name,
-    purpose,
+    ...(purpose ? { purpose } : {}),
     desktopImage: desktopMedia?.sourcePath ?? undefined,
     mobileImage: mobileMedia?.sourcePath ?? undefined,
     altText: representativeMedia.altText,
@@ -349,7 +343,9 @@ export function getProductMediaItem(
     focalPoint: representativeMedia.focalPoint,
     fallbackVisual: productFallbackVisuals[product.id],
     destination: getProductHref(product.id),
-    availability: product.availability.label,
+    ...(product.availability.approvalStatus === 'approved'
+      ? { availability: product.availability.label }
+      : {}),
     availabilityState: product.status,
   };
 }

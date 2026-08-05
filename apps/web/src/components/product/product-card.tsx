@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
 export interface ProductCardProps {
-  description: string;
+  description?: string;
   href: string;
   image?: string;
   imageAlt?: string;
@@ -71,9 +71,11 @@ export function ProductCard({
         </div>
         <div className="flex flex-1 flex-col pt-5">
           <h3 className="text-xl font-medium tracking-[-0.03em]">{name}</h3>
-          <p className="text-muted-foreground mt-2 text-sm leading-6">
-            {description}
-          </p>
+          {description ? (
+            <p className="text-muted-foreground mt-2 text-sm leading-6">
+              {description}
+            </p>
+          ) : null}
           <span className="text-foreground mt-auto inline-flex items-center gap-1 pt-5 text-sm font-medium">
             View product direction
             <ArrowUpRight
