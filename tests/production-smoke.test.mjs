@@ -100,6 +100,24 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.equal(vf7Response.status, 200);
     assert.match(vf7, /<h1[^>]*>VF7<\/h1>/);
 
+    const knowledgeResponse = await fetch(`${baseUrl}/knowledge?q=compat`);
+    const knowledge = await knowledgeResponse.text();
+
+    assert.equal(knowledgeResponse.status, 200);
+    assert.match(knowledge, /Knowledge Centre/);
+    assert.match(knowledge, /How to Read Compatibility Information/);
+    assert.doesNotMatch(knowledge, /Preparing for Installation/);
+
+    const articleResponse = await fetch(
+      `${baseUrl}/knowledge/reading-compatibility-information`,
+    );
+    const article = await articleResponse.text();
+
+    assert.equal(articleResponse.status, 200);
+    assert.match(article, /Preview article/);
+    assert.match(article, /BreadcrumbList/);
+    assert.match(article, /noindex/);
+
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();
 

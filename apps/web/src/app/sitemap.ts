@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: new URL('/', siteUrl).toString() },
+    { url: new URL('/knowledge', siteUrl).toString() },
     { url: new URL('/vehicles/vf7', siteUrl).toString() },
   ];
 }

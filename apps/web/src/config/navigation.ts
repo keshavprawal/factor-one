@@ -93,7 +93,7 @@ export const productDestinations = {
 } as const;
 
 const knowledge: AvailableNavigationItem = {
-  href: '/#knowledge',
+  href: '/knowledge',
   id: 'knowledge',
   label: 'Knowledge',
 };
