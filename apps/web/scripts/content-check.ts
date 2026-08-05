@@ -1,12 +1,17 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import {
+  knowledgeArticles,
+  knowledgeCategories,
+} from '../src/config/knowledge';
 import { productMediaManifest } from '../src/config/product-media';
 import { products } from '../src/config/products';
+import { validateKnowledgeContent } from '../src/content/knowledge-content-validation';
 import { validateProductContent } from '../src/content/product-content-validation';
 
 const strict = process.argv.includes('--strict');
 const publicDirectory = path.resolve(process.cwd(), 'public');
-const issues = validateProductContent(products, productMediaManifest, {
+const productIssues = validateProductContent(products, productMediaManifest, {
   strict,
   mediaPathExists(sourcePath) {
     return existsSync(
@@ -14,11 +19,21 @@ const issues = validateProductContent(products, productMediaManifest, {
     );
   },
 });
+const knowledgeIssues = validateKnowledgeContent(
+  knowledgeArticles,
+  knowledgeCategories.map((category) => category.id),
+);
+const issues = [...productIssues, ...knowledgeIssues];
 const errors = issues.filter((issue) => issue.severity === 'error');
 const warnings = issues.filter((issue) => issue.severity === 'warning');
 
 for (const issue of issues) {
-  const scope = issue.productId ? ` [${issue.productId}]` : '';
+  const scope =
+    'productId' in issue && issue.productId
+      ? ` [${issue.productId}]`
+      : 'articleSlug' in issue && issue.articleSlug
+        ? ` [${issue.articleSlug}]`
+        : '';
   console.log(
     `${issue.severity.toUpperCase()} ${issue.code}${scope}: ${issue.message}`,
   );

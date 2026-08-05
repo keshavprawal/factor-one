@@ -8,12 +8,23 @@ const {
   products,
 } = require('../apps/web/.content-check/src/config/products.js');
 const {
+  getArticleReadingTime,
+  getKnowledgeArticle,
+  getRelatedKnowledgeArticles,
+  knowledgeArticles,
+  knowledgeCategories,
+  searchKnowledgeArticles,
+} = require('../apps/web/.content-check/src/config/knowledge.js');
+const {
   getProductMediaItem,
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
 const {
   validateProductContent,
 } = require('../apps/web/.content-check/src/content/product-content-validation.js');
+const {
+  validateKnowledgeContent,
+} = require('../apps/web/.content-check/src/content/knowledge-content-validation.js');
 
 const localMediaExists = (sourcePath) =>
   sourcePath === '/images/essentials/screen-protector.jpg';
@@ -234,4 +245,38 @@ test('strict launch validation ignores deliberately deferred products', () => {
   });
 
   assert.deepEqual(issues, []);
+});
+
+test('repository knowledge content is structurally valid', () => {
+  const issues = validateKnowledgeContent(
+    knowledgeArticles,
+    knowledgeCategories.map((category) => category.id),
+  );
+
+  assert.deepEqual(issues, []);
+});
+
+test('knowledge search supports partial queries and category filters', () => {
+  assert.deepEqual(
+    searchKnowledgeArticles({ query: 'compat' }).map((article) => article.slug),
+    ['reading-compatibility-information', 'confirming-product-fit'],
+  );
+  assert.deepEqual(
+    searchKnowledgeArticles({ categoryId: 'installation' }).map(
+      (article) => article.slug,
+    ),
+    ['preparing-for-installation'],
+  );
+});
+
+test('knowledge articles provide reading time and related content', () => {
+  const article = getKnowledgeArticle('reading-compatibility-information');
+
+  assert.ok(article);
+  assert.equal(getArticleReadingTime(article), 1);
+  assert.equal(getRelatedKnowledgeArticles(article).length, 2);
+  assert.equal(
+    getRelatedKnowledgeArticles(article)[0].categoryId,
+    article.categoryId,
+  );
 });
