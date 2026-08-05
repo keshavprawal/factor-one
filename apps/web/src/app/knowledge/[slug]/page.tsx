@@ -13,7 +13,7 @@ import {
   getRelatedKnowledgeArticles,
   knowledgeArticles,
 } from '@/config/knowledge';
-import { getSiteUrl, siteConfig } from '@/config/site';
+import { getCanonicalSiteUrl, siteConfig } from '@/config/site';
 
 interface KnowledgeArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -33,12 +33,12 @@ export async function generateMetadata({
     return {};
   }
 
-  const siteUrl = getSiteUrl();
+  const canonicalSiteUrl = getCanonicalSiteUrl();
 
   return {
     title: article.title,
     description: article.description,
-    alternates: siteUrl
+    alternates: canonicalSiteUrl
       ? { canonical: `/knowledge/${article.slug}` }
       : undefined,
     openGraph: {
@@ -46,7 +46,7 @@ export async function generateMetadata({
       siteName: siteConfig.name,
       title: article.title,
       type: 'article',
-      url: siteUrl ? `/knowledge/${article.slug}` : undefined,
+      url: canonicalSiteUrl ? `/knowledge/${article.slug}` : undefined,
     },
     robots: { follow: false, index: false },
     twitter: {
@@ -71,9 +71,9 @@ export default async function KnowledgeArticlePage({
   const relatedArticles = getRelatedKnowledgeArticles(article);
   const readingTime = getArticleReadingTime(article);
   const wordCount = getArticleWordCount(article);
-  const siteUrl = getSiteUrl();
-  const articleUrl = siteUrl
-    ? new URL(`/knowledge/${article.slug}`, siteUrl).toString()
+  const canonicalSiteUrl = getCanonicalSiteUrl();
+  const articleUrl = canonicalSiteUrl
+    ? new URL(`/knowledge/${article.slug}`, canonicalSiteUrl).toString()
     : null;
   const articleStructuredData = {
     '@context': 'https://schema.org',
@@ -93,13 +93,17 @@ export default async function KnowledgeArticlePage({
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        ...(siteUrl ? { item: new URL('/', siteUrl).toString() } : {}),
+        ...(canonicalSiteUrl
+          ? { item: new URL('/', canonicalSiteUrl).toString() }
+          : {}),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Knowledge',
-        ...(siteUrl ? { item: new URL('/knowledge', siteUrl).toString() } : {}),
+        ...(canonicalSiteUrl
+          ? { item: new URL('/knowledge', canonicalSiteUrl).toString() }
+          : {}),
       },
       {
         '@type': 'ListItem',
@@ -197,8 +201,12 @@ export default async function KnowledgeArticlePage({
         </Container>
       </aside>
 
-      <StructuredData data={articleStructuredData} />
-      <StructuredData data={breadcrumbStructuredData} />
+      {canonicalSiteUrl ? (
+        <>
+          <StructuredData data={articleStructuredData} />
+          <StructuredData data={breadcrumbStructuredData} />
+        </>
+      ) : null}
     </>
   );
 }

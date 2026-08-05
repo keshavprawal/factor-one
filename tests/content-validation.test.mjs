@@ -20,11 +20,19 @@ const {
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
 const {
+  garageNavigation,
+} = require('../apps/web/.content-check/src/config/navigation.js');
+const {
   validateProductContent,
 } = require('../apps/web/.content-check/src/content/product-content-validation.js');
 const {
   validateKnowledgeContent,
 } = require('../apps/web/.content-check/src/content/knowledge-content-validation.js');
+const {
+  createEmptyGarageState,
+  parseGarageState,
+  serializeGarageState,
+} = require('../apps/web/.content-check/src/features/garage/garage-state.js');
 
 const localMediaExists = (sourcePath) =>
   sourcePath === '/images/essentials/screen-protector.jpg';
@@ -165,6 +173,59 @@ test('public projections expose approved content only', () => {
       value: 'Founder-approved public copy.',
     }),
     'Founder-approved public copy.',
+  );
+});
+
+test('garage state accepts only repository-supported identities', () => {
+  const scope = {
+    productIds: ['screen-guard', 'parcel-tray'],
+    vehicleIds: ['vinfast-vf7'],
+  };
+  const state = parseGarageState(
+    JSON.stringify({
+      installedProductIds: ['screen-guard', 'screen-guard', 'unknown-product'],
+      selectedVehicleId: 'vinfast-vf7',
+      version: 1,
+    }),
+    scope,
+  );
+
+  assert.deepEqual(state, {
+    installedProductIds: ['screen-guard'],
+    selectedVehicleId: 'vinfast-vf7',
+    version: 1,
+  });
+  assert.deepEqual(parseGarageState(serializeGarageState(state), scope), state);
+});
+
+test('garage navigation exposes the implemented route and keeps assistance unavailable', () => {
+  assert.deepEqual(garageNavigation.children, [
+    { href: '/garage', id: 'garage-home', label: 'My Garage' },
+    { id: 'assistance', label: 'Assistance', unavailable: true },
+  ]);
+});
+
+test('garage state fails safely when local data is invalid', () => {
+  const scope = {
+    productIds: ['screen-guard'],
+    vehicleIds: ['vinfast-vf7'],
+  };
+
+  assert.deepEqual(parseGarageState('{not-json', scope), {
+    installedProductIds: [],
+    selectedVehicleId: null,
+    version: 1,
+  });
+  assert.deepEqual(
+    parseGarageState(
+      JSON.stringify({
+        installedProductIds: ['screen-guard'],
+        selectedVehicleId: 'unknown-car',
+        version: 1,
+      }),
+      scope,
+    ),
+    createEmptyGarageState(),
   );
 });
 

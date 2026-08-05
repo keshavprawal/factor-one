@@ -13,12 +13,14 @@
   "include": [
     "scripts/content-check.ts",
     "src/config/knowledge.ts",
+    "src/config/navigation.ts",
     "src/config/product-media.ts",
     "src/config/product-routes.ts",
     "src/config/products.ts",
     "src/config/site.ts",
     "src/content/knowledge-content-validation.ts",
     "src/content/product-content-validation.ts",
+    "src/features/garage/garage-state.ts",
     "src/instrumentation.ts"
   ]
 }

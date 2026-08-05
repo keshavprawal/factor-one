@@ -20,6 +20,8 @@ export type ProductStatus =
 
 export type ProductLaunchScope = 'v1' | 'deferred';
 
+export const vinfastVf7VehicleId = 'vinfast-vf7';
+
 export type ContentApprovalStatus = 'pending' | 'draft' | 'approved';
 
 export interface ContentField<T> {
@@ -133,7 +135,7 @@ const vf7Compatibility = [
   {
     make: 'VinFast',
     model: 'VF7',
-    vehicleId: 'vinfast-vf7',
+    vehicleId: vinfastVf7VehicleId,
     verificationStatus: 'pending',
     years: null,
   },

@@ -138,8 +138,15 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(articleResponse.status, 200);
     assert.match(article, /Preview article/);
-    assert.match(article, /BreadcrumbList/);
     assert.match(article, /noindex/);
+    assert.doesNotMatch(article, /application\/ld\+json/);
+
+    const garageResponse = await fetch(`${baseUrl}/garage`);
+    const garage = await garageResponse.text();
+
+    assert.equal(garageResponse.status, 200);
+    assert.match(garage, /Your car, in one clear place/);
+    assert.match(garage, /name="robots" content="noindex, nofollow"/);
 
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();
