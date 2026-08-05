@@ -1,10 +1,10 @@
 import type { MetadataRoute } from 'next';
-import { getSiteUrl } from '@/config/site';
+import { getCanonicalSiteUrl } from '@/config/site';
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = getSiteUrl();
+  const canonicalSiteUrl = getCanonicalSiteUrl();
 
-  if (!siteUrl) {
+  if (!canonicalSiteUrl) {
     return {
       rules: {
         disallow: '/',
@@ -18,6 +18,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       userAgent: '*',
     },
-    sitemap: new URL('/sitemap.xml', siteUrl).toString(),
+    sitemap: new URL('/sitemap.xml', canonicalSiteUrl).toString(),
   };
 }

@@ -138,7 +138,7 @@ export const garageNavigation: GroupedNavigationItem = {
   id: 'garage',
   label: 'My Garage',
   children: [
-    { id: 'garage-home', label: 'My Garage', unavailable: true },
+    { href: '/garage', id: 'garage-home', label: 'My Garage' },
     { id: 'assistance', label: 'Assistance', unavailable: true },
   ],
 };
@@ -146,7 +146,7 @@ export const garageNavigation: GroupedNavigationItem = {
 export const mobileNavigationSections: readonly NavigationSection[] = [
   { id: 'products', label: 'Products', items: productNavigation },
   { id: 'factor-one', label: 'Factor One', items: companyNavigation },
-  { id: 'account', label: 'Account', items: [garageNavigation] },
+  { id: 'garage', label: 'Garage', items: [garageNavigation] },
 ];
 
 export const footerNavigation: readonly FooterNavigationGroup[] = [

@@ -10,23 +10,23 @@ import {
   knowledgeCategories,
   searchKnowledgeArticles,
 } from '@/config/knowledge';
-import { getSiteUrl, siteConfig } from '@/config/site';
+import { getCanonicalSiteUrl, siteConfig } from '@/config/site';
 import { Container } from '@/components/layout/container';
 
-const siteUrl = getSiteUrl();
+const canonicalSiteUrl = getCanonicalSiteUrl();
 const description =
   'Preview guides for compatibility, installation and product care from Factor One.';
 
 export const metadata: Metadata = {
   title: 'Knowledge Centre',
   description,
-  alternates: siteUrl ? { canonical: '/knowledge' } : undefined,
+  alternates: canonicalSiteUrl ? { canonical: '/knowledge' } : undefined,
   openGraph: {
     description,
     siteName: siteConfig.name,
     title: 'Knowledge Centre',
     type: 'website',
-    url: siteUrl ? '/knowledge' : undefined,
+    url: canonicalSiteUrl ? '/knowledge' : undefined,
   },
   twitter: {
     card: 'summary',
@@ -62,13 +62,13 @@ export default async function KnowledgePage({
     query: query || undefined,
   });
   const hasFilters = Boolean(query || activeCategory);
-  const structuredData = siteUrl
+  const structuredData = canonicalSiteUrl
     ? {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         name: 'Factor One Knowledge Centre',
         description,
-        url: new URL('/knowledge', siteUrl).toString(),
+        url: new URL('/knowledge', canonicalSiteUrl).toString(),
         mainEntity: {
           '@type': 'ItemList',
           numberOfItems: knowledgeArticles.length,
@@ -76,12 +76,15 @@ export default async function KnowledgePage({
             '@type': 'ListItem',
             position: index + 1,
             name: article.title,
-            url: new URL(`/knowledge/${article.slug}`, siteUrl).toString(),
+            url: new URL(
+              `/knowledge/${article.slug}`,
+              canonicalSiteUrl,
+            ).toString(),
           })),
         },
         potentialAction: {
           '@type': 'SearchAction',
-          target: `${new URL('/knowledge', siteUrl).toString()}?q={search_term_string}`,
+          target: `${new URL('/knowledge', canonicalSiteUrl).toString()}?q={search_term_string}`,
           'query-input': 'required name=search_term_string',
         },
       }

@@ -228,6 +228,7 @@ interface DesktopGarageMenuProps {
   isOpen: boolean;
   onClose: (restoreFocus?: boolean) => void;
   onOpen: () => void;
+  pathname: string;
   triggerRef: RefObject<HTMLButtonElement | null>;
 }
 
@@ -236,6 +237,7 @@ function DesktopGarageMenu({
   isOpen,
   onClose,
   onOpen,
+  pathname,
   triggerRef,
 }: DesktopGarageMenuProps) {
   const groupRef = useRef<HTMLDivElement>(null);
@@ -304,14 +306,29 @@ function DesktopGarageMenu({
           }}
         >
           <p className="text-muted-foreground px-3 pb-2 pt-1 text-[0.65rem] font-medium uppercase tracking-[0.14em]">
-            Account
+            Garage
           </p>
           <ul>
-            {group.children.map((item) => (
-              <li key={item.id}>
-                <UnavailableNavigationControl item={item} compact />
-              </li>
-            ))}
+            {group.children.map((item) => {
+              if (!isAvailableNavigationItem(item)) {
+                return (
+                  <li key={item.id}>
+                    <UnavailableNavigationControl item={item} compact />
+                  </li>
+                );
+              }
+
+              return (
+                <li key={item.id}>
+                  <NavigationItemLink
+                    item={item}
+                    pathname={pathname}
+                    onNavigate={() => onClose()}
+                    className="motion-safe-transition hover:bg-muted focus-visible:bg-muted flex min-h-11 items-center rounded-md px-3 text-sm font-medium transition-[color,background-color,transform] active:translate-y-px aria-[current=page]:font-semibold"
+                  />
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : null}
@@ -533,6 +550,7 @@ export function Navbar({
               setDesktopGarageOpen(true);
             }}
             onClose={closeGarageMenu}
+            pathname={pathname}
             triggerRef={garageTriggerRef}
           />
           <button
