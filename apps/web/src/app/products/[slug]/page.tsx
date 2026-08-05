@@ -200,6 +200,48 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </ul>
               </div>
 
+              <aside
+                className="border-border mt-8 border-t pt-6"
+                aria-labelledby="product-warranty-heading"
+              >
+                <h2
+                  id="product-warranty-heading"
+                  className="text-base font-medium"
+                >
+                  12-Month Limited Manufacturer Warranty
+                </h2>
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  Covered against manufacturing defects in materials or
+                  workmanship.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
+                  <Link
+                    href="/ownership/warranty"
+                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                  >
+                    Read the Warranty Policy →
+                  </Link>
+                  <Link
+                    href="/ownership/returns"
+                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                  >
+                    Returns & Refunds
+                  </Link>
+                  <Link
+                    href="/ownership/shipping"
+                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                  >
+                    Shipping
+                  </Link>
+                  <Link
+                    href="/ownership/installation"
+                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                  >
+                    Installation Guidance
+                  </Link>
+                </div>
+              </aside>
+
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
                   asChild
@@ -209,14 +251,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 >
                   <Link href="/compatibility">View vehicle compatibility</Link>
                 </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="rounded-full px-6"
+                <Link
+                  href="/garage"
+                  className="motion-safe-transition border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-11 items-center justify-center rounded-full border px-6 text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform,opacity] active:translate-y-px motion-reduce:transform-none"
                 >
-                  <Link href="/garage">View in My Garage</Link>
-                </Button>
+                  View in My Garage
+                </Link>
               </div>
             </div>
           </div>
