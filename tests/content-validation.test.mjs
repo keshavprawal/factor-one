@@ -27,6 +27,21 @@ const {
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
 const {
+  getApprovedProductMedia,
+  getIndexableProductPaths,
+  getProductBySlug,
+  getProductCanonicalPath,
+  getProductPageContent,
+  getProductStructuredData,
+  getRelatedProducts,
+  isApprovedProductMedia,
+  isProductPageIndexable,
+} = require('../apps/web/.content-check/src/config/product-pages.js');
+const {
+  getProductHref,
+  getProductPath,
+} = require('../apps/web/.content-check/src/config/product-routes.js');
+const {
   compatibilityNavigation,
   garageNavigation,
 } = require('../apps/web/.content-check/src/config/navigation.js');
@@ -184,6 +199,55 @@ test('public projections expose approved content only', () => {
       value: 'Founder-approved public copy.',
     }),
     'Founder-approved public copy.',
+  );
+});
+
+test('canonical product routes resolve from the Product Bible', () => {
+  assert.deepEqual(
+    products.map((product) => getProductBySlug(product.slug)?.id),
+    products.map((product) => product.id),
+  );
+  assert.equal(getProductBySlug('not-a-product'), null);
+  assert.equal(getProductPath('screen-guard'), '/products/screen-guard');
+  assert.equal(getProductHref('screen-guard'), '/products/screen-guard');
+  assert.equal(getProductCanonicalPath(products[0]), '/products/screen-guard');
+});
+
+test('product page projections hide draft and pending fields', () => {
+  const content = getProductPageContent(products[0]);
+
+  assert.equal(content.shortDescription, null);
+  assert.equal(content.problemSolved, null);
+  assert.equal(content.fullDescription, null);
+  assert.equal(content.price, null);
+  assert.equal(content.warranty, null);
+});
+
+test('product pages use only approved media and remain non-indexable until launch-ready', () => {
+  const approvedTemporaryMedia = {
+    ...productMediaManifest[0],
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    rightsStatus: 'owned',
+  };
+
+  assert.equal(isApprovedProductMedia(approvedTemporaryMedia), true);
+  assert.deepEqual(getApprovedProductMedia('screen-guard'), []);
+  assert.equal(isProductPageIndexable(products[0]), false);
+  assert.deepEqual(getIndexableProductPaths(), []);
+  assert.equal(
+    getProductStructuredData(products[0], new URL('https://example.com')),
+    null,
+  );
+});
+
+test('related product pages follow explicit canonical relationships only', () => {
+  const productWithRelations = structuredClone(products[0]);
+  productWithRelations.relatedProductIds = ['parcel-tray', 'door-visor'];
+
+  assert.deepEqual(
+    getRelatedProducts(productWithRelations).map((product) => product.slug),
+    ['parcel-tray', 'door-visor'],
   );
 });
 

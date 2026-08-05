@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState, type UIEvent } from 'react';
 import { OwnerBuiltBadge } from '@/components/home/owner-built-badge';
 import { ProductMediaVisual } from '@/components/product/product-media-visual';
@@ -133,7 +134,12 @@ export function FeaturedProductsCarousel({
                     </p>
                   ) : null}
                   <h3 className="mt-3 text-3xl font-medium tracking-[-0.045em]">
-                    {product.name}
+                    <Link
+                      href={product.destination}
+                      className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red"
+                    >
+                      {product.name}
+                    </Link>
                   </h3>
                 </div>
                 {product.ownerRequestCount ? (
@@ -145,6 +151,12 @@ export function FeaturedProductsCarousel({
                   {product.purpose}
                 </p>
               ) : null}
+              <Link
+                href={product.destination}
+                className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red mt-6 inline-flex min-h-11 items-center text-sm font-medium"
+              >
+                View product direction
+              </Link>
             </div>
           </article>
         ))}

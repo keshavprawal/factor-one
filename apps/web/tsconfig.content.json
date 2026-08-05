@@ -16,6 +16,7 @@
     "src/config/knowledge.ts",
     "src/config/navigation.ts",
     "src/config/product-media.ts",
+    "src/config/product-pages.ts",
     "src/config/product-routes.ts",
     "src/config/products.ts",
     "src/config/site.ts",
