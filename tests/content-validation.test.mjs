@@ -8,6 +8,13 @@ const {
   products,
 } = require('../apps/web/.content-check/src/config/products.js');
 const {
+  compatibilityGarageHref,
+  compatibilityVehicles,
+  createCompatibilityProducts,
+  getCompatibilityVehicle,
+  getProductCompatibilityStatus,
+} = require('../apps/web/.content-check/src/config/compatibility.js');
+const {
   getArticleReadingTime,
   getKnowledgeArticle,
   getRelatedKnowledgeArticles,
@@ -20,8 +27,12 @@ const {
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
 const {
+  compatibilityNavigation,
   garageNavigation,
 } = require('../apps/web/.content-check/src/config/navigation.js');
+const {
+  indexableSitePaths,
+} = require('../apps/web/.content-check/src/config/site.js');
 const {
   validateProductContent,
 } = require('../apps/web/.content-check/src/content/product-content-validation.js');
@@ -227,6 +238,58 @@ test('garage state fails safely when local data is invalid', () => {
     ),
     createEmptyGarageState(),
   );
+});
+
+test('compatibility projections distinguish verified, pending and not-listed states', () => {
+  const pendingProduct = structuredClone(products[0]);
+  const verifiedProduct = structuredClone(products[0]);
+  const notListedProduct = structuredClone(products[0]);
+
+  verifiedProduct.vehicleCompatibility[0].verificationStatus = 'verified';
+  notListedProduct.vehicleCompatibility = [];
+
+  assert.equal(
+    getProductCompatibilityStatus(pendingProduct, 'vinfast-vf7'),
+    'pending',
+  );
+  assert.equal(
+    getProductCompatibilityStatus(verifiedProduct, 'vinfast-vf7'),
+    'verified',
+  );
+  assert.equal(
+    getProductCompatibilityStatus(notListedProduct, 'vinfast-vf7'),
+    'not-listed',
+  );
+});
+
+test('compatibility results derive every product from the canonical registry', () => {
+  const results = createCompatibilityProducts(products, 'vinfast-vf7');
+
+  assert.deepEqual(
+    results.map((product) => product.id),
+    products.map((product) => product.id),
+  );
+  assert.equal(
+    compatibilityVehicles[0].products.every(
+      (product) => product.status === 'pending',
+    ),
+    true,
+  );
+});
+
+test('compatibility rejects unsupported vehicle identity and links to My Garage', () => {
+  assert.equal(getCompatibilityVehicle('vinfast-vf6'), null);
+  assert.equal(getCompatibilityVehicle('../vinfast-vf7'), null);
+  assert.equal(compatibilityGarageHref, '/garage');
+});
+
+test('compatibility navigation and canonical sitemap path are centralized', () => {
+  assert.deepEqual(compatibilityNavigation, {
+    href: '/compatibility',
+    id: 'compatibility',
+    label: 'Vehicle Compatibility',
+  });
+  assert.equal(indexableSitePaths.includes('/compatibility'), true);
 });
 
 test('product presentation omits unapproved draft copy', () => {

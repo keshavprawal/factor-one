@@ -98,6 +98,12 @@ const knowledge: AvailableNavigationItem = {
   label: 'Knowledge',
 };
 
+export const compatibilityNavigation: AvailableNavigationItem = {
+  href: '/compatibility',
+  id: 'compatibility',
+  label: 'Vehicle Compatibility',
+};
+
 const builtWithOwners: AvailableNavigationItem = {
   href: '/#built-with-owners',
   id: 'built-with-owners',
@@ -122,6 +128,7 @@ export const productNavigation: readonly NavigationItem[] = [
 
 export const companyNavigation: readonly NavigationItem[] = [
   builtWithOwners,
+  compatibilityNavigation,
   knowledge,
 ];
 
@@ -155,7 +162,7 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
     label: 'Explore',
   },
   {
-    items: [knowledge, builtWithOwners],
+    items: [compatibilityNavigation, knowledge, builtWithOwners],
     label: 'Factor One',
   },
 ];
