@@ -12,20 +12,22 @@ import {
   vf7OverviewHighlights,
   vf7OwnershipResources,
 } from '@/config/vf7';
-import { getSiteUrl, siteConfig } from '@/config/site';
+import { getCanonicalSiteUrl, siteConfig } from '@/config/site';
+
+const canonicalSiteUrl = getCanonicalSiteUrl();
 
 export const metadata: Metadata = {
   title: 'VinFast VF7',
   description:
     'Explore Factor One accessories and ownership resources for the VinFast VF7.',
-  alternates: getSiteUrl() ? { canonical: '/vehicles/vf7' } : undefined,
+  alternates: canonicalSiteUrl ? { canonical: '/vehicles/vf7' } : undefined,
   openGraph: {
     description:
       'Explore Factor One accessories and ownership resources for the VinFast VF7.',
     siteName: siteConfig.name,
     title: 'VinFast VF7',
     type: 'website',
-    url: getSiteUrl() ? '/vehicles/vf7' : undefined,
+    url: canonicalSiteUrl ? '/vehicles/vf7' : undefined,
   },
   twitter: {
     card: 'summary',

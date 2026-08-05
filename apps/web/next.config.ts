@@ -23,7 +23,8 @@ const securityHeaders = [
   },
   {
     key: 'Permissions-Policy',
-    value: 'camera=(), geolocation=(), microphone=()',
+    value:
+      'accelerometer=(), autoplay=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()',
   },
   {
     key: 'Referrer-Policy',
@@ -43,6 +44,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
+  trailingSlash: false,
   async headers() {
     return [
       {

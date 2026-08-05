@@ -69,6 +69,7 @@ test('production routes, crawl controls and security headers are ready', async (
       env: {
         ...process.env,
         NODE_ENV: 'production',
+        SITE_INDEXING_ENABLED: 'false',
         SITE_URL: '',
       },
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -87,8 +88,20 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.equal(homeResponse.status, 200);
     assert.match(home, /<main[^>]+id="main-content"/);
     assert.match(home, /Accessories that belong on your car/);
+    assert.match(home, /name="robots" content="noindex, nofollow"/);
+    assert.doesNotMatch(home, /rel="canonical"/);
+    assert.doesNotMatch(home, /application\/ld\+json/);
     assert.equal(homeResponse.headers.get('x-content-type-options'), 'nosniff');
     assert.equal(homeResponse.headers.get('x-frame-options'), 'DENY');
+    assert.equal(
+      homeResponse.headers.get('referrer-policy'),
+      'strict-origin-when-cross-origin',
+    );
+    assert.match(
+      homeResponse.headers.get('permissions-policy') ?? '',
+      /payment=\(\)/,
+    );
+    assert.equal(homeResponse.headers.get('strict-transport-security'), null);
     assert.match(
       homeResponse.headers.get('content-security-policy') ?? '',
       /frame-ancestors 'none'/,
@@ -99,6 +112,16 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(vf7Response.status, 200);
     assert.match(vf7, /<h1[^>]*>VF7<\/h1>/);
+
+    const trailingSlashResponse = await fetch(`${baseUrl}/vehicles/vf7/`, {
+      redirect: 'manual',
+    });
+
+    assert.equal(trailingSlashResponse.status, 308);
+    assert.equal(
+      trailingSlashResponse.headers.get('location'),
+      '/vehicles/vf7',
+    );
 
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();
@@ -111,12 +134,14 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(robotsResponse.status, 200);
     assert.match(robots, /Disallow: \//);
+    assert.doesNotMatch(robots, /Sitemap:/);
 
     const sitemapResponse = await fetch(`${baseUrl}/sitemap.xml`);
     const sitemap = await sitemapResponse.text();
 
     assert.equal(sitemapResponse.status, 200);
-    assert.doesNotMatch(sitemap, /localhost|127\.0\.0\.1/);
+    assert.doesNotMatch(sitemap, /<loc>/);
+    assert.doesNotMatch(sitemap, /preview\.example\.com/);
   } finally {
     server.kill('SIGTERM');
     await new Promise((resolve) => {
