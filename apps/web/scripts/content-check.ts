@@ -4,9 +4,11 @@ import {
   knowledgeArticles,
   knowledgeCategories,
 } from '../src/config/knowledge';
+import { ownershipPolicies } from '../src/config/ownership';
 import { productMediaManifest } from '../src/config/product-media';
 import { products } from '../src/config/products';
 import { validateKnowledgeContent } from '../src/content/knowledge-content-validation';
+import { validateOwnershipContent } from '../src/content/ownership-content-validation';
 import { validateProductContent } from '../src/content/product-content-validation';
 
 const strict = process.argv.includes('--strict');
@@ -23,7 +25,8 @@ const knowledgeIssues = validateKnowledgeContent(
   knowledgeArticles,
   knowledgeCategories.map((category) => category.id),
 );
-const issues = [...productIssues, ...knowledgeIssues];
+const ownershipIssues = validateOwnershipContent(ownershipPolicies);
+const issues = [...productIssues, ...knowledgeIssues, ...ownershipIssues];
 const errors = issues.filter((issue) => issue.severity === 'error');
 const warnings = issues.filter((issue) => issue.severity === 'warning');
 

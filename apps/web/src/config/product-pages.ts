@@ -6,6 +6,7 @@ import {
   products,
   type Product,
   type ProductId,
+  type ProductWarranty,
 } from './products';
 
 export interface ProductPageContent {
@@ -26,6 +27,11 @@ export interface ProductPageContent {
   specifications: Product['specifications']['value'] | null;
   variants: Product['variants']['value'] | null;
   warranty: Product['warranty']['value'] | null;
+}
+
+export interface ProductWarrantySummary {
+  heading: string;
+  summary: string;
 }
 
 function hasContent(value: unknown): boolean {
@@ -74,6 +80,27 @@ export function getProductPageContent(product: Product): ProductPageContent {
     variants: getPublicContentValue(product.variants),
     warranty: getPublicContentValue(product.warranty),
   };
+}
+
+export function getProductWarrantySummary(
+  product: Product,
+): ProductWarrantySummary | null {
+  const warranty = getPublicContentValue(product.warranty);
+
+  if (!warranty || !warranty.summary.trim()) {
+    return null;
+  }
+
+  return {
+    heading: formatProductWarrantyHeading(warranty),
+    summary: warranty.summary,
+  };
+}
+
+function formatProductWarrantyHeading(warranty: ProductWarranty) {
+  return warranty.durationMonths
+    ? `${warranty.durationMonths}-Month Limited Manufacturer Warranty`
+    : 'Limited Manufacturer Warranty';
 }
 
 export function isApprovedProductMedia(media: ProductMediaAsset) {

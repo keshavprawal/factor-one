@@ -104,6 +104,12 @@ export const compatibilityNavigation: AvailableNavigationItem = {
   label: 'Vehicle Compatibility',
 };
 
+export const ownershipNavigation: AvailableNavigationItem = {
+  href: '/ownership',
+  id: 'ownership',
+  label: 'Ownership',
+};
+
 const builtWithOwners: AvailableNavigationItem = {
   href: '/#built-with-owners',
   id: 'built-with-owners',
@@ -130,6 +136,7 @@ export const companyNavigation: readonly NavigationItem[] = [
   builtWithOwners,
   compatibilityNavigation,
   knowledge,
+  ownershipNavigation,
 ];
 
 export const primaryNavigation: readonly NavigationItem[] = [
@@ -164,5 +171,26 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
   {
     items: [compatibilityNavigation, knowledge, builtWithOwners],
     label: 'Factor One',
+  },
+  {
+    items: [
+      ownershipNavigation,
+      { href: '/ownership/warranty', id: 'warranty', label: 'Warranty' },
+      { href: '/ownership/returns', id: 'returns', label: 'Returns & Refunds' },
+      { href: '/ownership/shipping', id: 'shipping', label: 'Shipping' },
+      {
+        href: '/ownership/installation',
+        id: 'installation-guidance',
+        label: 'Installation Guidance',
+      },
+      {
+        href: '/ownership/contact',
+        id: 'contact-support',
+        label: 'Contact Support',
+      },
+      { href: '/ownership/privacy', id: 'privacy', label: 'Privacy' },
+      { href: '/ownership/terms', id: 'terms', label: 'Terms' },
+    ],
+    label: 'Ownership',
   },
 ];

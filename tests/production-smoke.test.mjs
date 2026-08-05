@@ -160,6 +160,39 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(compatibility, /name="robots" content="noindex, nofollow"/);
     assert.doesNotMatch(compatibility, /rel="canonical"/);
 
+    const ownershipResponse = await fetch(`${baseUrl}/ownership`);
+    const ownership = await ownershipResponse.text();
+
+    assert.equal(ownershipResponse.status, 200);
+    assert.match(ownership, /Clear support after you buy/);
+    assert.match(ownership, /href="\/ownership\/warranty"/);
+    assert.match(ownership, /name="robots" content="noindex, nofollow"/);
+
+    for (const policySlug of [
+      'warranty',
+      'returns',
+      'shipping',
+      'installation',
+      'contact',
+      'privacy',
+      'terms',
+    ]) {
+      const policyResponse = await fetch(`${baseUrl}/ownership/${policySlug}`);
+      const policy = await policyResponse.text();
+
+      assert.equal(policyResponse.status, 200);
+      assert.match(policy, /Ownership/);
+      assert.match(policy, /name="robots" content="noindex, nofollow"/);
+      assert.doesNotMatch(policy, /rel="canonical"/);
+      assert.doesNotMatch(policy, /application\/ld\+json/);
+    }
+
+    const warrantyResponse = await fetch(`${baseUrl}/ownership/warranty`);
+    const warranty = await warrantyResponse.text();
+
+    assert.match(warranty, /12-Month Limited Manufacturer Warranty/);
+    assert.match(warranty, /Misuse, accidental damage or overloading/);
+
     for (const productSlug of [
       'screen-guard',
       'parcel-tray',
@@ -175,6 +208,12 @@ test('production routes, crawl controls and security headers are ready', async (
       assert.match(product, /Verification pending/);
       assert.match(product, /href="\/compatibility"/);
       assert.match(product, /href="\/garage"/);
+      assert.match(product, /Ownership policies/);
+      assert.doesNotMatch(product, /12-Month Limited Manufacturer Warranty/);
+      assert.match(product, /href="\/ownership\/returns"/);
+      assert.match(product, /href="\/ownership\/shipping"/);
+      assert.match(product, /href="\/ownership\/installation"/);
+      assert.doesNotMatch(product, /Misuse, accidental damage or overloading/);
       assert.match(product, /name="robots" content="noindex, nofollow"/);
       assert.doesNotMatch(product, /rel="canonical"/);
       assert.doesNotMatch(product, /application\/ld\+json/);
@@ -187,6 +226,14 @@ test('production routes, crawl controls and security headers are ready', async (
 
     assert.equal(unknownProductResponse.status, 404);
     assert.match(unknownProduct, /This page does not exist/);
+
+    const unknownOwnershipResponse = await fetch(
+      `${baseUrl}/ownership/not-a-policy`,
+    );
+    const unknownOwnership = await unknownOwnershipResponse.text();
+
+    assert.equal(unknownOwnershipResponse.status, 404);
+    assert.match(unknownOwnership, /This page does not exist/);
 
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();

@@ -531,7 +531,7 @@ export function Navbar({
 
         <nav
           aria-label="Primary navigation"
-          className="absolute left-1/2 hidden -translate-x-1/2 xl:flex xl:items-center xl:gap-8"
+          className="absolute left-1/2 hidden -translate-x-1/2 2xl:flex 2xl:items-center 2xl:gap-8"
         >
           <ul className="flex items-center gap-5">
             {productNavigation.map(renderDesktopItem)}
@@ -556,7 +556,7 @@ export function Navbar({
           <button
             ref={menuTriggerRef}
             type="button"
-            className={cn(iconButtonClassName, 'xl:hidden')}
+            className={cn(iconButtonClassName, '2xl:hidden')}
             aria-label={
               isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
             }
@@ -578,7 +578,7 @@ export function Navbar({
         id="mobile-navigation"
         aria-labelledby="mobile-navigation-heading"
         aria-modal="true"
-        className="motion-dialog-in bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 xl:hidden"
+        className="motion-dialog-in bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 2xl:hidden"
         onCancel={(event) => {
           event.preventDefault();
           setIsMenuOpen(false);

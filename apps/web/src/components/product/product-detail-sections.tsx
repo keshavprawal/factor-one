@@ -212,14 +212,6 @@ export function ProductDetailSections({
         </DetailSection>
       ) : null}
 
-      {content.warranty ? (
-        <DetailSection id="warranty" title="Warranty">
-          <p className="max-w-3xl text-base leading-7">
-            {content.warranty.summary}
-          </p>
-        </DetailSection>
-      ) : null}
-
       {content.honestLimitations?.length ? (
         <DetailSection id="honest-limitations" title="Honest limitations">
           <ul className="max-w-3xl list-disc space-y-2 pl-5">

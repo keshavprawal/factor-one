@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="bg-charcoal text-charcoal-foreground">
       <Container className="py-14 sm:py-20">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.5fr)_repeat(2,minmax(0,0.7fr))]">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,0.7fr))]">
           <div className="max-w-sm">
             <Wordmark as="p" size="footer" />
             <p className="text-charcoal-foreground/60 mt-4 text-sm leading-6">

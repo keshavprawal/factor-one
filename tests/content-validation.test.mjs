@@ -33,6 +33,7 @@ const {
   getProductCanonicalPath,
   getProductPageContent,
   getProductStructuredData,
+  getProductWarrantySummary,
   getRelatedProducts,
   isApprovedProductMedia,
   isProductPageIndexable,
@@ -43,8 +44,18 @@ const {
 } = require('../apps/web/.content-check/src/config/product-routes.js');
 const {
   compatibilityNavigation,
+  companyNavigation,
+  footerNavigation,
   garageNavigation,
+  ownershipNavigation,
 } = require('../apps/web/.content-check/src/config/navigation.js');
+const {
+  getIndexableOwnershipPolicyPaths,
+  getOwnershipPolicy,
+  getOwnershipPolicyPath,
+  isOwnershipPolicyIndexable,
+  ownershipPolicies,
+} = require('../apps/web/.content-check/src/config/ownership.js');
 const {
   indexableSitePaths,
 } = require('../apps/web/.content-check/src/config/site.js');
@@ -54,6 +65,9 @@ const {
 const {
   validateKnowledgeContent,
 } = require('../apps/web/.content-check/src/content/knowledge-content-validation.js');
+const {
+  validateOwnershipContent,
+} = require('../apps/web/.content-check/src/content/ownership-content-validation.js');
 const {
   createEmptyGarageState,
   parseGarageState,
@@ -221,6 +235,54 @@ test('product page projections hide draft and pending fields', () => {
   assert.equal(content.fullDescription, null);
   assert.equal(content.price, null);
   assert.equal(content.warranty, null);
+});
+
+test('product warranty summaries require approved canonical content', () => {
+  const approvedProduct = structuredClone(products[0]);
+  approvedProduct.warranty = {
+    status: 'approved',
+    value: {
+      durationMonths: 12,
+      summary: 'Covered against approved manufacturing defects.',
+    },
+  };
+
+  assert.deepEqual(getProductWarrantySummary(approvedProduct), {
+    heading: '12-Month Limited Manufacturer Warranty',
+    summary: 'Covered against approved manufacturing defects.',
+  });
+
+  const pendingProduct = structuredClone(approvedProduct);
+  pendingProduct.warranty = { status: 'pending', value: null };
+  assert.equal(getProductWarrantySummary(pendingProduct), null);
+
+  const draftProduct = structuredClone(approvedProduct);
+  draftProduct.warranty = {
+    status: 'draft',
+    value: {
+      durationMonths: 12,
+      summary: 'Draft warranty content.',
+    },
+  };
+  assert.equal(getProductWarrantySummary(draftProduct), null);
+});
+
+test('Parcel Tray can project an approved 12-month warranty when its record is approved', () => {
+  const parcelTray = structuredClone(
+    products.find((product) => product.id === 'parcel-tray'),
+  );
+  parcelTray.warranty = {
+    status: 'approved',
+    value: {
+      durationMonths: 12,
+      summary: 'Covered against approved manufacturing defects.',
+    },
+  };
+
+  assert.equal(
+    getProductWarrantySummary(parcelTray)?.heading,
+    '12-Month Limited Manufacturer Warranty',
+  );
 });
 
 test('product pages use only approved media and remain non-indexable until launch-ready', () => {
@@ -466,5 +528,51 @@ test('knowledge articles provide reading time and related content', () => {
   assert.equal(
     getRelatedKnowledgeArticles(article)[0].categoryId,
     article.categoryId,
+  );
+});
+
+test('ownership policies are repository-driven and provisional policies stay non-indexable', () => {
+  const warranty = getOwnershipPolicy('warranty');
+  const privacy = getOwnershipPolicy('privacy');
+
+  assert.ok(warranty);
+  assert.ok(privacy);
+  assert.equal(warranty.publicationStatus, 'approved');
+  assert.equal(privacy.publicationStatus, 'provisional');
+  assert.equal(getOwnershipPolicy('not-a-policy'), null);
+  assert.equal(getOwnershipPolicyPath(warranty), '/ownership/warranty');
+  assert.equal(isOwnershipPolicyIndexable(privacy), false);
+  assert.deepEqual(getIndexableOwnershipPolicyPaths(), [
+    '/ownership/warranty',
+    '/ownership/installation',
+  ]);
+  assert.deepEqual(validateOwnershipContent(ownershipPolicies), []);
+});
+
+test('ownership navigation stays centralized across the header and footer', () => {
+  assert.deepEqual(ownershipNavigation, {
+    href: '/ownership',
+    id: 'ownership',
+    label: 'Ownership',
+  });
+  assert.equal(companyNavigation.includes(ownershipNavigation), true);
+
+  const ownershipFooterGroup = footerNavigation.find(
+    (group) => group.label === 'Ownership',
+  );
+
+  assert.ok(ownershipFooterGroup);
+  assert.deepEqual(
+    ownershipFooterGroup.items.map((item) => item.href),
+    [
+      '/ownership',
+      '/ownership/warranty',
+      '/ownership/returns',
+      '/ownership/shipping',
+      '/ownership/installation',
+      '/ownership/contact',
+      '/ownership/privacy',
+      '/ownership/terms',
+    ],
   );
 });
