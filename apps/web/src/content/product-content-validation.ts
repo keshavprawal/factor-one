@@ -407,13 +407,8 @@ export function validateProductContent(
       });
     }
 
-    const isUnrenderableEvidenceRecord =
-      media.evidenceOnly &&
-      media.lifecycleStatus === 'temporary' &&
-      !media.sourcePath;
-
     if (
-      !isUnrenderableEvidenceRecord &&
+      !media.evidenceOnly &&
       ((media.lifecycleStatus === 'missing' && media.sourcePath) ||
         (media.lifecycleStatus !== 'missing' && !media.sourcePath))
     ) {
@@ -427,11 +422,13 @@ export function validateProductContent(
 
     if (
       media.evidenceOnly &&
-      (media.lifecycleStatus !== 'temporary' || Boolean(media.sourcePath))
+      (media.lifecycleStatus !== 'temporary' ||
+        !media.sourcePath ||
+        !media.disclosure?.trim())
     ) {
       issues.push({
         code: 'INVALID_EVIDENCE_MEDIA',
-        message: `Evidence-only media "${media.id}" must remain temporary without a renderable source path.`,
+        message: `Evidence-only media "${media.id}" must remain temporary, renderable and clearly disclosed.`,
         productId: media.productId,
         severity: 'error',
       });

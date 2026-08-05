@@ -245,6 +245,23 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /VinFast VF7 \(2025 onwards\)/);
     assert.match(parcelTray, /Earth, Wind, Wind Infinity, Sky, Sky Infinity/);
     assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
+    assert.match(parcelTray, /Representative visualisation/);
+    assert.match(parcelTray, /Development evidence · Prototype photography/);
+    assert.match(
+      parcelTray,
+      /Prototype installed during product development\./,
+    );
+    assert.match(
+      parcelTray,
+      /Clean using a soft, damp cloth\. Use a mild automotive interior cleaner only when required\./,
+    );
+    assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
+    assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);
+    assert.match(parcelTray, /parcel-tray-prototype-installed\.jpg/);
+    assert.doesNotMatch(
+      parcelTray,
+      /DENSE CARPETING|SOUND DAMPENING|FULL LOAD PRIVACY/,
+    );
     assert.doesNotMatch(parcelTray, /Dimensions/);
     assert.doesNotMatch(parcelTray, /noise dampening/i);
     assert.doesNotMatch(parcelTray, /load capacity/i);

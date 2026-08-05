@@ -23,6 +23,7 @@ const {
   searchKnowledgeArticles,
 } = require('../apps/web/.content-check/src/config/knowledge.js');
 const {
+  getProductDetailMediaItem,
   getProductMediaItem,
   productMediaManifest,
 } = require('../apps/web/.content-check/src/config/product-media.js');
@@ -75,7 +76,12 @@ const {
 } = require('../apps/web/.content-check/src/features/garage/garage-state.js');
 
 const localMediaExists = (sourcePath) =>
-  sourcePath === '/images/essentials/screen-protector.jpg';
+  [
+    '/images/essentials/screen-protector.jpg',
+    '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
+    '/images/products/parcel-tray/parcel-tray-temporary-lifestyle.png',
+    '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
+  ].includes(sourcePath);
 
 test('draft content is structurally valid and exposes launch warnings', () => {
   const issues = validateProductContent(products, productMediaManifest, {
@@ -347,22 +353,66 @@ test('product pages use only approved media and remain non-indexable until launc
   );
 });
 
-test('Parcel Tray evidence media remains identifiable but non-renderable until final assets arrive', () => {
+test('Parcel Tray media uses approved temporary visuals and disclosed prototype evidence', () => {
+  const parcelTrayDetail = getProductDetailMediaItem('parcel-tray');
   const parcelTrayEvidence = productMediaManifest.filter(
     (media) => media.productId === 'parcel-tray' && media.evidenceOnly === true,
   );
 
+  assert.equal(parcelTrayDetail.mediaId, 'parcel-tray-temporary-hero');
+  assert.equal(parcelTrayDetail.disclosure, 'Representative visualisation');
+  assert.equal(
+    parcelTrayDetail.desktopImage,
+    '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
+  );
   assert.deepEqual(
     parcelTrayEvidence.map((media) => media.lifecycleStatus),
-    ['temporary', 'temporary', 'temporary'],
+    ['temporary'],
+  );
+  assert.equal(parcelTrayEvidence[0]?.id, 'parcel-tray-prototype-installed');
+  assert.equal(
+    parcelTrayEvidence[0]?.sourcePath,
+    '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
   );
   assert.equal(
-    parcelTrayEvidence.every((media) => media.sourcePath === null),
+    parcelTrayEvidence[0]?.caption,
+    'Prototype installed during product development.',
+  );
+  assert.equal(
+    parcelTrayEvidence[0]?.disclosure,
+    'Development evidence · Prototype photography',
+  );
+  assert.equal(
+    getApprovedProductMedia('parcel-tray', 'product-gallery').length,
+    2,
+  );
+  assert.equal(
+    getApprovedProductMedia('parcel-tray', 'product-gallery').some(
+      (media) => media.id === 'parcel-tray-temporary-lifestyle',
+    ),
     true,
+  );
+  assert.equal(
+    productMediaManifest.some((media) => media.id.includes('infographic')),
+    false,
+  );
+  assert.equal(
+    getProductPageContent(
+      products.find((product) => product.id === 'parcel-tray'),
+    ).careInstructions,
+    'Clean using a soft, damp cloth. Use a mild automotive interior cleaner only when required. Avoid abrasive pads, harsh chemicals and strong solvents. Dry before reinstalling, and inspect the support strings periodically for wear or damage.',
   );
   assert.equal(
     parcelTrayEvidence.some(
       (media) => media.rightsStatus === 'user-confirmed-commercial-use',
+    ),
+    false,
+  );
+  assert.equal(
+    productMediaManifest.some(
+      (media) =>
+        media.id === 'parcel-tray-temporary-hero' &&
+        media.rightsStatus === 'user-confirmed-commercial-use',
     ),
     true,
   );

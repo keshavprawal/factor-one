@@ -364,7 +364,9 @@ export const products = [
     installationMethod: approved('Self-installation'),
     installationDifficulty: pending(),
     estimatedInstallationTime: pending(),
-    careInstructions: pending(),
+    careInstructions: approved(
+      'Clean using a soft, damp cloth. Use a mild automotive interior cleaner only when required. Avoid abrasive pads, harsh chemicals and strong solvents. Dry before reinstalling, and inspect the support strings periodically for wear or damage.',
+    ),
     warranty: approved({
       durationMonths: 12,
       summary:
@@ -392,9 +394,9 @@ export const products = [
       'parcel-tray-homepage-hero',
       'parcel-tray-homepage-featured',
       'parcel-tray-vf7-featured',
-      'parcel-tray-founder-prototype-evidence',
-      'parcel-tray-cad-development-evidence',
-      'parcel-tray-gemini-visualisation',
+      'parcel-tray-temporary-hero',
+      'parcel-tray-temporary-lifestyle',
+      'parcel-tray-prototype-installed',
     ],
     seo: approved({
       title: 'VF7 Parcel Tray with Extended Rear Coverage | Factor One',
