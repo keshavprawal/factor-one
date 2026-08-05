@@ -171,11 +171,13 @@ test('production routes, crawl controls and security headers are ready', async (
     for (const policySlug of [
       'warranty',
       'returns',
+      'cancellation',
       'shipping',
       'installation',
       'contact',
       'privacy',
       'terms',
+      'faq',
     ]) {
       const policyResponse = await fetch(`${baseUrl}/ownership/${policySlug}`);
       const policy = await policyResponse.text();
@@ -190,12 +192,47 @@ test('production routes, crawl controls and security headers are ready', async (
     const warrantyResponse = await fetch(`${baseUrl}/ownership/warranty`);
     const warranty = await warrantyResponse.text();
 
-    assert.match(warranty, /12-Month Limited Manufacturer Warranty/);
-    assert.match(warranty, /Misuse, accidental damage or overloading/);
+    assert.match(warranty, /Limited Warranty Policy/);
+    assert.match(warranty, /12 months from delivery/);
+    assert.match(warranty, /Accidental damage, misuse or excessive loading/);
+
+    const returnsResponse = await fetch(`${baseUrl}/ownership/returns`);
+    const returns = await returnsResponse.text();
+
+    assert.match(returns, /within 7 calendar days of delivery/);
+    assert.match(returns, /70% of the product price/);
+
+    const shippingResponse = await fetch(`${baseUrl}/ownership/shipping`);
+    const shipping = await shippingResponse.text();
+
+    assert.match(shipping, /Free standard shipping on all orders/);
+    assert.match(shipping, /Orders are prepaid only/);
+    assert.match(shipping, /Cash on delivery is not available/);
+
+    const contactResponse = await fetch(`${baseUrl}/ownership/contact`);
+    const contact = await contactResponse.text();
+
+    assert.match(contact, /mailto:contact@factorone\.in/);
+
+    const parcelTrayResponse = await fetch(`${baseUrl}/products/parcel-tray`);
+    const parcelTray = await parcelTrayResponse.text();
+
+    assert.equal(parcelTrayResponse.status, 200);
+    assert.match(parcelTray, /VF7 Parcel Tray/);
+    assert.match(parcelTray, /₹2,999/);
+    assert.match(parcelTray, /Launch date:[\s\S]{0,100}15 August 2026/);
+    assert.match(parcelTray, /Verified/);
+    assert.match(parcelTray, /VinFast VF7 \(2025 onwards\)/);
+    assert.match(parcelTray, /Earth, Wind, Wind Infinity, Sky, Sky Infinity/);
+    assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
+    assert.doesNotMatch(parcelTray, /Dimensions/);
+    assert.doesNotMatch(parcelTray, /noise dampening/i);
+    assert.doesNotMatch(parcelTray, /load capacity/i);
+    assert.match(parcelTray, /name="robots" content="noindex, nofollow"/);
+    assert.doesNotMatch(parcelTray, /application\/ld\+json/);
 
     for (const productSlug of [
       'screen-guard',
-      'parcel-tray',
       'rear-door-mud-guard',
       'bumper-mud-guard',
       'door-visor',

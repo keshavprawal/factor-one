@@ -19,7 +19,8 @@ export type ProductMediaRightsStatus =
   | 'unknown'
   | 'owned'
   | 'official'
-  | 'licensed';
+  | 'licensed'
+  | 'user-confirmed-commercial-use';
 
 export type ProductMediaApprovalStatus = 'pending' | 'approved' | 'rejected';
 
@@ -30,6 +31,7 @@ export interface ProductMediaAsset {
   approvalStatus: ProductMediaApprovalStatus;
   aspectRatio: '1:1' | '4:3' | '16:9';
   credit: string | null;
+  evidenceOnly?: boolean;
   focalPoint: string;
   id: string;
   intendedPlacement: ProductMediaPlacement;
@@ -235,6 +237,55 @@ export const productMediaManifest = [
     rightsStatus: 'unknown',
     approvalStatus: 'pending',
     lifecycleStatus: 'missing',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-founder-prototype-evidence',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-detail',
+    viewport: 'all',
+    sourcePath: null,
+    aspectRatio: '4:3',
+    altText:
+      'Founder-owned prototype photograph of the VF7 Parcel Tray during development',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-cad-development-evidence',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-gallery',
+    viewport: 'all',
+    sourcePath: null,
+    aspectRatio: '4:3',
+    altText: 'CAD development evidence for the VF7 Parcel Tray',
+    sourceName: 'Factor One-authorized CAD development evidence',
+    credit: 'Manufacturer-supplied / Factor One-authorized',
+    evidenceOnly: true,
+    rightsStatus: 'official',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-gemini-visualisation',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-gallery',
+    viewport: 'all',
+    sourcePath: null,
+    aspectRatio: '4:3',
+    altText: 'Gemini-generated visualisation of the VF7 Parcel Tray concept',
+    sourceName: 'Gemini-generated visualisation',
+    credit: 'Factor One',
+    evidenceOnly: true,
+    rightsStatus: 'user-confirmed-commercial-use',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
     focalPoint: 'center',
   },
   {

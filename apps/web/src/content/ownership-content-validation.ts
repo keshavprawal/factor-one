@@ -41,7 +41,8 @@ export function validateOwnershipContent(
       (section) =>
         !section.heading.trim() ||
         (!section.paragraphs?.some((paragraph) => paragraph.trim()) &&
-          !section.items?.some((item) => item.trim())),
+          !section.items?.some((item) => item.trim())) ||
+        section.links?.some((link) => !link.href.trim() || !link.label.trim()),
     );
 
     if (

@@ -103,6 +103,7 @@ export function validateProductContent(
       ['installation difficulty', product.installationDifficulty],
       ['estimated installation time', product.estimatedInstallationTime],
       ['care instructions', product.careInstructions],
+      ['launch date', product.launchDate],
       ['warranty', product.warranty],
       ['honest limitations', product.honestLimitations],
       ['price', product.price],
@@ -142,6 +143,19 @@ export function validateProductContent(
       issues.push({
         code: 'INVALID_PRODUCT_SLUG',
         message: `Product slug "${product.slug}" is not URL-safe.`,
+        productId: product.id,
+        severity: 'error',
+      });
+    }
+
+    if (
+      product.launchDate.status === 'approved' &&
+      product.launchDate.value !== null &&
+      !/^\d{4}-\d{2}-\d{2}$/.test(product.launchDate.value.date)
+    ) {
+      issues.push({
+        code: 'INVALID_LAUNCH_DATE',
+        message: 'Approved launch dates must use the ISO YYYY-MM-DD format.',
         productId: product.id,
         severity: 'error',
       });
@@ -281,7 +295,11 @@ export function validateProductContent(
     if (
       product.seo.status === 'approved' &&
       (!product.seo.value?.title.trim() ||
-        !product.seo.value?.description.trim())
+        !product.seo.value?.description.trim() ||
+        (product.seo.value?.openGraphTitle !== undefined &&
+          !product.seo.value.openGraphTitle.trim()) ||
+        (product.seo.value?.openGraphDescription !== undefined &&
+          !product.seo.value.openGraphDescription.trim()))
     ) {
       issues.push({
         code: 'INVALID_SEO_METADATA',
@@ -389,13 +407,31 @@ export function validateProductContent(
       });
     }
 
+    const isUnrenderableEvidenceRecord =
+      media.evidenceOnly &&
+      media.lifecycleStatus === 'temporary' &&
+      !media.sourcePath;
+
     if (
-      (media.lifecycleStatus === 'missing' && media.sourcePath) ||
-      (media.lifecycleStatus !== 'missing' && !media.sourcePath)
+      !isUnrenderableEvidenceRecord &&
+      ((media.lifecycleStatus === 'missing' && media.sourcePath) ||
+        (media.lifecycleStatus !== 'missing' && !media.sourcePath))
     ) {
       issues.push({
         code: 'MEDIA_STATE_MISMATCH',
         message: `Media "${media.id}" lifecycle status does not match whether a source path exists.`,
+        productId: media.productId,
+        severity: 'error',
+      });
+    }
+
+    if (
+      media.evidenceOnly &&
+      (media.lifecycleStatus !== 'temporary' || Boolean(media.sourcePath))
+    ) {
+      issues.push({
+        code: 'INVALID_EVIDENCE_MEDIA',
+        message: `Evidence-only media "${media.id}" must remain temporary without a renderable source path.`,
         productId: media.productId,
         severity: 'error',
       });

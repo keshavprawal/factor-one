@@ -1,17 +1,25 @@
 export type OwnershipPolicyId =
   | 'warranty'
   | 'returns'
+  | 'cancellation'
   | 'shipping'
   | 'installation'
   | 'contact'
   | 'privacy'
-  | 'terms';
+  | 'terms'
+  | 'faq';
 
 export type OwnershipPublicationStatus = 'approved' | 'provisional';
+
+export interface OwnershipPolicyLink {
+  href: string;
+  label: string;
+}
 
 export interface OwnershipPolicySection {
   heading: string;
   items?: readonly string[];
+  links?: readonly OwnershipPolicyLink[];
   paragraphs?: readonly string[];
 }
 
@@ -20,17 +28,21 @@ export interface OwnershipPolicy {
   id: OwnershipPolicyId;
   publicationStatus: OwnershipPublicationStatus;
   sections: readonly OwnershipPolicySection[];
-  slug: string;
+  slug: OwnershipPolicyId;
   title: string;
+}
+
+function ownershipPath(slug: OwnershipPolicyId) {
+  return `/ownership/${slug}` as const;
 }
 
 export const ownershipPolicies = [
   {
     id: 'warranty',
     slug: 'warranty',
-    title: 'Warranty Policy',
+    title: 'Limited Warranty Policy',
     description:
-      'How Factor One handles manufacturing defects and warranty claims.',
+      'The limited warranty, what it covers and how Factor One assesses claims.',
     publicationStatus: 'approved',
     sections: [
       {
@@ -47,18 +59,17 @@ export const ownershipPolicies = [
         ],
       },
       {
-        heading: 'How a claim is reviewed',
+        heading: 'How a claim is assessed',
         paragraphs: [
-          'Photographic or video evidence may be requested, and an inspection may be required. Warranty claims are subject to inspection and approval by Factor One.',
-          'Coverage applies only where Factor One reasonably determines that the issue falls within this policy.',
+          'Photographs, video or an inspection may be requested. Warranty claims are subject to inspection and approval by Factor One. Coverage applies only where Factor One reasonably determines that the issue falls within this warranty policy.',
         ],
       },
       {
         heading: 'What is not covered',
         items: [
-          'Misuse, accidental damage or overloading.',
+          'Accidental damage, misuse or excessive loading.',
           'Modification, unauthorised repair, cutting, drilling or other alteration unless explicitly instructed by Factor One.',
-          'Abnormal heat, chemicals, incompatible use, ordinary wear or vehicle accidents.',
+          'Abnormal heat, chemicals, incompatible use, normal wear or vehicle accidents.',
         ],
       },
       {
@@ -66,6 +77,9 @@ export const ownershipPolicies = [
         paragraphs: [
           'This policy does not limit statutory consumer rights that apply to you.',
           'Damage on arrival is handled separately under the Returns & Refunds Policy.',
+        ],
+        links: [
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
         ],
       },
     ],
@@ -75,33 +89,72 @@ export const ownershipPolicies = [
     slug: 'returns',
     title: 'Returns & Refunds Policy',
     description:
-      'How Factor One reviews damaged, defective, incorrect and discretionary returns.',
-    publicationStatus: 'provisional',
+      'How Factor One handles damaged, defective, incorrect and change-of-mind returns.',
+    publicationStatus: 'approved',
     sections: [
       {
-        heading: 'Damaged, defective or incorrect items',
+        heading: 'Damaged, defective or incorrect products',
         paragraphs: [
-          'If an item arrives damaged, is defective or is incorrect, contact Factor One with your order number and clear photographs or video. Eligible issues will receive a full remedy under the applicable policy after review.',
+          'Report a damaged, defective or incorrect product within 7 calendar days of delivery. Include your order details and supporting evidence.',
+          'After verification, the appropriate full remedy may include replacement, repair or refund. The discretionary return rule below does not apply to damaged, defective or incorrect products.',
         ],
       },
       {
-        heading: 'Discretionary returns',
+        heading: 'Discretionary change-of-mind returns',
         paragraphs: [
-          'A discretionary return may be considered within the applicable return window once that window is approved and published. Returned items must be unused, in original condition and include their original packaging.',
-          'Return shipping may be the customer’s responsibility unless the item is damaged, defective or incorrect. A return is inspected before any refund is issued.',
+          'A discretionary return may be considered only when requested within 7 calendar days and the product passes inspection.',
+        ],
+        items: [
+          'The product is unused, has not been installed and has not been modified.',
+          'All parts and accessories are included.',
+          'The original packaging is retained.',
         ],
       },
       {
-        heading: 'Refund adjustments',
+        heading: 'Refund and return shipping',
         paragraphs: [
-          'Delivery, packaging and handling costs may not be fully recoverable for a discretionary return. A partial refund may therefore apply after inspection.',
-          'Founder-policy content: any percentage-based deduction will be approved and published separately before launch.',
+          'For an approved discretionary return, the refund is 70% of the product price. Return shipping is paid by the customer.',
+          'Delivery, packaging, payment processing, inspection, restocking and handling costs may be non-recoverable. This is why an approved discretionary return may receive a partial refund.',
         ],
       },
       {
-        heading: 'Your statutory rights',
+        heading: 'Our approach',
         paragraphs: [
+          'Our goal is not to avoid returns—it is to help customers make informed purchasing decisions so returns are rarely necessary.',
           'Nothing in this policy removes statutory rights that apply to you.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'cancellation',
+    slug: 'cancellation',
+    title: 'Order Cancellation Policy',
+    description:
+      'What to do when an order needs to be cancelled or was placed by mistake.',
+    publicationStatus: 'approved',
+    sections: [
+      {
+        heading: 'Before dispatch',
+        paragraphs: [
+          'An order can be cancelled in full and refunded when it can still be stopped before dispatch. There is no cancellation fee before dispatch.',
+          'Cancellation cannot be guaranteed once packing or dispatch processing has begun.',
+        ],
+      },
+      {
+        heading: 'After dispatch',
+        paragraphs: [
+          'Dispatched or delivered orders fall under the Returns & Refunds Policy.',
+          'Duplicate or mistaken orders should be reported immediately so Factor One can review whether they can still be stopped.',
+        ],
+        links: [
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
+        ],
+      },
+      {
+        heading: 'Refund method',
+        paragraphs: [
+          'Refunds use the original payment method where reasonably possible.',
         ],
       },
     ],
@@ -109,34 +162,40 @@ export const ownershipPolicies = [
   {
     id: 'shipping',
     slug: 'shipping',
-    title: 'Shipping Policy',
+    title: 'Shipping & Delivery Policy',
     description:
-      'What to expect from order processing, dispatch, delivery and parcel issues.',
-    publicationStatus: 'provisional',
+      'Free standard shipping, delivery expectations and help when a parcel needs attention.',
+    publicationStatus: 'approved',
     sections: [
       {
-        heading: 'Processing and dispatch',
-        paragraphs: [
-          'Order processing and dispatch estimates will be shown when they are operationally approved. Factor One does not currently publish a courier partner, exact dispatch time or delivery estimate.',
+        heading: 'Shipping and payment',
+        items: [
+          'Free standard shipping on all orders.',
+          'Delivery is available to serviceable Indian PIN codes.',
+          'Orders are prepaid only. Cash on delivery is not available.',
         ],
       },
       {
-        heading: 'Delivery and tracking',
+        heading: 'Processing and delivery',
         paragraphs: [
-          'Serviceability, delivery estimates and tracking availability depend on the delivery address and approved delivery service. These details will be confirmed before products are offered for purchase.',
+          'Processing and dispatch usually take 2–4 business days. Estimated delivery after dispatch is 3–8 business days.',
+          'These delivery estimates are not guarantees. Tracking details are provided after dispatch where available.',
         ],
       },
       {
-        heading: 'Addresses and receiving your parcel',
+        heading: 'Address and delivery responsibility',
         paragraphs: [
-          'Customers are responsible for providing an accurate delivery address and for receiving the parcel. Contact Factor One promptly if delivery details need to be reviewed.',
+          'Customers are responsible for providing an accurate delivery address and for receiving the parcel. Delivery attempts, returned shipments, remote or restricted locations may affect delivery timing or serviceability.',
         ],
       },
       {
-        heading: 'Delayed, failed or damaged deliveries',
+        heading: 'Delayed, lost, damaged or incorrect deliveries',
         paragraphs: [
-          'If a parcel is delayed, fails to arrive or appears damaged, retain the packaging where possible and contact Factor One with your order details and supporting photographs or video.',
-          'Carrier disruption, severe weather and other events outside Factor One’s reasonable control may affect delivery timing.',
+          'Courier delays and events outside Factor One’s reasonable control may affect delivery timing. If a shipment is lost, damaged, partial or incorrect, retain the packaging where possible and contact Factor One with your order details and supporting evidence.',
+        ],
+        links: [
+          { href: ownershipPath('contact'), label: 'Contact & Claims Support' },
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
         ],
       },
     ],
@@ -144,28 +203,42 @@ export const ownershipPolicies = [
   {
     id: 'installation',
     slug: 'installation',
-    title: 'Installation and Usage Guidance',
+    title: 'Installation & Usage Guidance',
     description:
-      'General guidance for using approved Factor One product instructions safely.',
+      'General guidance for fitting, checking and caring for Factor One accessories.',
     publicationStatus: 'approved',
     sections: [
       {
-        heading: 'Follow the product instructions',
-        paragraphs: [
-          'Follow only the product-specific instructions supplied with an approved Factor One product. General guidance does not replace instructions for a particular product.',
+        heading: 'Before installation',
+        items: [
+          'Confirm compatibility before installation and inspect the product before fitting.',
+          'Follow the product-specific instructions supplied for your product.',
+          'Use professional help where needed.',
         ],
       },
       {
-        heading: 'Use listed compatibility',
-        paragraphs: [
-          'Use a product only with cars listed as compatible. Stop installation if fitment appears incorrect.',
+        heading: 'Fit carefully',
+        items: [
+          'Do not force, cut, drill, heat, reshape or modify a product or your car unless Factor One explicitly instructs you to do so.',
+          'Protect vehicle trim, electrical components, sensors and safety systems during installation.',
+          'Check product and vehicle operation after installation, then perform an initial driving check.',
         ],
       },
       {
-        heading: 'Do not force or modify',
+        heading: 'Use and care',
+        items: [
+          'Periodically inspect installed accessories.',
+          'Follow product-specific cleaning instructions.',
+          'Stop use if you notice looseness, cracking, interference or abnormal behaviour.',
+        ],
+      },
+      {
+        heading: 'Warranty coverage',
         paragraphs: [
-          'Do not force, cut, drill or modify a product or your car unless Factor One explicitly instructs you to do so. Seek assistance where required.',
-          'Improper installation or misuse may affect warranty coverage.',
+          'Misuse or incorrect installation may affect warranty coverage.',
+        ],
+        links: [
+          { href: ownershipPath('warranty'), label: 'Limited Warranty Policy' },
         ],
       },
     ],
@@ -173,29 +246,38 @@ export const ownershipPolicies = [
   {
     id: 'contact',
     slug: 'contact',
-    title: 'Contact and Claims Support',
+    title: 'Contact & Claims Support',
     description:
-      'What to send Factor One when you need help with an order or product issue.',
-    publicationStatus: 'provisional',
+      'Contact Factor One about products, orders, claims, suggestions or business enquiries.',
+    publicationStatus: 'approved',
     sections: [
+      {
+        heading: 'How to contact us',
+        paragraphs: [
+          'Email contact@factorone.in for general product and compatibility enquiries, warranty and return claims, shipping issues, product suggestions, and business or dealer enquiries.',
+          'Most enquiries receive a response within 1–2 business days.',
+        ],
+        links: [
+          {
+            href: 'mailto:contact@factorone.in',
+            label: 'contact@factorone.in',
+          },
+        ],
+      },
       {
         heading: 'What to include',
         items: [
-          'Your order number or invoice.',
+          'Your full name.',
+          'Order number or invoice.',
+          'Vehicle model and variant where relevant.',
           'A clear description of the issue.',
-          'Relevant photographs or video.',
+          'Photographs or video where appropriate.',
         ],
       },
       {
         heading: 'What happens next',
         paragraphs: [
-          'Factor One will review the information provided and may request further evidence or an inspection where needed. The appropriate warranty, returns or shipping process will then be confirmed.',
-        ],
-      },
-      {
-        heading: 'Contact channel',
-        paragraphs: [
-          'The preferred support contact channel is pending founder approval and will be published before launch. This page does not provide a contact form or claims portal.',
+          'Factor One will review the information provided and may request further evidence or an inspection where needed. The relevant warranty, returns or shipping process will then be confirmed.',
         ],
       },
     ],
@@ -204,14 +286,40 @@ export const ownershipPolicies = [
     id: 'privacy',
     slug: 'privacy',
     title: 'Privacy Policy',
-    description: 'A provisional placeholder for approved privacy information.',
+    description:
+      'A plain-language overview of how Factor One handles information needed for products and ownership support.',
     publicationStatus: 'provisional',
     sections: [
       {
-        heading: 'Provisional policy',
+        heading: 'Information we collect',
         paragraphs: [
-          'This is a repository-driven placeholder for the final Privacy Policy. Factor One will publish approved information about personal-data handling before launch.',
-          'No company registration details, addresses, legal entity names, payment processors or data-practice claims are stated here because they have not been canonically confirmed.',
+          'Factor One collects only information reasonably required to provide products, services and the ownership experience. This may include your name, email, phone number, address, orders, vehicle information, warranty claims, support communications and necessary website data.',
+          'Factor One does not sell personal information.',
+        ],
+      },
+      {
+        heading: 'How information is used',
+        paragraphs: [
+          'Information may be used for order fulfilment, payment, delivery, compatibility, support, warranty, fraud prevention, legal compliance and service improvement.',
+        ],
+      },
+      {
+        heading: 'My Garage and browser storage',
+        paragraphs: [
+          'My Garage currently stores selected-car and installed-product identifiers locally in your browser. Browser-local Garage data is not currently synchronized to Factor One servers.',
+        ],
+      },
+      {
+        heading: 'Cookies, security and your choices',
+        paragraphs: [
+          'Cookies and third-party services will be described only where they are actually used. Factor One uses reasonable security measures but cannot guarantee absolute security.',
+          'Where applicable, you may request correction or deletion of your information by contacting Factor One. This policy may be updated as practices change.',
+        ],
+        links: [
+          {
+            href: 'mailto:contact@factorone.in',
+            label: 'contact@factorone.in',
+          },
         ],
       },
     ],
@@ -219,15 +327,193 @@ export const ownershipPolicies = [
   {
     id: 'terms',
     slug: 'terms',
-    title: 'Terms & Conditions',
-    description: 'A provisional placeholder for approved terms and conditions.',
+    title: 'Terms of Sale & Website Use',
+    description:
+      'The provisional terms that govern Factor One products, orders and website use.',
     publicationStatus: 'provisional',
     sections: [
       {
-        heading: 'Provisional policy',
+        heading: 'Products and orders',
         paragraphs: [
-          'This is a repository-driven placeholder for the final Terms & Conditions. Final terms will be reviewed and published before products are offered for purchase.',
-          'No company registration details, addresses, legal entity names, payment processors or commercial terms are stated here because they have not been canonically confirmed.',
+          'Factor One supplies vehicle-specific automotive accessories. Order acceptance occurs after payment, verification and dispatch confirmation. Product availability and pricing may change, and pricing errors may be corrected before an order is accepted.',
+          'Customers are responsible for accurate vehicle and delivery information. Orders are prepaid and cash on delivery is not available.',
+        ],
+      },
+      {
+        heading: 'Policies and product information',
+        paragraphs: [
+          'Shipping, cancellation, returns and warranty are governed by the linked policies. Product information may include reasonable tolerances and clearly labelled temporary or prototype imagery.',
+          'Customers should use Factor One compatibility information and tools before installation or purchase where applicable.',
+        ],
+        links: [
+          {
+            href: ownershipPath('shipping'),
+            label: 'Shipping & Delivery Policy',
+          },
+          {
+            href: ownershipPath('cancellation'),
+            label: 'Order Cancellation Policy',
+          },
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
+          { href: ownershipPath('warranty'), label: 'Limited Warranty Policy' },
+        ],
+      },
+      {
+        heading: 'Website use and intellectual property',
+        paragraphs: [
+          'Factor One content, trademarks and product information remain protected. Website use must not interfere with the service, misuse content or infringe intellectual-property rights. Third-party services remain subject to their own terms where they are used.',
+        ],
+      },
+      {
+        heading: 'Product improvements and legal terms',
+        paragraphs: [
+          'Factor One may improve products over time. Liability is limited to the extent permitted by applicable law. These terms are governed by the laws of India, with competent courts at Factor One’s registered place of business. Statutory consumer rights remain unaffected.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'faq',
+    slug: 'faq',
+    title: 'Ownership FAQ',
+    description:
+      'Quick answers about orders, delivery, returns, warranty, compatibility and product care.',
+    publicationStatus: 'approved',
+    sections: [
+      {
+        heading: 'Can I cancel an order?',
+        paragraphs: [
+          'Contact Factor One immediately. A full cancellation and refund may be possible before dispatch, but cannot be guaranteed once packing or dispatch processing has begun.',
+        ],
+        links: [
+          {
+            href: ownershipPath('cancellation'),
+            label: 'Order Cancellation Policy',
+          },
+        ],
+      },
+      {
+        heading: 'Can I change my delivery details?',
+        paragraphs: [
+          'Contact Factor One as soon as possible. Changes depend on whether the order can still be updated before dispatch.',
+        ],
+        links: [
+          { href: 'mailto:contact@factorone.in', label: 'Contact Factor One' },
+        ],
+      },
+      {
+        heading: 'Is shipping free and is cash on delivery available?',
+        paragraphs: [
+          'Standard shipping is free on all orders to serviceable Indian PIN codes. Orders are prepaid only; cash on delivery is not available.',
+        ],
+        links: [
+          {
+            href: ownershipPath('shipping'),
+            label: 'Shipping & Delivery Policy',
+          },
+        ],
+      },
+      {
+        heading: 'When will my order be dispatched and delivered?',
+        paragraphs: [
+          'Processing and dispatch usually take 2–4 business days. Estimated delivery after dispatch is 3–8 business days and is not guaranteed.',
+        ],
+        links: [
+          {
+            href: ownershipPath('shipping'),
+            label: 'Shipping & Delivery Policy',
+          },
+        ],
+      },
+      {
+        heading: 'Can I return a product?',
+        paragraphs: [
+          'Damaged, defective or incorrect products have a separate full-remedy process. A change-of-mind return may be considered within 7 calendar days when the product meets the policy conditions.',
+        ],
+        links: [
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
+        ],
+      },
+      {
+        heading: 'Why is a discretionary return refunded at 70%?',
+        paragraphs: [
+          'For an approved discretionary return, delivery, packaging, payment processing, inspection, restocking and handling costs may be non-recoverable. The policy therefore provides a 70% refund of the product price.',
+        ],
+        links: [
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
+        ],
+      },
+      {
+        heading: 'What if my product arrives damaged or incorrect?',
+        paragraphs: [
+          'Report the issue within 7 calendar days with order details and supporting evidence. After verification, the appropriate full remedy may include replacement, repair or refund.',
+        ],
+        links: [
+          { href: ownershipPath('returns'), label: 'Returns & Refunds Policy' },
+        ],
+      },
+      {
+        heading: 'Is there a warranty?',
+        paragraphs: [
+          'The Limited Warranty Policy covers manufacturing defects in materials or workmanship for 12 months from delivery, subject to its terms and assessment process.',
+        ],
+        links: [
+          { href: ownershipPath('warranty'), label: 'Limited Warranty Policy' },
+        ],
+      },
+      {
+        heading: 'How do I make a claim?',
+        paragraphs: [
+          'Email Factor One with your full name, order number or invoice, a description of the issue, and photographs or video where appropriate.',
+        ],
+        links: [
+          {
+            href: 'mailto:contact@factorone.in',
+            label: 'Contact & Claims Support',
+          },
+        ],
+      },
+      {
+        heading: 'How do I confirm compatibility?',
+        paragraphs: [
+          'Use the compatibility information listed for the product and confirm your car details before installation or purchase.',
+        ],
+        links: [{ href: '/compatibility', label: 'Vehicle Compatibility' }],
+      },
+      {
+        heading: 'Can I install a product myself?',
+        paragraphs: [
+          'Follow the product-specific instructions and seek professional help where needed. Do not force or modify a product or your car unless instructed.',
+        ],
+        links: [
+          {
+            href: ownershipPath('installation'),
+            label: 'Installation & Usage Guidance',
+          },
+        ],
+      },
+      {
+        heading: 'How should I care for a product?',
+        paragraphs: [
+          'Follow the product-specific cleaning instructions and periodically inspect installed accessories. Stop use if you notice looseness, cracking, interference or abnormal behaviour.',
+        ],
+        links: [
+          {
+            href: ownershipPath('installation'),
+            label: 'Installation & Usage Guidance',
+          },
+        ],
+      },
+      {
+        heading: 'How do I contact Factor One?',
+        paragraphs: [
+          'Email contact@factorone.in. Most enquiries receive a response within 1–2 business days.',
+        ],
+        links: [
+          {
+            href: 'mailto:contact@factorone.in',
+            label: 'contact@factorone.in',
+          },
         ],
       },
     ],
@@ -239,7 +525,7 @@ export const ownershipPolicyPaths = ownershipPolicies.map((policy) =>
 );
 
 export function getOwnershipPolicyPath(policy: Pick<OwnershipPolicy, 'slug'>) {
-  return `/ownership/${policy.slug}` as const;
+  return ownershipPath(policy.slug);
 }
 
 export function getOwnershipPolicy(slug: string) {

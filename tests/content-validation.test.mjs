@@ -267,22 +267,66 @@ test('product warranty summaries require approved canonical content', () => {
   assert.equal(getProductWarrantySummary(draftProduct), null);
 });
 
-test('Parcel Tray can project an approved 12-month warranty when its record is approved', () => {
-  const parcelTray = structuredClone(
-    products.find((product) => product.id === 'parcel-tray'),
-  );
-  parcelTray.warranty = {
-    status: 'approved',
-    value: {
-      durationMonths: 12,
-      summary: 'Covered against approved manufacturing defects.',
-    },
-  };
+test('Parcel Tray projects its approved 12-month warranty without affecting other products', () => {
+  const parcelTray = products.find((product) => product.id === 'parcel-tray');
 
+  assert.ok(parcelTray);
+  assert.deepEqual(getProductWarrantySummary(parcelTray), {
+    heading: '12-Month Limited Manufacturer Warranty',
+    summary:
+      'Covered against manufacturing defects in materials or workmanship for 12 months from delivery.',
+  });
+  assert.equal(getProductWarrantySummary(products[0]), null);
+});
+
+test('the VF7 Parcel Tray uses approved canonical content and verified compatibility', () => {
+  const parcelTray = products.find((product) => product.id === 'parcel-tray');
+
+  assert.ok(parcelTray);
+  assert.equal(parcelTray.name, 'VF7 Parcel Tray');
+  assert.equal(parcelTray.internalCode, 'FO-VF7-PT-001');
+  assert.equal(parcelTray.category, 'cargo-storage');
+  assert.deepEqual(getPublicContentValue(parcelTray.price), {
+    amountMinor: 299900,
+    currency: 'INR',
+  });
+  assert.deepEqual(getPublicContentValue(parcelTray.launchDate), {
+    date: '2026-08-15',
+    label: '15 August 2026',
+  });
+  assert.equal(parcelTray.availability.purchasable, false);
   assert.equal(
-    getProductWarrantySummary(parcelTray)?.heading,
-    '12-Month Limited Manufacturer Warranty',
+    parcelTray.vehicleCompatibility[0]?.verificationStatus,
+    'verified',
   );
+  assert.equal(parcelTray.vehicleCompatibility[0]?.yearStart, 2025);
+  assert.deepEqual(parcelTray.vehicleCompatibility[0]?.variants, [
+    'Earth',
+    'Wind',
+    'Wind Infinity',
+    'Sky',
+    'Sky Infinity',
+  ]);
+  assert.equal(parcelTray.vehicleCompatibility[0]?.evidence?.length, 5);
+  assert.equal('dimensions' in parcelTray, false);
+
+  const publicContent = JSON.stringify(getProductPageContent(parcelTray));
+  for (const prohibitedClaim of [
+    'noise dampening',
+    'acoustic',
+    'load capacity',
+    'impact resistance',
+    'UV resistance',
+    'security',
+    'perfect fit',
+    'OEM mounting',
+    'laser scanned',
+  ]) {
+    assert.doesNotMatch(
+      publicContent.toLowerCase(),
+      new RegExp(prohibitedClaim),
+    );
+  }
 });
 
 test('product pages use only approved media and remain non-indexable until launch-ready', () => {
@@ -300,6 +344,27 @@ test('product pages use only approved media and remain non-indexable until launc
   assert.equal(
     getProductStructuredData(products[0], new URL('https://example.com')),
     null,
+  );
+});
+
+test('Parcel Tray evidence media remains identifiable but non-renderable until final assets arrive', () => {
+  const parcelTrayEvidence = productMediaManifest.filter(
+    (media) => media.productId === 'parcel-tray' && media.evidenceOnly === true,
+  );
+
+  assert.deepEqual(
+    parcelTrayEvidence.map((media) => media.lifecycleStatus),
+    ['temporary', 'temporary', 'temporary'],
+  );
+  assert.equal(
+    parcelTrayEvidence.every((media) => media.sourcePath === null),
+    true,
+  );
+  assert.equal(
+    parcelTrayEvidence.some(
+      (media) => media.rightsStatus === 'user-confirmed-commercial-use',
+    ),
+    true,
   );
 });
 
@@ -396,7 +461,13 @@ test('compatibility results derive every product from the canonical registry', (
     products.map((product) => product.id),
   );
   assert.equal(
-    compatibilityVehicles[0].products.every(
+    compatibilityVehicles[0].products.find(
+      (product) => product.id === 'parcel-tray',
+    )?.status,
+    'verified',
+  );
+  assert.equal(
+    compatibilityVehicles[0].products.some(
       (product) => product.status === 'pending',
     ),
     true,
@@ -544,7 +615,12 @@ test('ownership policies are repository-driven and provisional policies stay non
   assert.equal(isOwnershipPolicyIndexable(privacy), false);
   assert.deepEqual(getIndexableOwnershipPolicyPaths(), [
     '/ownership/warranty',
+    '/ownership/returns',
+    '/ownership/cancellation',
+    '/ownership/shipping',
     '/ownership/installation',
+    '/ownership/contact',
+    '/ownership/faq',
   ]);
   assert.deepEqual(validateOwnershipContent(ownershipPolicies), []);
 });
@@ -568,11 +644,13 @@ test('ownership navigation stays centralized across the header and footer', () =
       '/ownership',
       '/ownership/warranty',
       '/ownership/returns',
+      '/ownership/cancellation',
       '/ownership/shipping',
       '/ownership/installation',
       '/ownership/contact',
       '/ownership/privacy',
       '/ownership/terms',
+      '/ownership/faq',
     ],
   );
 });
