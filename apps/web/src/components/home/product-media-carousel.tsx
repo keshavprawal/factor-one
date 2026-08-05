@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import {
   useEffect,
   useRef,
@@ -137,6 +138,12 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
                   {product.purpose}
                 </p>
               ) : null}
+              <Link
+                href={product.destination}
+                className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red mt-3 inline-flex min-h-11 items-center text-sm font-medium"
+              >
+                View product direction
+              </Link>
             </div>
           </article>
         ))}

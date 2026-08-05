@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getIndexableProductPaths } from '@/config/product-pages';
 import { getCanonicalSiteUrl, indexableSitePaths } from '@/config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -8,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return [];
   }
 
-  return indexableSitePaths.map((path) => ({
+  return [...indexableSitePaths, ...getIndexableProductPaths()].map((path) => ({
     url: new URL(path, canonicalSiteUrl).toString(),
   }));
 }

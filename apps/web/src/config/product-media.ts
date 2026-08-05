@@ -350,6 +350,61 @@ export function getProductMediaItem(
   };
 }
 
+function isApprovedProductMedia(media: ProductMediaAsset | undefined) {
+  return Boolean(
+    media?.sourcePath &&
+      media.approvalStatus === 'approved' &&
+      media.rightsStatus !== 'unknown' &&
+      media.lifecycleStatus !== 'missing',
+  );
+}
+
+export function getProductDetailMediaItem(
+  productId: ProductId,
+): ProductMediaItem {
+  const product = getProduct(productId);
+  const detailMedia = getProductMediaAssets(productId, 'product-detail');
+  const desktopMedia =
+    detailMedia.find(
+      (media) => media.viewport === 'desktop' && isApprovedProductMedia(media),
+    ) ??
+    detailMedia.find(
+      (media) => media.viewport === 'all' && isApprovedProductMedia(media),
+    );
+  const mobileMedia =
+    detailMedia.find(
+      (media) => media.viewport === 'mobile' && isApprovedProductMedia(media),
+    ) ??
+    detailMedia.find(
+      (media) => media.viewport === 'all' && isApprovedProductMedia(media),
+    );
+  const hasApprovedDetailMedia = Boolean(desktopMedia && mobileMedia);
+
+  return {
+    id: product.id,
+    mediaId: desktopMedia?.id ?? `product-${product.id}-fallback`,
+    name: product.name,
+    altText: hasApprovedDetailMedia
+      ? desktopMedia!.altText
+      : `${product.name} photography pending`,
+    desktopImage: desktopMedia?.sourcePath ?? undefined,
+    mobileImage: mobileMedia?.sourcePath ?? undefined,
+    mediaStatus: hasApprovedDetailMedia
+      ? desktopMedia!.lifecycleStatus === 'final' &&
+        mobileMedia!.lifecycleStatus === 'final'
+        ? 'approved'
+        : 'provisional'
+      : 'missing',
+    focalPoint: desktopMedia?.focalPoint ?? 'center',
+    fallbackVisual: productFallbackVisuals[product.id],
+    destination: getProductHref(product.id),
+    ...(product.availability.approvalStatus === 'approved'
+      ? { availability: product.availability.label }
+      : {}),
+    availabilityState: product.status,
+  };
+}
+
 export function getProductMediaItems(
   intendedPlacement: ProductMediaPlacement,
 ): readonly ProductMediaItem[] {

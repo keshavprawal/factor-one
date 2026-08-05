@@ -1,18 +1,17 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Container } from '@/components/layout/container';
 import { Grid } from '@/components/layout/grid';
 import type { ProductMediaAsset } from '@/config/product-media';
-import type { ContentField, Product } from '@/config/products';
+import { getProductHref } from '@/config/product-routes';
+import type { Product, ProductSpecification } from '@/config/products';
+import type { ProductPageContent } from '@/config/product-pages';
 
 export interface ProductDetailSectionsProps {
-  media: readonly ProductMediaAsset[];
-  product: Product;
-  relatedProducts?: readonly Product[];
-}
-
-function contentValue<T>(field: ContentField<T>): T | null {
-  return field.status === 'approved' ? field.value : null;
+  content: ProductPageContent;
+  galleryMedia: readonly ProductMediaAsset[];
+  relatedProducts: readonly Product[];
 }
 
 function DetailSection({
@@ -27,7 +26,7 @@ function DetailSection({
   return (
     <section
       id={id}
-      className="section-space"
+      className="section-space scroll-mt-24"
       aria-labelledby={`${id}-heading`}
     >
       <Container>
@@ -43,77 +42,69 @@ function DetailSection({
   );
 }
 
+function DefinitionList({
+  items,
+}: {
+  items: readonly { label: string; value: ReactNode }[];
+}) {
+  return (
+    <dl className="border-border max-w-3xl border-t">
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="border-border grid gap-2 border-b py-4 sm:grid-cols-2"
+        >
+          <dt className="font-medium">{item.label}</dt>
+          <dd className="text-muted-foreground">{item.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function specificationsToItems(
+  specifications: readonly ProductSpecification[],
+) {
+  return specifications.map((specification) => ({
+    label: specification.label,
+    value: `${specification.value}${
+      specification.unit ? ` ${specification.unit}` : ''
+    }`,
+  }));
+}
+
 export function ProductDetailSections({
-  media,
-  product,
-  relatedProducts = [],
+  content,
+  galleryMedia,
+  relatedProducts,
 }: ProductDetailSectionsProps) {
-  const shortDescription = contentValue(product.shortDescription);
-  const fullDescription = contentValue(product.fullDescription);
-  const problemSolved = contentValue(product.problemSolved);
-  const benefits = contentValue(product.keyBenefits);
-  const specifications = contentValue(product.specifications);
-  const materials = contentValue(product.materials);
-  const installationMethod = contentValue(product.installationMethod);
-  const installationDifficulty = contentValue(product.installationDifficulty);
-  const estimatedInstallationTime = contentValue(
-    product.estimatedInstallationTime,
-  );
-  const includedItems = contentValue(product.includedItems);
-  const warranty = contentValue(product.warranty);
-  const limitations = contentValue(product.honestLimitations);
-  const approvedGalleryMedia = media.filter(
-    (item) =>
-      item.productId === product.id &&
-      item.intendedPlacement === 'product-gallery' &&
-      item.sourcePath &&
-      item.approvalStatus === 'approved' &&
-      item.rightsStatus !== 'unknown',
-  );
-  const resolvedRelatedProducts = relatedProducts.filter((candidate) =>
-    product.relatedProductIds.includes(candidate.id),
-  );
-  const verifiedCompatibility = product.vehicleCompatibility.filter(
-    (compatibility) => compatibility.verificationStatus === 'verified',
-  );
   const hasInstallation =
-    installationMethod || installationDifficulty || estimatedInstallationTime;
+    content.installationMethod ||
+    content.installationDifficulty ||
+    content.estimatedInstallationTime;
 
   return (
     <>
-      <section className="section-space" aria-labelledby="product-heading">
-        <Container>
-          <div className="max-w-3xl">
-            <h1
-              id="product-heading"
-              className="text-balance text-5xl font-semibold tracking-[-0.055em] sm:text-6xl lg:text-7xl"
-            >
-              {product.name}
-            </h1>
-            {shortDescription ? (
-              <p className="text-muted-foreground mt-6 text-lg leading-8 sm:text-xl">
-                {shortDescription}
-              </p>
-            ) : null}
-          </div>
-        </Container>
-      </section>
-
-      {problemSolved || fullDescription ? (
-        <DetailSection id="problem-and-solution" title="Problem and solution">
-          <div className="max-w-3xl space-y-5 text-base leading-7 sm:text-lg sm:leading-8">
-            {problemSolved ? <p>{problemSolved}</p> : null}
-            {fullDescription ? (
-              <p className="text-muted-foreground">{fullDescription}</p>
-            ) : null}
-          </div>
+      {content.fullDescription ? (
+        <DetailSection id="overview" title="Overview">
+          <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg sm:leading-8">
+            {content.fullDescription}
+          </p>
         </DetailSection>
       ) : null}
 
-      {benefits?.length ? (
-        <DetailSection id="benefits" title="Benefits">
+      {content.problemSolved ? (
+        <DetailSection id="the-problem" title="The Problem">
+          <p className="max-w-3xl text-base leading-7 sm:text-lg sm:leading-8">
+            {content.problemSolved}
+          </p>
+        </DetailSection>
+      ) : null}
+
+      {content.keyBenefits?.length ? (
+        <DetailSection id="owner-benefits" title="Owner benefits">
           <ul className="grid gap-6 md:grid-cols-2">
-            {benefits.map((benefit) => (
+            {content.keyBenefits.map((benefit) => (
               <li
                 key={benefit}
                 className="border-border border-t pt-5 text-base leading-7"
@@ -125,66 +116,49 @@ export function ProductDetailSections({
         </DetailSection>
       ) : null}
 
-      {specifications?.length || materials?.length ? (
+      {content.specifications?.length ? (
         <DetailSection id="specifications" title="Specifications">
-          <dl className="border-border max-w-3xl border-t">
-            {specifications?.map((specification) => (
-              <div
-                key={specification.label}
-                className="border-border grid gap-2 border-b py-4 sm:grid-cols-2"
-              >
-                <dt className="font-medium">{specification.label}</dt>
-                <dd className="text-muted-foreground">
-                  {specification.value}
-                  {specification.unit ? ` ${specification.unit}` : ''}
-                </dd>
-              </div>
-            ))}
-            {materials?.length ? (
-              <div className="border-border grid gap-2 border-b py-4 sm:grid-cols-2">
-                <dt className="font-medium">Materials</dt>
-                <dd className="text-muted-foreground">
-                  {materials.join(', ')}
-                </dd>
-              </div>
-            ) : null}
-          </dl>
+          <DefinitionList
+            items={specificationsToItems(content.specifications)}
+          />
         </DetailSection>
       ) : null}
 
-      {verifiedCompatibility.length ? (
-        <DetailSection id="compatibility" title="Compatibility">
+      {content.materials?.length ? (
+        <DetailSection id="materials-and-finish" title="Materials and finish">
+          <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg sm:leading-8">
+            {content.materials.join(', ')}
+          </p>
+        </DetailSection>
+      ) : null}
+
+      {content.variants?.length ? (
+        <DetailSection id="variants" title="Options">
           <ul className="max-w-3xl space-y-3">
-            {verifiedCompatibility.map((compatibility) => (
-              <li
-                key={compatibility.vehicleId}
-                className="border-border border-b pb-3"
-              >
-                {compatibility.make} {compatibility.model}
-                {compatibility.years?.length
-                  ? ` — ${compatibility.years.join(', ')}`
-                  : ''}
+            {content.variants.map((variant) => (
+              <li key={variant.id} className="border-border border-b pb-3">
+                {variant.name}
               </li>
             ))}
           </ul>
         </DetailSection>
       ) : null}
 
-      {approvedGalleryMedia.length ? (
-        <DetailSection id="gallery" title="Gallery">
+      {galleryMedia.length ? (
+        <DetailSection id="product-gallery" title="Product gallery">
           <Grid columns={2} gap="lg">
-            {approvedGalleryMedia.map((item) => (
+            {galleryMedia.map((media) => (
               <figure
-                key={item.id}
+                key={media.id}
                 className="bg-muted relative aspect-[4/3] overflow-hidden"
               >
                 <Image
-                  src={item.sourcePath!}
-                  alt={item.altText}
+                  src={media.sourcePath!}
+                  alt={media.altText}
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover"
-                  style={{ objectPosition: item.focalPoint }}
+                  style={{ objectPosition: media.focalPoint }}
                 />
               </figure>
             ))}
@@ -194,75 +168,84 @@ export function ProductDetailSections({
 
       {hasInstallation ? (
         <DetailSection id="installation" title="Installation">
-          <dl className="border-border max-w-3xl border-t">
-            {installationMethod ? (
-              <div className="border-border grid gap-2 border-b py-4 sm:grid-cols-2">
-                <dt className="font-medium">Method</dt>
-                <dd className="text-muted-foreground">{installationMethod}</dd>
-              </div>
-            ) : null}
-            {installationDifficulty ? (
-              <div className="border-border grid gap-2 border-b py-4 sm:grid-cols-2">
-                <dt className="font-medium">Difficulty</dt>
-                <dd className="text-muted-foreground capitalize">
-                  {installationDifficulty}
-                </dd>
-              </div>
-            ) : null}
-            {estimatedInstallationTime ? (
-              <div className="border-border grid gap-2 border-b py-4 sm:grid-cols-2">
-                <dt className="font-medium">Estimated time</dt>
-                <dd className="text-muted-foreground">
-                  {estimatedInstallationTime.minimumMinutes}–
-                  {estimatedInstallationTime.maximumMinutes} minutes
-                </dd>
-              </div>
-            ) : null}
-          </dl>
+          <DefinitionList
+            items={[
+              ...(content.installationMethod
+                ? [{ label: 'Method', value: content.installationMethod }]
+                : []),
+              ...(content.installationDifficulty
+                ? [
+                    {
+                      label: 'Difficulty',
+                      value: content.installationDifficulty,
+                    },
+                  ]
+                : []),
+              ...(content.estimatedInstallationTime
+                ? [
+                    {
+                      label: 'Estimated time',
+                      value: `${content.estimatedInstallationTime.minimumMinutes}–${content.estimatedInstallationTime.maximumMinutes} minutes`,
+                    },
+                  ]
+                : []),
+            ]}
+          />
         </DetailSection>
       ) : null}
 
-      {includedItems?.length ? (
+      {content.includedItems?.length ? (
         <DetailSection id="included-items" title="Included items">
           <ul className="max-w-3xl list-disc space-y-2 pl-5">
-            {includedItems.map((item) => (
+            {content.includedItems.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </DetailSection>
       ) : null}
 
-      {warranty ? (
-        <DetailSection id="warranty" title="Warranty">
-          <p className="max-w-3xl text-base leading-7">{warranty.summary}</p>
+      {content.careInstructions ? (
+        <DetailSection id="care" title="Care">
+          <p className="max-w-3xl text-base leading-7">
+            {content.careInstructions}
+          </p>
         </DetailSection>
       ) : null}
 
-      {limitations?.length ? (
-        <DetailSection id="limitations" title="Limitations">
+      {content.warranty ? (
+        <DetailSection id="warranty" title="Warranty">
+          <p className="max-w-3xl text-base leading-7">
+            {content.warranty.summary}
+          </p>
+        </DetailSection>
+      ) : null}
+
+      {content.honestLimitations?.length ? (
+        <DetailSection id="honest-limitations" title="Honest limitations">
           <ul className="max-w-3xl list-disc space-y-2 pl-5">
-            {limitations.map((limitation) => (
+            {content.honestLimitations.map((limitation) => (
               <li key={limitation}>{limitation}</li>
             ))}
           </ul>
         </DetailSection>
       ) : null}
 
-      {resolvedRelatedProducts.length ? (
-        <DetailSection id="related-products" title="Related products">
+      {relatedProducts.length ? (
+        <DetailSection id="related-products" title="Often Installed Together">
           <Grid columns={3} gap="lg">
-            {resolvedRelatedProducts.map((relatedProduct) => (
+            {relatedProducts.map((relatedProduct) => (
               <article
                 key={relatedProduct.id}
                 className="border-border border-t pt-5"
               >
-                <h3 className="text-xl font-medium">{relatedProduct.name}</h3>
-                {relatedProduct.shortDescription.status === 'approved' &&
-                relatedProduct.shortDescription.value ? (
-                  <p className="text-muted-foreground mt-2 text-sm leading-6">
-                    {relatedProduct.shortDescription.value}
-                  </p>
-                ) : null}
+                <h3 className="text-xl font-medium tracking-[-0.03em]">
+                  <Link
+                    href={getProductHref(relatedProduct.id)}
+                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red"
+                  >
+                    {relatedProduct.name}
+                  </Link>
+                </h3>
               </article>
             ))}
           </Grid>

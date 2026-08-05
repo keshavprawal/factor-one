@@ -88,6 +88,7 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.equal(homeResponse.status, 200);
     assert.match(home, /<main[^>]+id="main-content"/);
     assert.match(home, /Accessories that belong on your car/);
+    assert.match(home, /href="\/products\/screen-guard"/);
     assert.match(home, /name="robots" content="noindex, nofollow"/);
     assert.doesNotMatch(home, /rel="canonical"/);
     assert.doesNotMatch(home, /application\/ld\+json/);
@@ -155,9 +156,37 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(compatibility, /Know what is listed for your car/);
     assert.match(compatibility, /Verification pending/);
     assert.match(compatibility, /href="\/garage"/);
-    assert.match(compatibility, /href="\/#product-screen-guard"/);
+    assert.match(compatibility, /href="\/products\/screen-guard"/);
     assert.match(compatibility, /name="robots" content="noindex, nofollow"/);
     assert.doesNotMatch(compatibility, /rel="canonical"/);
+
+    for (const productSlug of [
+      'screen-guard',
+      'parcel-tray',
+      'rear-door-mud-guard',
+      'bumper-mud-guard',
+      'door-visor',
+    ]) {
+      const productResponse = await fetch(`${baseUrl}/products/${productSlug}`);
+      const product = await productResponse.text();
+
+      assert.equal(productResponse.status, 200);
+      assert.match(product, /Photography pending/);
+      assert.match(product, /Verification pending/);
+      assert.match(product, /href="\/compatibility"/);
+      assert.match(product, /href="\/garage"/);
+      assert.match(product, /name="robots" content="noindex, nofollow"/);
+      assert.doesNotMatch(product, /rel="canonical"/);
+      assert.doesNotMatch(product, /application\/ld\+json/);
+    }
+
+    const unknownProductResponse = await fetch(
+      `${baseUrl}/products/not-a-product`,
+    );
+    const unknownProduct = await unknownProductResponse.text();
+
+    assert.equal(unknownProductResponse.status, 404);
+    assert.match(unknownProduct, /This page does not exist/);
 
     const notFoundResponse = await fetch(`${baseUrl}/not-a-real-route`);
     const notFound = await notFoundResponse.text();
