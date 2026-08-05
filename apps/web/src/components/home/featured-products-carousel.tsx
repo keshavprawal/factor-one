@@ -6,6 +6,7 @@ import { OwnerBuiltBadge } from '@/components/home/owner-built-badge';
 import { ProductMediaVisual } from '@/components/product/product-media-visual';
 import { Button } from '@/components/ui/button';
 import type { FeaturedProduct } from '@/config/homepage';
+import { getProductAnchor, getProductElementId } from '@/config/product-routes';
 import { cn } from '@/lib/utils';
 
 export interface FeaturedProductsCarouselProps {
@@ -42,7 +43,7 @@ export function FeaturedProductsCarousel({
   useEffect(() => {
     function activateHashProduct() {
       const index = products.findIndex(
-        (product) => `#product-${product.id}` === window.location.hash,
+        (product) => getProductAnchor(product.id) === window.location.hash,
       );
 
       if (index >= 0) {
@@ -114,7 +115,7 @@ export function FeaturedProductsCarousel({
         {products.map((product, index) => (
           <article
             key={product.id}
-            id={`product-${product.id}`}
+            id={getProductElementId(product.id)}
             data-product-index={index}
             className={cn(
               'motion-safe-transition w-[86%] shrink-0 snap-center snap-always scroll-mt-28 overflow-hidden rounded-lg bg-white transition-transform motion-reduce:transform-none motion-reduce:transition-none sm:w-[64%] lg:w-[46%] xl:w-[40%]',
@@ -126,9 +127,11 @@ export function FeaturedProductsCarousel({
             <div className="p-6 sm:p-8">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
-                    {product.availability}
-                  </p>
+                  {product.availability ? (
+                    <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.14em]">
+                      {product.availability}
+                    </p>
+                  ) : null}
                   <h3 className="mt-3 text-3xl font-medium tracking-[-0.045em]">
                     {product.name}
                   </h3>
@@ -137,9 +140,11 @@ export function FeaturedProductsCarousel({
                   <OwnerBuiltBadge count={product.ownerRequestCount} />
                 ) : null}
               </div>
-              <p className="text-muted-foreground mt-5 max-w-lg text-base leading-7">
-                {product.purpose}
-              </p>
+              {product.purpose ? (
+                <p className="text-muted-foreground mt-5 max-w-lg text-base leading-7">
+                  {product.purpose}
+                </p>
+              ) : null}
             </div>
           </article>
         ))}

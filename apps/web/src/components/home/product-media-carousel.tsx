@@ -124,15 +124,19 @@ export function ProductMediaCarousel({ products }: ProductMediaCarouselProps) {
               className="aspect-[4/3] rounded-lg"
             />
             <div className="px-1 pt-4">
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.13em]">
-                {product.availability}
-              </p>
+              {product.availability ? (
+                <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.13em]">
+                  {product.availability}
+                </p>
+              ) : null}
               <p className="mt-2 text-xl font-medium tracking-[-0.03em]">
                 {product.name}
               </p>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                {product.purpose}
-              </p>
+              {product.purpose ? (
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  {product.purpose}
+                </p>
+              ) : null}
             </div>
           </article>
         ))}

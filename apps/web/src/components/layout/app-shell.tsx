@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 import { Footer } from '@/components/layout/footer';
 import { Navbar } from '@/components/layout/navbar';
+import {
+  companyNavigation,
+  garageNavigation,
+  mobileNavigationSections,
+  productNavigation,
+} from '@/config/navigation';
 
 export interface AppShellProps {
   children: ReactNode;
@@ -17,7 +23,12 @@ export function AppShell({ children }: AppShellProps) {
         Skip to content
       </a>
       <div className="flex min-h-screen flex-col">
-        <Navbar />
+        <Navbar
+          companyNavigation={companyNavigation}
+          garageNavigation={garageNavigation}
+          mobileNavigationSections={mobileNavigationSections}
+          productNavigation={productNavigation}
+        />
         <main id="main-content" className="flex-1">
           {children}
         </main>

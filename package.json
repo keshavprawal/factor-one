@@ -9,11 +9,13 @@
   },
   "scripts": {
     "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
+    "build": "pnpm content:check && pnpm --filter web build",
     "start": "pnpm --filter web start",
     "lint": "pnpm --filter web lint",
     "typecheck": "pnpm --filter web typecheck",
-    "test": "pnpm build && node --test tests/production-smoke.test.mjs",
+    "test": "pnpm build && node --test tests/*.test.mjs",
+    "content:check": "pnpm --filter web content:check",
+    "content:check:launch": "pnpm --filter web content:check -- --strict",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

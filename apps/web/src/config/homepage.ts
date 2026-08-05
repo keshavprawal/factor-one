@@ -1,4 +1,8 @@
-import { productMedia, type ProductMediaItem } from '@/config/product-media';
+import {
+  getProductMediaItems,
+  type ProductMediaItem,
+} from '@/config/product-media';
+import { getProduct } from '@/config/products';
 
 export interface FeaturedProduct extends ProductMediaItem {
   ownerRequestCount?: number;
@@ -22,16 +26,20 @@ export interface RoadmapItem {
   title: string;
 }
 
-export const featuredProducts: readonly FeaturedProduct[] = productMedia.map(
-  (product) => ({
-    ...product,
-    ...(product.id === 'rear-door-mud-guard'
-      ? { ownerRequestCount: 67 }
-      : product.id === 'parcel-tray'
-        ? { ownerRequestCount: 184 }
+export const featuredProducts: readonly FeaturedProduct[] =
+  getProductMediaItems('homepage-featured').map((product) => {
+    const ownerBuiltBadge = getProduct(product.id).badges.find(
+      (badge) =>
+        badge.id === 'owner-built' && badge.approvalStatus === 'approved',
+    );
+
+    return {
+      ...product,
+      ...(ownerBuiltBadge?.ownerRequestCount
+        ? { ownerRequestCount: ownerBuiltBadge.ownerRequestCount }
         : {}),
-  }),
-);
+    };
+  });
 
 export const knowledgeTopics: readonly KnowledgeTopic[] = [
   {
@@ -91,7 +99,7 @@ export const roadmapItems: readonly RoadmapItem[] = [
     status: 'Research',
   },
   {
-    title: 'Rear Door Mud Guard',
+    title: getProduct('rear-door-mud-guard').name,
     raisedBy: 'Factor Lab',
     agreementCount: 67,
     status: 'Testing',

@@ -1,3 +1,6 @@
+import { getProductHref } from './product-routes';
+import { getProduct, type ProductId } from './products';
+
 export interface AvailableNavigationItem {
   href: string;
   id: string;
@@ -42,21 +45,7 @@ export interface NavigationSection {
   label: string;
 }
 
-export type ProductId =
-  | 'parcel-tray'
-  | 'screen-guard'
-  | 'door-visor'
-  | 'decals'
-  | 'rear-door-mud-guard'
-  | 'bumper-mud-guard';
-
-export function getProductAnchor(id: Exclude<ProductId, 'decals'>) {
-  return `#product-${id}` as const;
-}
-
-function getProductHref(id: Exclude<ProductId, 'decals'>) {
-  return `/${getProductAnchor(id)}` as const;
-}
+export type { ProductId };
 
 const home: AvailableNavigationItem = {
   href: '/',
@@ -74,17 +63,17 @@ export const productDestinations = {
   parcelTray: {
     href: getProductHref('parcel-tray'),
     id: 'parcel-tray',
-    label: 'Parcel Tray',
+    label: getProduct('parcel-tray').name,
   },
   screenGuard: {
     href: getProductHref('screen-guard'),
     id: 'screen-guard',
-    label: 'Screen Guard',
+    label: getProduct('screen-guard').name,
   },
   doorVisor: {
     href: getProductHref('door-visor'),
     id: 'door-visor',
-    label: 'Door Visor',
+    label: getProduct('door-visor').name,
   },
   decals: {
     id: 'decals',
@@ -94,12 +83,12 @@ export const productDestinations = {
   rearDoorMudGuard: {
     href: getProductHref('rear-door-mud-guard'),
     id: 'rear-door-mud-guard',
-    label: 'Rear Door Mud Guard',
+    label: getProduct('rear-door-mud-guard').name,
   },
   bumperMudGuard: {
     href: getProductHref('bumper-mud-guard'),
     id: 'bumper-mud-guard',
-    label: 'Bumper Mud Guard',
+    label: getProduct('bumper-mud-guard').name,
   },
 } as const;
 
@@ -170,22 +159,3 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
     label: 'Factor One',
   },
 ];
-
-export function isAvailableNavigationItem(
-  item: NavigationItem | NavigationLeaf,
-): item is AvailableNavigationItem {
-  return 'href' in item;
-}
-
-export function isGroupedNavigationItem(
-  item: NavigationItem,
-): item is GroupedNavigationItem {
-  return 'children' in item;
-}
-
-export function isCurrentNavigationItem(
-  item: AvailableNavigationItem,
-  pathname: string,
-) {
-  return item.href === pathname;
-}

@@ -312,6 +312,11 @@ export default function Home() {
                 We start with the problems people notice while living with the
                 same cars—not with a target catalogue size.
               </p>
+              <p className="border-border mt-8 border-t pt-6 text-lg font-medium leading-8">
+                Every product begins with the same question:
+                <br />
+                Why wasn’t this on the car already?
+              </p>
             </div>
 
             <div className="border-border border-t">

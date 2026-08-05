@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "isolatedModules": false,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noEmit": false,
+    "outDir": ".content-check",
+    "rootDir": ".",
+    "target": "ES2022"
+  },
+  "include": [
+    "scripts/content-check.ts",
+    "src/config/product-media.ts",
+    "src/config/product-routes.ts",
+    "src/config/products.ts",
+    "src/content/product-content-validation.ts"
+  ]
+}

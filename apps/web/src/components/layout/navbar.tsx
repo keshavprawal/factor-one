@@ -13,23 +13,36 @@ import {
 import { Wordmark } from '@/components/brand/wordmark';
 import { Container } from '@/components/layout/container';
 import { ScrollLink } from '@/components/ui/scroll-link';
-import {
-  companyNavigation,
-  garageNavigation,
-  isAvailableNavigationItem,
-  isCurrentNavigationItem,
-  isGroupedNavigationItem,
-  mobileNavigationSections,
-  productNavigation,
-  type AvailableNavigationItem,
-  type GroupedNavigationItem,
-  type NavigationItem,
-  type NavigationLeaf,
+import type {
+  AvailableNavigationItem,
+  GroupedNavigationItem,
+  NavigationItem,
+  NavigationLeaf,
+  NavigationSection,
 } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 
 const iconButtonClassName =
   'motion-safe-transition inline-flex size-11 items-center justify-center rounded-full text-foreground transition-[color,background-color,transform] hover:bg-black/5 focus-visible:bg-black/5 active:scale-[0.97] disabled:cursor-not-allowed motion-reduce:transform-none';
+
+function isAvailableNavigationItem(
+  item: NavigationItem | NavigationLeaf,
+): item is AvailableNavigationItem {
+  return 'href' in item;
+}
+
+function isGroupedNavigationItem(
+  item: NavigationItem,
+): item is GroupedNavigationItem {
+  return 'children' in item;
+}
+
+function isCurrentNavigationItem(
+  item: AvailableNavigationItem,
+  pathname: string,
+) {
+  return item.href === pathname;
+}
 
 interface NavigationItemLinkProps {
   className: string;
@@ -211,6 +224,7 @@ function DesktopNavigationGroup({
 }
 
 interface DesktopGarageMenuProps {
+  group: GroupedNavigationItem;
   isOpen: boolean;
   onClose: (restoreFocus?: boolean) => void;
   onOpen: () => void;
@@ -218,6 +232,7 @@ interface DesktopGarageMenuProps {
 }
 
 function DesktopGarageMenu({
+  group,
   isOpen,
   onClose,
   onOpen,
@@ -292,7 +307,7 @@ function DesktopGarageMenu({
             Account
           </p>
           <ul>
-            {garageNavigation.children.map((item) => (
+            {group.children.map((item) => (
               <li key={item.id}>
                 <UnavailableNavigationControl item={item} compact />
               </li>
@@ -304,7 +319,19 @@ function DesktopGarageMenu({
   );
 }
 
-export function Navbar() {
+export interface NavbarProps {
+  companyNavigation: readonly NavigationItem[];
+  garageNavigation: GroupedNavigationItem;
+  mobileNavigationSections: readonly NavigationSection[];
+  productNavigation: readonly NavigationItem[];
+}
+
+export function Navbar({
+  companyNavigation,
+  garageNavigation,
+  mobileNavigationSections,
+  productNavigation,
+}: NavbarProps) {
   const pathname = usePathname() ?? '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -499,6 +526,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-1">
           <DesktopGarageMenu
+            group={garageNavigation}
             isOpen={desktopGarageOpen}
             onOpen={() => {
               setDesktopProductMenuOpen(false);

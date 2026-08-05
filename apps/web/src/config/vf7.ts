@@ -1,45 +1,45 @@
 import { productDestinations } from '@/config/navigation';
+import { getProductHref } from '@/config/product-routes';
+import { getProductMediaItem } from '@/config/product-media';
+import {
+  getPublicContentValue,
+  getProduct,
+  type ProductId,
+} from '@/config/products';
 
-export const vf7FeaturedProducts = [
-  {
-    name: productDestinations.screenGuard.label,
-    description:
-      'A clear layer of protection for the central display and daily touch use.',
-    href: productDestinations.screenGuard.href,
-    image: '/images/essentials/screen-protector.jpg',
-    imageAlt: 'Screen guard positioned over a car display',
+const vf7FeaturedProductIds = [
+  'screen-guard',
+  'parcel-tray',
+  'rear-door-mud-guard',
+  'bumper-mud-guard',
+] as const satisfies readonly ProductId[];
+
+export const vf7FeaturedProducts = vf7FeaturedProductIds.map((productId) => {
+  const product = getProduct(productId);
+  const media = getProductMediaItem(productId, 'vehicle-featured');
+
+  const description = getPublicContentValue(product.shortDescription);
+
+  return {
+    name: product.name,
+    ...(description ? { description } : {}),
+    href: getProductHref(product.id),
+    ...(media.desktopImage && media.altText
+      ? { image: media.desktopImage, imageAlt: media.altText }
+      : {}),
     visualStatus:
-      'Repository product close-up — final VF7 photography pending.',
-  },
-  {
-    name: productDestinations.parcelTray.label,
-    description:
-      'A cargo-area solution shaped around the gap owners asked us to solve.',
-    href: productDestinations.parcelTray.href,
-    visualStatus: 'VF7 product photography pending.',
-  },
-  {
-    name: productDestinations.rearDoorMudGuard.label,
-    description:
-      'A product direction focused on the spray owners notice around the rear doors.',
-    href: productDestinations.rearDoorMudGuard.href,
-    visualStatus: 'VF7 product photography pending.',
-  },
-  {
-    name: productDestinations.bumperMudGuard.label,
-    description:
-      'A separate product direction for protection around the exposed bumper area.',
-    href: productDestinations.bumperMudGuard.href,
-    visualStatus: 'VF7 product photography pending.',
-  },
-] as const;
+      media.mediaStatus === 'missing'
+        ? 'VF7 product photography pending.'
+        : 'Repository product close-up — final VF7 photography pending.',
+  };
+});
 
 export const vf7Categories = [
   {
     name: 'Screen & Cabin',
     description:
       'Protection and details for the places you use inside the car.',
-    actionLabel: 'View Screen Guard',
+    actionLabel: `View ${productDestinations.screenGuard.label}`,
     products: [
       {
         name: productDestinations.screenGuard.label,
@@ -71,7 +71,7 @@ export const vf7Categories = [
   {
     name: 'Cargo & Storage',
     description: 'Purposeful solutions for the VF7 cargo area.',
-    actionLabel: 'View Parcel Tray',
+    actionLabel: `View ${productDestinations.parcelTray.label}`,
     products: [
       {
         name: productDestinations.parcelTray.label,
