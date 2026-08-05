@@ -33,6 +33,7 @@ const {
   getProductCanonicalPath,
   getProductPageContent,
   getProductStructuredData,
+  getProductWarrantySummary,
   getRelatedProducts,
   isApprovedProductMedia,
   isProductPageIndexable,
@@ -234,6 +235,54 @@ test('product page projections hide draft and pending fields', () => {
   assert.equal(content.fullDescription, null);
   assert.equal(content.price, null);
   assert.equal(content.warranty, null);
+});
+
+test('product warranty summaries require approved canonical content', () => {
+  const approvedProduct = structuredClone(products[0]);
+  approvedProduct.warranty = {
+    status: 'approved',
+    value: {
+      durationMonths: 12,
+      summary: 'Covered against approved manufacturing defects.',
+    },
+  };
+
+  assert.deepEqual(getProductWarrantySummary(approvedProduct), {
+    heading: '12-Month Limited Manufacturer Warranty',
+    summary: 'Covered against approved manufacturing defects.',
+  });
+
+  const pendingProduct = structuredClone(approvedProduct);
+  pendingProduct.warranty = { status: 'pending', value: null };
+  assert.equal(getProductWarrantySummary(pendingProduct), null);
+
+  const draftProduct = structuredClone(approvedProduct);
+  draftProduct.warranty = {
+    status: 'draft',
+    value: {
+      durationMonths: 12,
+      summary: 'Draft warranty content.',
+    },
+  };
+  assert.equal(getProductWarrantySummary(draftProduct), null);
+});
+
+test('Parcel Tray can project an approved 12-month warranty when its record is approved', () => {
+  const parcelTray = structuredClone(
+    products.find((product) => product.id === 'parcel-tray'),
+  );
+  parcelTray.warranty = {
+    status: 'approved',
+    value: {
+      durationMonths: 12,
+      summary: 'Covered against approved manufacturing defects.',
+    },
+  };
+
+  assert.equal(
+    getProductWarrantySummary(parcelTray)?.heading,
+    '12-Month Limited Manufacturer Warranty',
+  );
 });
 
 test('product pages use only approved media and remain non-indexable until launch-ready', () => {

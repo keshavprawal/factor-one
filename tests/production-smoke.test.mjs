@@ -208,8 +208,11 @@ test('production routes, crawl controls and security headers are ready', async (
       assert.match(product, /Verification pending/);
       assert.match(product, /href="\/compatibility"/);
       assert.match(product, /href="\/garage"/);
-      assert.match(product, /12-Month Limited Manufacturer Warranty/);
-      assert.match(product, /href="\/ownership\/warranty"/);
+      assert.match(product, /Ownership policies/);
+      assert.doesNotMatch(product, /12-Month Limited Manufacturer Warranty/);
+      assert.match(product, /href="\/ownership\/returns"/);
+      assert.match(product, /href="\/ownership\/shipping"/);
+      assert.match(product, /href="\/ownership\/installation"/);
       assert.doesNotMatch(product, /Misuse, accidental damage or overloading/);
       assert.match(product, /name="robots" content="noindex, nofollow"/);
       assert.doesNotMatch(product, /rel="canonical"/);

@@ -14,6 +14,7 @@ import {
   getProductCompatibilitySummary,
   getProductPageContent,
   getProductStructuredData,
+  getProductWarrantySummary,
   getRelatedProducts,
   isProductPageIndexable,
 } from '@/config/product-pages';
@@ -105,6 +106,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const content = getProductPageContent(product);
+  const warrantySummary = getProductWarrantySummary(product);
   const detailMedia = getProductDetailMediaItem(product.id);
   const galleryMedia = getApprovedProductMedia(product.id, 'product-gallery');
   const compatibility = getProductCompatibilitySummary(product);
@@ -202,25 +204,28 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               <aside
                 className="border-border mt-8 border-t pt-6"
-                aria-labelledby="product-warranty-heading"
+                aria-labelledby="product-ownership-policies-heading"
               >
                 <h2
-                  id="product-warranty-heading"
+                  id="product-ownership-policies-heading"
                   className="text-base font-medium"
                 >
-                  12-Month Limited Manufacturer Warranty
+                  {warrantySummary?.heading ?? 'Ownership policies'}
                 </h2>
-                <p className="text-muted-foreground mt-2 text-sm leading-6">
-                  Covered against manufacturing defects in materials or
-                  workmanship.
-                </p>
+                {warrantySummary ? (
+                  <p className="text-muted-foreground mt-2 text-sm leading-6">
+                    {warrantySummary.summary}
+                  </p>
+                ) : null}
                 <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
-                  <Link
-                    href="/ownership/warranty"
-                    className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
-                  >
-                    Read the Warranty Policy →
-                  </Link>
+                  {warrantySummary ? (
+                    <Link
+                      href="/ownership/warranty"
+                      className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
+                    >
+                      Read the Warranty Policy →
+                    </Link>
+                  ) : null}
                   <Link
                     href="/ownership/returns"
                     className="motion-safe-transition hover:text-factor-red focus-visible:text-factor-red inline-flex min-h-11 items-center"
