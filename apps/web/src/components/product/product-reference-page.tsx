@@ -2,11 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import {
-  Check,
   ChevronDown,
   CircleCheck,
   ClipboardCheck,
-  Droplets,
   PackageCheck,
   PanelTop,
   ScanLine,
@@ -14,6 +12,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import { Wordmark } from '@/components/brand/wordmark';
 import { Container } from '@/components/layout/container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -93,7 +92,7 @@ function ProductSection({
   return (
     <section
       id={id}
-      className={`section-space scroll-mt-24 ${className}`}
+      className={`scroll-mt-24 py-12 sm:py-16 lg:py-20 ${className}`}
       aria-labelledby={`${id}-heading`}
     >
       <Container>
@@ -183,12 +182,6 @@ export function ProductReferencePage({
         },
       ]
     : coreBenefitItems;
-  const careSentences =
-    content.careInstructions
-      ?.match(/[^.]+\./g)
-      ?.map((sentence) => sentence.trim()) ?? [];
-  const carePrimary = careSentences.slice(0, 3).join(' ');
-  const careSecondary = careSentences.slice(3).join(' ');
   const visibleFaqs = presentation.faqs.filter(
     (faq) => faq.id !== 'warranty' || Boolean(warrantySummary),
   );
@@ -225,7 +218,7 @@ export function ProductReferencePage({
   return (
     <>
       <section
-        className="section-space scroll-mt-24 pt-5 sm:pt-10 lg:pt-14"
+        className="scroll-mt-24 pb-8 pt-5 sm:pb-12 sm:pt-10 lg:pb-14 lg:pt-14"
         aria-labelledby="product-heading"
       >
         <Container>
@@ -317,7 +310,7 @@ export function ProductReferencePage({
 
       <section
         id="problem-solution"
-        className="section-space scroll-mt-24"
+        className="scroll-mt-24 py-8 sm:py-12 lg:py-14"
         aria-labelledby="problem-solution-heading"
       >
         <Container>
@@ -517,169 +510,138 @@ export function ProductReferencePage({
         </div>
       </ProductSection>
 
-      <ProductSection id="compatibility" title="Made for your VF7.">
-        <div className="mt-9 grid gap-8 lg:grid-cols-2 lg:items-center">
-          <div className="border-border bg-warm rounded-lg border p-6 sm:p-8">
-            <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.15em]">
-              Verified compatibility
-            </p>
-            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.045em]">
-              {compatibility?.make} {compatibility?.model}
-            </h3>
-            {compatibility?.yearStart ? (
-              <p className="text-muted-foreground mt-2">
-                {compatibility.yearStart} onwards
-              </p>
-            ) : null}
-            {compatibility?.variants?.length ? (
-              <p className="text-muted-foreground mt-6 text-sm leading-6">
-                {compatibility.variants.join(' · ')}
-              </p>
-            ) : null}
-            <Button asChild variant="outline" size="lg" className="mt-7 px-6">
-              <Link href="/compatibility">Check Vehicle Compatibility</Link>
-            </Button>
-          </div>
-          <div>
-            <h3 className="text-2xl font-medium tracking-[-0.04em]">
-              Verified for every VF7 variant.
-            </h3>
-            {compatibility?.variants?.length ? (
-              <p className="text-muted-foreground mt-4 max-w-md leading-7">
-                {compatibility.variants.join(' · ')}
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </ProductSection>
-
-      <ProductSection
-        id="installation"
-        title="Installs without modifying the vehicle."
-      >
-        <ol className="mt-9 grid gap-6 md:grid-cols-3">
-          {presentation.installationSteps.map((step, index) => (
-            <li key={step} className="border-border border-t pt-5">
-              <p className="text-factor-red text-sm font-semibold">
-                0{index + 1}
-              </p>
-              <p className="mt-4 text-xl font-medium tracking-[-0.03em]">
-                {step}
-              </p>
-            </li>
-          ))}
-        </ol>
-        <ul className="text-muted-foreground mt-8 flex flex-wrap gap-x-5 gap-y-3 text-sm">
-          {[
-            'Self-installation',
-            'No drilling',
-            'No cutting',
-            'No additional hardware',
-            'No vehicle modification',
-          ].map((item) => (
-            <li key={item} className="inline-flex items-center gap-2">
-              <Check className="text-factor-red size-4" aria-hidden="true" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </ProductSection>
-
       <ProductSection
         id="specifications"
-        title="Specifications and care"
+        title="Product details"
         className="bg-warm"
       >
-        <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-10">
-          <details
-            className="border-border group border-y"
-            aria-labelledby="specifications-summary"
-          >
-            <summary
-              id="specifications-summary"
-              className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium"
-            >
-              Product specifications
-              <ChevronDown
-                className="motion-safe-transition size-5 group-open:rotate-180"
-                aria-hidden="true"
-              />
-            </summary>
-            <dl className="border-border border-t pb-2">
-              {specifications.map((item) => (
-                <div
-                  key={item.label}
-                  className="border-border grid gap-1 border-b py-4 text-sm sm:grid-cols-2"
-                >
-                  <dt className="font-medium">{item.label}</dt>
-                  <dd className="text-muted-foreground">
-                    {item.value}
-                    {item.unit ? ` ${item.unit}` : ''}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </details>
-          {content.careInstructions ? (
-            <aside
-              className="border-border bg-background rounded-lg border p-6"
-              aria-labelledby="care-heading"
-            >
-              <Droplets className="text-factor-red size-5" aria-hidden="true" />
-              <h3
-                id="care-heading"
-                className="mt-5 text-xl font-medium tracking-[-0.03em]"
-              >
-                Care
-              </h3>
-              {carePrimary ? (
-                <p className="text-muted-foreground mt-3 text-sm leading-6">
-                  {carePrimary}
-                </p>
-              ) : null}
-              {careSecondary ? (
-                <p className="text-muted-foreground mt-3 text-sm leading-6">
-                  {careSecondary}
-                </p>
-              ) : null}
-            </aside>
-          ) : null}
-        </div>
-      </ProductSection>
-
-      <ProductSection id="ownership-confidence" title="Ownership, kept clear.">
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {visibleOwnershipItems.map(({ href, icon: Icon, title }) => (
-            <Link
-              key={href}
-              href={href}
-              className="motion-safe-transition border-border hover:border-foreground/35 focus-visible:border-factor-red flex min-h-28 flex-col justify-between rounded-lg border p-5 transition-colors"
-            >
-              <Icon className="text-factor-red size-5" aria-hidden="true" />
-              <span className="mt-6 text-sm font-medium">{title}</span>
-            </Link>
-          ))}
-        </div>
-      </ProductSection>
-
-      <ProductSection id="faq" title="Questions, answered.">
-        <div className="border-border mt-8 max-w-4xl border-t">
-          {visibleFaqs.map(({ answer, id, question }) => (
-            <details key={id} className="border-border group border-b">
-              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 text-base font-medium sm:text-lg">
-                {question}
+        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-8">
+          <div className="border-border divide-border divide-y border-y">
+            <details className="group" open>
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium">
+                Product specifications
                 <ChevronDown
-                  className="motion-safe-transition size-5 shrink-0 group-open:rotate-180"
+                  className="motion-safe-transition size-5 group-open:rotate-180"
                   aria-hidden="true"
                 />
               </summary>
-              <p className="text-muted-foreground max-w-3xl pb-5 text-sm leading-6 sm:text-base sm:leading-7">
-                {answer}
-              </p>
+              <dl className="border-border border-t pb-2">
+                {specifications.map((item) => (
+                  <div
+                    key={item.label}
+                    className="border-border grid gap-1 border-b py-3 text-sm sm:grid-cols-2"
+                  >
+                    <dt className="font-medium">{item.label}</dt>
+                    <dd className="text-muted-foreground">
+                      {item.value}
+                      {item.unit ? ` ${item.unit}` : ''}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </details>
-          ))}
+            {compatibility?.variants?.length ? (
+              <details className="group">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium">
+                  Compatibility
+                  <ChevronDown
+                    className="motion-safe-transition size-5 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="border-border border-t py-4 text-sm">
+                  <p className="font-medium">
+                    {compatibility.make} {compatibility.model}{' '}
+                    {compatibility.yearStart
+                      ? `${compatibility.yearStart} onwards`
+                      : ''}
+                  </p>
+                  <p className="text-muted-foreground mt-2 leading-6">
+                    {compatibility.variants.join(' · ')}
+                  </p>
+                </div>
+              </details>
+            ) : null}
+          </div>
+          <div className="border-border bg-background rounded-lg border p-5 sm:p-6">
+            <p className="text-sm font-medium">
+              Easy self-installation. No drilling or vehicle modification
+              required.
+            </p>
+            <Link
+              href="/ownership/installation"
+              className="text-factor-red focus-visible:ring-ring mt-3 inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+            >
+              View installation guidance
+            </Link>
+            {content.careInstructions ? (
+              <div className="border-border mt-5 border-t pt-5">
+                <p className="text-muted-foreground text-sm leading-6">
+                  Care: Wipe clean with a soft, damp cloth.
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="border-border mt-10 border-t pt-8">
+          <h3 className="text-2xl font-semibold tracking-[-0.045em]">
+            Ownership, kept clear.
+          </h3>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {visibleOwnershipItems.map(({ href, icon: Icon, title }) => (
+              <Link
+                key={href}
+                href={href}
+                className="motion-safe-transition border-border hover:border-foreground/35 focus-visible:border-factor-red flex min-h-20 items-center gap-3 rounded-md border p-4 transition-colors"
+              >
+                <Icon className="text-factor-red size-5" aria-hidden="true" />
+                <span className="text-sm font-medium">{title}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="border-border mt-10 max-w-4xl border-t pt-8">
+          <h3 className="text-2xl font-semibold tracking-[-0.045em]">
+            Questions, answered.
+          </h3>
+          <div className="mt-5">
+            {visibleFaqs.map(({ answer, id, question }) => (
+              <details key={id} className="border-border group border-b">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-3 text-base font-medium">
+                  {question}
+                  <ChevronDown
+                    className="motion-safe-transition size-5 shrink-0 group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <p className="text-muted-foreground max-w-3xl pb-4 text-sm leading-6">
+                  {answer}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </ProductSection>
+
+      <section
+        className="bg-charcoal text-charcoal-foreground border-t py-16 sm:py-24"
+        aria-labelledby="brand-statement-heading"
+      >
+        <Container>
+          <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.18em]">
+            Built with owners
+          </p>
+          <Wordmark
+            as="h2"
+            id="brand-statement-heading"
+            size="display"
+            className="text-charcoal-foreground mt-5 max-w-5xl"
+          />
+          <p className="text-charcoal-foreground/72 mt-6 max-w-xl text-lg leading-7 sm:text-xl">
+            By VinFast owners, for VinFast owners.
+          </p>
+        </Container>
+      </section>
     </>
   );
 }

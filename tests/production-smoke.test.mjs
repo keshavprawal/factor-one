@@ -243,7 +243,8 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.doesNotMatch(parcelTray, /₹2,999\.00/);
     assert.match(parcelTray, /Launching[\s\S]{0,100}15 August 2026/);
     assert.match(parcelTray, /Launch status: Launching 15 August 2026/);
-    assert.match(parcelTray, /Verified compatibility/);
+    assert.doesNotMatch(parcelTray, /Made for your VF7\./);
+    assert.doesNotMatch(parcelTray, /Installs without modifying the vehicle\./);
     assert.match(parcelTray, /VinFast VF7[^<]{0,20}2025 onwards/);
     assert.match(parcelTray, /Earth[^<]{0,20}Wind[^<]{0,20}Wind Infinity/);
     assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
@@ -269,6 +270,21 @@ test('production routes, crawl controls and security headers are ready', async (
         parcelTray.indexOf('Parcel Tray benefits'),
     );
     assert.match(parcelTray, /Questions, answered/);
+    assert.match(parcelTray, /Product details/);
+    assert.match(
+      parcelTray,
+      /Easy self-installation\. No drilling or vehicle modification required\./,
+    );
+    assert.match(parcelTray, /View installation guidance/);
+    assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
+    assert.match(parcelTray, /Ownership, kept clear\./);
+    assert.match(parcelTray, /Built with owners/);
+    assert.match(parcelTray, /By VinFast owners, for VinFast owners\./);
+    assert.ok(
+      parcelTray.indexOf('Ownership, kept clear.') <
+        parcelTray.indexOf('Questions, answered.'),
+    );
+    assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
     assert.match(parcelTray, /Prototype shown[^<]{0,50}Development evidence/);
@@ -277,10 +293,7 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray,
       /Prototype installed during product development\./,
     );
-    assert.match(
-      parcelTray,
-      /Clean using a soft, damp cloth\. Use a mild automotive interior cleaner only when required\./,
-    );
+    assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
     assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
     assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);
     assert.match(parcelTray, /parcel-tray-prototype-installed\.jpg/);
