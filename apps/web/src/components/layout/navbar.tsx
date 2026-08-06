@@ -10,7 +10,7 @@ import {
   type KeyboardEvent,
   type RefObject,
 } from 'react';
-import { Wordmark } from '@/components/brand/wordmark';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { Container } from '@/components/layout/container';
 import { ScrollLink } from '@/components/ui/scroll-link';
 import type {
@@ -515,7 +515,7 @@ export function Navbar({
   return (
     <header
       className={cn(
-        'motion-safe-transition border-border bg-warm/95 animate-hero-fade sticky top-0 z-40 border-b backdrop-blur transition-[background-color,box-shadow]',
+        'motion-safe-transition border-border bg-background/95 animate-hero-fade sticky top-0 z-40 border-b backdrop-blur transition-[background-color,box-shadow]',
         isScrolled && 'shadow-[0_1px_18px_rgba(15,23,42,0.08)]',
       )}
     >
@@ -526,7 +526,7 @@ export function Navbar({
           aria-label="Factor One home"
           aria-current={pathname === '/' ? 'page' : undefined}
         >
-          <Wordmark />
+          <BrandLogo priority />
         </Link>
 
         <nav

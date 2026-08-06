@@ -12,7 +12,6 @@ import {
   Wrench,
 } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
-import { Wordmark } from '@/components/brand/wordmark';
 import { Container } from '@/components/layout/container';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -165,23 +164,9 @@ export function ProductReferencePage({
 }: ProductReferencePageProps) {
   const media = getApprovedGalleryMedia(product, galleryMedia);
   const heroMedia = media[0];
-  const prototypeMedia = media.find((item) => item.evidenceOnly) ?? null;
   const lifestyleMedia =
     media.find((item) => item.id.includes('lifestyle')) ?? media[1] ?? null;
   const compatibility = product.vehicleCompatibility[0] ?? null;
-  const benefitItems = warrantySummary
-    ? [
-        ...coreBenefitItems,
-        {
-          icon: ShieldCheck,
-          title: warrantySummary.heading.replace(
-            ' Limited Manufacturer Warranty',
-            ' Warranty',
-          ),
-          description: 'Product-specific limited warranty',
-        },
-      ]
-    : coreBenefitItems;
   const visibleFaqs = presentation.faqs.filter(
     (faq) => faq.id !== 'warranty' || Boolean(warrantySummary),
   );
@@ -189,7 +174,7 @@ export function ProductReferencePage({
     ? [
         {
           href: '/ownership/warranty',
-          title: warrantySummary.heading,
+          title: '12-Month Warranty',
           icon: ShieldCheck,
         },
         ...ownershipItems,
@@ -253,12 +238,14 @@ export function ProductReferencePage({
                   )}
                 </p>
               ) : null}
-              <div className="mt-4 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+              <div className="mt-4 grid gap-3 sm:mt-7 sm:grid-cols-2">
                 {content.launchDate ? (
                   <div
-                    className="border-factor-red/35 bg-warm inline-flex min-h-14 items-center gap-3 rounded-md border px-4 py-3 text-sm"
+                    className="border-factor-red/35 bg-warm inline-flex h-14 w-full items-center justify-center gap-3 rounded-md border px-4 py-3 text-center text-sm"
                     role="status"
                     aria-label={`Launch status: Launching ${content.launchDate.label}`}
+                    data-hero-control="matched"
+                    data-launch-status="true"
                   >
                     <span
                       className="bg-factor-red size-2 shrink-0 rounded-full"
@@ -269,7 +256,14 @@ export function ProductReferencePage({
                     </span>
                   </div>
                 ) : null}
-                <Button asChild variant="outline" size="lg" className="px-6">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="h-14 w-full rounded-md px-4"
+                  data-hero-control="matched"
+                  data-compatibility-control="true"
+                >
                   <Link href="/compatibility">Check Vehicle Compatibility</Link>
                 </Button>
               </div>
@@ -309,100 +303,167 @@ export function ProductReferencePage({
       </section>
 
       <section
-        id="problem-solution"
-        className="scroll-mt-24 py-8 sm:py-12 lg:py-14"
-        aria-labelledby="problem-solution-heading"
+        id="product-story"
+        className="bg-charcoal text-charcoal-foreground scroll-mt-24 py-10 sm:py-14 lg:py-16"
+        aria-labelledby="product-story-heading"
+        data-sticky-story="true"
       >
         <Container>
-          <h2 id="problem-solution-heading" className="sr-only">
-            Problem versus solution
+          <h2 id="product-story-heading" className="sr-only">
+            The Parcel Tray story
           </h2>
-          <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
-            <article className="bg-charcoal text-charcoal-foreground overflow-hidden rounded-lg">
-              <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8">
-                <p className="text-charcoal-foreground/65 text-xs font-semibold uppercase tracking-[0.14em]">
-                  Before
+          <div className="lg:grid lg:grid-cols-[minmax(17rem,0.72fr)_minmax(0,1.28fr)] lg:gap-8 xl:gap-12">
+            <aside className="hidden lg:block" aria-label="Product context">
+              <div className="sticky top-28">
+                {heroMedia?.sourcePath ? (
+                  <figure className="relative aspect-[5/4] overflow-hidden rounded-md">
+                    <Image
+                      src={heroMedia.sourcePath}
+                      alt={heroMedia.altText}
+                      fill
+                      sizes="(min-width: 1280px) 32vw, 36vw"
+                      className="object-cover"
+                      style={{ objectPosition: heroMedia.focalPoint }}
+                    />
+                    <figcaption className="bg-charcoal/88 absolute bottom-3 left-3 rounded-sm px-3 py-2 text-xs font-medium">
+                      {heroMedia.disclosure}
+                    </figcaption>
+                  </figure>
+                ) : null}
+                <p className="text-factor-red mt-5 text-xs font-semibold uppercase tracking-[0.16em]">
+                  VinFast VF7
                 </p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
-                  The gap owners noticed.
-                </h2>
-                <p className="text-charcoal-foreground/72 mt-2 text-sm leading-6">
-                  Factory cargo area
-                </p>
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-0.05em]">
+                  {product.name}
+                </h3>
+                <div className="mt-3 flex items-center justify-between gap-4 text-sm">
+                  {content.price ? (
+                    <span className="text-xl font-medium">
+                      {formatPrice(
+                        content.price.amountMinor,
+                        content.price.currency,
+                      )}
+                    </span>
+                  ) : null}
+                  {content.launchDate ? (
+                    <span className="text-charcoal-foreground/68">
+                      Launching {content.launchDate.label}
+                    </span>
+                  ) : null}
+                </div>
               </div>
-              <div
-                className="border-charcoal-foreground/20 relative aspect-[4/3] overflow-hidden border-y"
-                role="img"
-                aria-label="Open gap behind rear seats."
-              >
-                <div
-                  className="border-charcoal-foreground/30 absolute left-[14%] right-[14%] top-[28%] border-t"
-                  aria-hidden="true"
-                />
-                <div
-                  className="border-charcoal-foreground/60 absolute left-[19%] right-[19%] top-[29%] h-16 rounded-t-md border-x border-t sm:h-20"
-                  aria-hidden="true"
-                />
-                <div
-                  className="border-factor-red absolute left-[19%] right-[19%] top-[62%] border-t-2"
-                  aria-hidden="true"
-                />
-                <p className="text-factor-red-contrast absolute left-[19%] right-[19%] top-[66%] text-center text-sm font-medium leading-6">
-                  Open gap behind rear seats.
-                </p>
-                <div
-                  className="border-charcoal-foreground/30 absolute bottom-[14%] left-[14%] right-[14%] border-t"
-                  aria-hidden="true"
-                />
-              </div>
-              <p className="text-charcoal-foreground/72 px-5 py-5 text-sm leading-6 sm:px-7 sm:py-7">
-                An open section remains behind the rear seats.
-              </p>
-            </article>
+            </aside>
 
-            <article className="border-border bg-warm overflow-hidden rounded-lg border">
-              <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8">
-                <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]">
-                  Factor One
-                </p>
-                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
-                  The coverage Factor One added.
-                </h2>
-                <p className="text-muted-foreground mt-2 text-sm leading-6">
-                  Factor One Parcel Tray
-                </p>
-              </div>
-              {heroMedia?.sourcePath ? (
-                <figure className="bg-warm relative aspect-[4/3] overflow-hidden border-y">
-                  <Image
-                    src={heroMedia.sourcePath}
-                    alt={heroMedia.altText}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: heroMedia.focalPoint }}
+            <div className="space-y-5 sm:space-y-6">
+              <article className="bg-graphite overflow-hidden rounded-md">
+                <div className="px-5 pb-4 pt-6 sm:px-7 sm:pt-7">
+                  <p className="text-charcoal-foreground/65 text-xs font-semibold uppercase tracking-[0.14em]">
+                    Before
+                  </p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
+                    The gap owners noticed.
+                  </h3>
+                  <p className="text-charcoal-foreground/72 mt-2 text-sm">
+                    Factory cargo area
+                  </p>
+                </div>
+                <div
+                  className="border-charcoal-foreground/20 relative aspect-[16/8] overflow-hidden border-y"
+                  role="img"
+                  aria-label="Open gap behind rear seats."
+                >
+                  <div
+                    className="border-charcoal-foreground/30 absolute left-[14%] right-[14%] top-[24%] border-t"
+                    aria-hidden="true"
                   />
-                  <figcaption className="bg-charcoal/85 text-charcoal-foreground absolute bottom-4 left-4 rounded-sm px-3 py-2 text-xs font-medium">
-                    {heroMedia.disclosure}
-                  </figcaption>
-                </figure>
-              ) : null}
-              <p className="text-muted-foreground px-5 py-5 text-sm leading-6 sm:px-7 sm:py-7">
-                Extended rear coverage creates a cleaner, more complete cargo
-                area.
-              </p>
-            </article>
+                  <div
+                    className="border-charcoal-foreground/60 absolute left-[19%] right-[19%] top-[25%] h-14 rounded-t-md border-x border-t sm:h-20"
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="border-factor-red absolute left-[19%] right-[19%] top-[62%] border-t-2"
+                    aria-hidden="true"
+                  />
+                  <p className="text-factor-red-contrast absolute left-[19%] right-[19%] top-[67%] text-center text-sm font-medium">
+                    Open gap behind rear seats.
+                  </p>
+                  <div
+                    className="border-charcoal-foreground/30 absolute bottom-[12%] left-[14%] right-[14%] border-t"
+                    aria-hidden="true"
+                  />
+                </div>
+                <p className="text-charcoal-foreground/72 px-5 py-4 text-sm leading-6 sm:px-7">
+                  An open section remains behind the rear seats.
+                </p>
+              </article>
+
+              <article className="bg-background text-foreground overflow-hidden rounded-md">
+                <div className="px-5 pb-4 pt-6 sm:px-7 sm:pt-7">
+                  <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]">
+                    Factor One
+                  </p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
+                    {presentation.solutionHeadline}
+                  </h3>
+                  <p className="text-muted-foreground mt-2 text-sm">
+                    Factor One Parcel Tray
+                  </p>
+                </div>
+                {heroMedia?.sourcePath ? (
+                  <figure className="bg-warm relative aspect-[16/8] overflow-hidden border-y">
+                    <Image
+                      src={heroMedia.sourcePath}
+                      alt={heroMedia.altText}
+                      fill
+                      sizes="(min-width: 1024px) 58vw, 100vw"
+                      className="object-cover"
+                      style={{ objectPosition: heroMedia.focalPoint }}
+                    />
+                    <figcaption className="bg-charcoal/88 text-charcoal-foreground absolute bottom-3 left-3 rounded-sm px-3 py-2 text-xs font-medium">
+                      {heroMedia.disclosure}
+                    </figcaption>
+                  </figure>
+                ) : null}
+                <p className="text-muted-foreground px-5 py-4 text-sm leading-6 sm:px-7">
+                  {presentation.solutionSupportingLine}
+                </p>
+              </article>
+
+              <div className="border-charcoal-foreground/18 border-y py-6">
+                <p className="max-w-xl text-xl font-medium tracking-[-0.03em]">
+                  Developed from the vehicle, not guessed from measurements.
+                </p>
+                <ul
+                  className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2"
+                  aria-label="Engineering proof"
+                >
+                  {[
+                    'VF7 scanned and modelled',
+                    'CAD-developed',
+                    'Prototype-fitted',
+                    'Manufacturer dynamically tested',
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="border-charcoal-foreground/18 border-t pt-3 text-sm font-medium"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
 
       <section
-        className="border-border bg-warm border-y py-7 sm:py-8"
+        className="border-border bg-background border-b py-6 sm:py-7"
         aria-label="Parcel Tray benefits"
       >
         <Container>
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-7 lg:grid-cols-5 lg:gap-6">
-            {benefitItems.map(({ icon: Icon, title, description }) => (
+          <ul className="grid grid-cols-2 gap-x-5 gap-y-6 lg:grid-cols-4 lg:gap-7">
+            {coreBenefitItems.map(({ icon: Icon, title, description }) => (
               <li key={title} className="min-w-0">
                 <Icon className="text-factor-red size-5" aria-hidden="true" />
                 <h2 className="mt-3 text-sm font-semibold">{title}</h2>
@@ -416,10 +477,10 @@ export function ProductReferencePage({
       </section>
 
       <ProductSection id="features" title="Designed around the details.">
-        <div className="border-border mt-9 grid gap-x-8 border-t sm:grid-cols-2 lg:grid-cols-3">
+        <div className="border-border mt-7 grid gap-x-7 border-t sm:grid-cols-2 lg:grid-cols-4">
           {presentation.featureStory.map(
             ({ description, id, title }, index) => (
-              <article key={id} className="border-border border-b py-7">
+              <article key={id} className="border-border border-b py-6">
                 <p className="text-factor-red text-xs font-semibold tracking-[0.14em]">
                   0{index + 1}
                 </p>
@@ -433,6 +494,28 @@ export function ProductReferencePage({
             ),
           )}
         </div>
+        {warrantySummary ? (
+          <aside
+            className="border-factor-red mt-7 flex flex-col justify-between gap-4 border-l-2 py-2 pl-5 sm:flex-row sm:items-center"
+            data-warranty-emphasis="true"
+          >
+            <div>
+              <h3 className="text-xl font-semibold tracking-[-0.035em]">
+                12-Month Factor One Warranty
+              </h3>
+              <p className="text-muted-foreground mt-1 text-sm leading-6">
+                Covered against manufacturing defects in materials or
+                workmanship.
+              </p>
+            </div>
+            <Link
+              href="/ownership/warranty"
+              className="text-factor-red inline-flex min-h-11 shrink-0 items-center text-sm font-medium underline underline-offset-4"
+            >
+              Read the Warranty Policy
+            </Link>
+          </aside>
+        ) : null}
       </ProductSection>
 
       {lifestyleMedia?.sourcePath ? (
@@ -440,7 +523,7 @@ export function ProductReferencePage({
           className="bg-charcoal text-charcoal-foreground"
           aria-labelledby="lifestyle-heading"
         >
-          <div className="relative min-h-[34rem] overflow-hidden sm:min-h-[42rem]">
+          <div className="relative min-h-[28rem] overflow-hidden sm:min-h-[34rem]">
             <Image
               src={lifestyleMedia.sourcePath}
               alt={lifestyleMedia.altText}
@@ -453,7 +536,7 @@ export function ProductReferencePage({
               className="bg-charcoal/20 absolute inset-0"
               aria-hidden="true"
             />
-            <Container className="relative flex min-h-[34rem] flex-col justify-end py-10 sm:min-h-[42rem] sm:py-14">
+            <Container className="relative flex min-h-[28rem] flex-col justify-end py-9 sm:min-h-[34rem] sm:py-12">
               <p className="bg-charcoal/85 w-fit rounded-sm px-3 py-2 text-xs font-medium">
                 {lifestyleMedia.disclosure}
               </p>
@@ -469,53 +552,11 @@ export function ProductReferencePage({
       ) : null}
 
       <ProductSection
-        id="engineering-proof"
-        title="Developed from the vehicle, not guessed from measurements."
-        className="bg-graphite text-graphite-foreground"
-      >
-        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
-          <ul
-            className="grid gap-4 sm:grid-cols-2"
-            aria-label="Development evidence"
-          >
-            {[
-              'VF7 scanned and modelled',
-              'CAD-developed',
-              'Prototype-fitted',
-              'Manufacturer dynamically tested',
-            ].map((item) => (
-              <li
-                key={item}
-                className="border-graphite-foreground/20 flex min-h-24 items-end border-t pt-4 text-lg font-medium tracking-[-0.025em]"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-          {prototypeMedia?.sourcePath ? (
-            <figure className="relative aspect-[4/3] overflow-hidden rounded-lg">
-              <Image
-                src={prototypeMedia.sourcePath}
-                alt={prototypeMedia.altText}
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-                style={{ objectPosition: prototypeMedia.focalPoint }}
-              />
-              <figcaption className="bg-charcoal/90 text-charcoal-foreground absolute bottom-4 left-4 rounded-sm px-3 py-2 text-xs font-medium">
-                {prototypeMedia.disclosure}
-              </figcaption>
-            </figure>
-          ) : null}
-        </div>
-      </ProductSection>
-
-      <ProductSection
         id="specifications"
         title="Product details"
         className="bg-warm"
       >
-        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-8">
+        <div className="mt-6 max-w-4xl">
           <div className="border-border divide-border divide-y border-y">
             <details className="group" open>
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium">
@@ -563,7 +604,7 @@ export function ProductReferencePage({
               </details>
             ) : null}
           </div>
-          <div className="border-border bg-background rounded-lg border p-5 sm:p-6">
+          <div className="border-border mt-5 border-b pb-5">
             <p className="text-sm font-medium">
               Easy self-installation. No drilling or vehicle modification
               required.
@@ -575,19 +616,17 @@ export function ProductReferencePage({
               View installation guidance
             </Link>
             {content.careInstructions ? (
-              <div className="border-border mt-5 border-t pt-5">
-                <p className="text-muted-foreground text-sm leading-6">
-                  Care: Wipe clean with a soft, damp cloth.
-                </p>
-              </div>
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
+                Care: Wipe clean with a soft, damp cloth.
+              </p>
             ) : null}
           </div>
         </div>
-        <div className="border-border mt-10 border-t pt-8">
+        <div className="border-border mt-8 border-t pt-7">
           <h3 className="text-2xl font-semibold tracking-[-0.045em]">
             Ownership, kept clear.
           </h3>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {visibleOwnershipItems.map(({ href, icon: Icon, title }) => (
               <Link
                 key={href}
@@ -600,11 +639,11 @@ export function ProductReferencePage({
             ))}
           </div>
         </div>
-        <div className="border-border mt-10 max-w-4xl border-t pt-8">
+        <div className="border-border mt-8 max-w-4xl border-t pt-7">
           <h3 className="text-2xl font-semibold tracking-[-0.045em]">
             Questions, answered.
           </h3>
-          <div className="mt-5">
+          <div className="mt-4">
             {visibleFaqs.map(({ answer, id, question }) => (
               <details key={id} className="border-border group border-b">
                 <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-3 text-base font-medium">
@@ -622,26 +661,6 @@ export function ProductReferencePage({
           </div>
         </div>
       </ProductSection>
-
-      <section
-        className="bg-charcoal text-charcoal-foreground border-t py-16 sm:py-24"
-        aria-labelledby="brand-statement-heading"
-      >
-        <Container>
-          <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.18em]">
-            Built with owners
-          </p>
-          <Wordmark
-            as="h2"
-            id="brand-statement-heading"
-            size="display"
-            className="text-charcoal-foreground mt-5 max-w-5xl"
-          />
-          <p className="text-charcoal-foreground/72 mt-6 max-w-xl text-lg leading-7 sm:text-xl">
-            By VinFast owners, for VinFast owners.
-          </p>
-        </Container>
-      </section>
     </>
   );
 }

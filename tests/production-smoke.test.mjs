@@ -238,22 +238,41 @@ test('production routes, crawl controls and security headers are ready', async (
     const parcelTray = await parcelTrayResponse.text();
 
     assert.equal(parcelTrayResponse.status, 200);
+    assert.match(
+      parcelTray,
+      /href="\/products\/parcel-tray"[^>]*>Parcel Tray<\/a>/,
+    );
+    assert.doesNotMatch(
+      parcelTray,
+      /href="\/products\/parcel-tray"[^>]*>VF7 Parcel Tray<\/a>/,
+    );
+    assert.match(parcelTray, /alt="Factor One logo"/);
+    assert.match(parcelTray, /factor-one-logo-horizontal\.png/);
     assert.match(parcelTray, /VF7 Parcel Tray/);
     assert.match(parcelTray, /₹2,999/);
     assert.doesNotMatch(parcelTray, /₹2,999\.00/);
     assert.match(parcelTray, /Launching[\s\S]{0,100}15 August 2026/);
     assert.match(parcelTray, /Launch status: Launching 15 August 2026/);
+    assert.match(parcelTray, /data-launch-status="true"/);
+    assert.match(parcelTray, /data-compatibility-control="true"/);
+    assert.equal(
+      (parcelTray.match(/data-hero-control="matched"/g) ?? []).length,
+      2,
+    );
+    assert.doesNotMatch(
+      parcelTray,
+      /data-launch-status="true"[^>]*(href=|tabindex=)/,
+    );
     assert.doesNotMatch(parcelTray, /Made for your VF7\./);
     assert.doesNotMatch(parcelTray, /Installs without modifying the vehicle\./);
     assert.match(parcelTray, /VinFast VF7[^<]{0,20}2025 onwards/);
     assert.match(parcelTray, /Earth[^<]{0,20}Wind[^<]{0,20}Wind Infinity/);
-    assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
     assert.match(parcelTray, /Extended Rear Coverage/);
     assert.match(parcelTray, /All VF7 Variants/);
     assert.match(parcelTray, /No Vehicle Modification/);
     assert.match(parcelTray, /12-Month Warranty/);
     assert.match(parcelTray, /Manufacturer dynamically tested/);
-    assert.match(parcelTray, /Problem versus solution/);
+    assert.match(parcelTray, /data-sticky-story="true"/);
     assert.match(parcelTray, /The gap owners noticed/);
     assert.match(parcelTray, /Before/);
     assert.match(parcelTray, /Factory cargo area/);
@@ -269,22 +288,47 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray.indexOf('The gap owners noticed.') <
         parcelTray.indexOf('Parcel Tray benefits'),
     );
+    assert.doesNotMatch(parcelTray, /id="engineering-proof"/);
+    assert.match(
+      parcelTray,
+      /The coverage Factor One added\.[\s\S]*VF7 scanned and modelled/,
+    );
+    for (const featureHeading of [
+      'Extended Rear Coverage',
+      'OEM Fit',
+      'Tailgate and Rear-Seat Clearance',
+      'Rigorously Tested',
+    ]) {
+      assert.match(parcelTray, new RegExp(featureHeading));
+    }
+    assert.doesNotMatch(parcelTray, /Vehicle-Specific Alignment/);
+    assert.doesNotMatch(parcelTray, /Easy to Remove/);
+    assert.match(parcelTray, /data-warranty-emphasis="true"/);
+    assert.match(parcelTray, /12-Month Factor One Warranty/);
     assert.match(parcelTray, /Questions, answered/);
     assert.match(parcelTray, /Product details/);
+    assert.match(parcelTray, /Product specifications/);
+    assert.match(parcelTray, />Compatibility</);
     assert.match(
       parcelTray,
       /Easy self-installation\. No drilling or vehicle modification required\./,
     );
     assert.match(parcelTray, /View installation guidance/);
     assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
+    assert.doesNotMatch(parcelTray, /Position the tray/);
+    assert.doesNotMatch(parcelTray, /Attach the two support strings/);
     assert.match(parcelTray, /Ownership, kept clear\./);
-    assert.match(parcelTray, /Built with owners/);
+    assert.match(parcelTray, /href="\/ownership\/warranty"/);
     assert.match(parcelTray, /By VinFast owners, for VinFast owners\./);
     assert.ok(
       parcelTray.indexOf('Ownership, kept clear.') <
         parcelTray.indexOf('Questions, answered.'),
     );
     assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);
+    assert.match(
+      parcelTray,
+      /data-footer-ending="true"[^>]*>\s*Factor One\s*<\/p>\s*<\/footer>/,
+    );
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
     assert.match(parcelTray, /Prototype shown[^<]{0,50}Development evidence/);
@@ -295,6 +339,7 @@ test('production routes, crawl controls and security headers are ready', async (
     );
     assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
     assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
+    assert.match(parcelTray, /data-gallery-image-loaded="false"/);
     assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);
     assert.match(parcelTray, /parcel-tray-prototype-installed\.jpg/);
     assert.doesNotMatch(

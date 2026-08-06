@@ -24,10 +24,12 @@ export function ProductHeroGallery({
   productName,
 }: ProductHeroGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loadedMediaId, setLoadedMediaId] = useState<string | null>(null);
   const pointerStartX = useRef<number | null>(null);
   const didSwipe = useRef(false);
   const lightboxRef = useRef<HTMLDialogElement>(null);
   const activeMedia = media[activeIndex];
+  const isActiveImageLoaded = loadedMediaId === activeMedia?.id;
 
   if (!activeMedia?.sourcePath) {
     return null;
@@ -50,6 +52,7 @@ export function ProductHeroGallery({
     <section aria-label={`${productName} image gallery`}>
       <div
         className="bg-warm group relative aspect-[5/4] touch-pan-y overflow-hidden rounded-lg sm:aspect-square"
+        aria-busy={!isActiveImageLoaded}
         onPointerDown={(event) => {
           pointerStartX.current = event.clientX;
           didSwipe.current = false;
@@ -70,6 +73,13 @@ export function ProductHeroGallery({
           selectIndex(activeIndex + (distance < 0 ? 1 : -1));
         }}
       >
+        <div
+          className={cn(
+            'bg-muted absolute inset-0 transition-opacity duration-200',
+            isActiveImageLoaded ? 'opacity-0' : 'opacity-100',
+          )}
+          aria-hidden="true"
+        />
         <button
           type="button"
           className="absolute inset-0 z-10 cursor-zoom-in"
@@ -85,8 +95,10 @@ export function ProductHeroGallery({
           fill
           priority={activeIndex === 0}
           sizes="(min-width: 1024px) 48vw, 100vw"
-          className="motion-media-transition object-cover"
+          className="motion-media-transition object-cover transition-opacity"
           style={{ objectPosition: activeMedia.focalPoint }}
+          onLoad={() => setLoadedMediaId(activeMedia.id)}
+          data-gallery-image-loaded={isActiveImageLoaded ? 'true' : 'false'}
         />
         <div className="bg-charcoal/85 text-charcoal-foreground pointer-events-none absolute bottom-4 left-4 z-20 rounded-sm px-3 py-2 text-xs font-medium sm:bottom-5 sm:left-5">
           {mediaTypeLabel(activeMedia)}

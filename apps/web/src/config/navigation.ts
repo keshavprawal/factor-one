@@ -125,8 +125,13 @@ export const mudGuardNavigation: GroupedNavigationItem = {
   ],
 };
 
+const parcelTrayNavigation: AvailableNavigationItem = {
+  ...productDestinations.parcelTray,
+  label: 'Parcel Tray',
+};
+
 export const productNavigation: readonly NavigationItem[] = [
-  productDestinations.parcelTray,
+  parcelTrayNavigation,
   mudGuardNavigation,
   productDestinations.screenGuard,
   productDestinations.doorVisor,

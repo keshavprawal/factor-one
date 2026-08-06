@@ -52,6 +52,7 @@ const {
   footerNavigation,
   garageNavigation,
   ownershipNavigation,
+  productNavigation,
 } = require('../apps/web/.content-check/src/config/navigation.js');
 const {
   getIndexableOwnershipPolicyPaths,
@@ -296,10 +297,26 @@ test('the Parcel Tray reference presentation is explicit and stays separate from
     presentation.heroValueStatement,
     'Extended coverage behind the rear seats, designed specifically for the VinFast VF7.',
   );
-  assert.equal(presentation.featureStory.length, 6);
-  assert.equal(presentation.installationSteps.length, 3);
+  assert.deepEqual(
+    presentation.featureStory.map((feature) => feature.title),
+    [
+      'Extended Rear Coverage',
+      'OEM Fit',
+      'Tailgate and Rear-Seat Clearance',
+      'Rigorously Tested',
+    ],
+  );
+  assert.equal('installationSteps' in presentation, false);
   assert.equal(presentation.faqs.length, 8);
   assert.equal(getProductPageReferencePresentation('screen-guard'), null);
+});
+
+test('product navigation uses the product-family label without changing canonical identity', () => {
+  assert.equal(productNavigation[0].label, 'Parcel Tray');
+  assert.equal(
+    products.find((product) => product.id === 'parcel-tray')?.name,
+    'VF7 Parcel Tray',
+  );
 });
 
 test('the VF7 Parcel Tray uses approved canonical content and verified compatibility', () => {
