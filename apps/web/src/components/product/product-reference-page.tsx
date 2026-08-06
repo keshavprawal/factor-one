@@ -37,6 +37,8 @@ interface ProductReferencePageProps {
 function formatPrice(amountMinor: number, currency: string) {
   return new Intl.NumberFormat('en-IN', {
     currency,
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
     style: 'currency',
   }).format(amountMinor / 100);
 }
@@ -116,7 +118,7 @@ const coreBenefitItems = [
   {
     icon: ScanLine,
     title: 'Vehicle-Specific',
-    description: 'Developed for the VinFast VF7',
+    description: 'Listed for every supported VF7 variant',
   },
   {
     icon: Wrench,
@@ -128,6 +130,13 @@ const coreBenefitItems = [
     title: 'Self-Installation',
     description: 'No additional mounting hardware',
   },
+] as const;
+
+const heroTrustItems = [
+  { icon: PanelTop, title: 'Extended Rear Coverage' },
+  { icon: ScanLine, title: 'All VF7 Variants' },
+  { icon: Wrench, title: 'No Vehicle Modification' },
+  { icon: ShieldCheck, title: '12-Month Warranty' },
 ] as const;
 
 const ownershipItems = [
@@ -216,14 +225,14 @@ export function ProductReferencePage({
   return (
     <>
       <section
-        className="section-space scroll-mt-24 pt-10 sm:pt-14"
+        className="section-space scroll-mt-24 pt-5 sm:pt-10 lg:pt-14"
         aria-labelledby="product-heading"
       >
         <Container>
           <Breadcrumbs
             items={[{ href: '/', label: 'Home' }, { label: product.name }]}
           />
-          <div className="mt-8 grid items-start gap-9 lg:grid-cols-[minmax(0,1.12fr)_minmax(24rem,0.88fr)] lg:gap-14 xl:gap-20">
+          <div className="mt-3 grid items-start gap-6 sm:mt-5 sm:gap-8 lg:mt-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(24rem,0.88fr)] lg:gap-14 xl:gap-20">
             <ProductHeroGallery media={media} productName={product.name} />
 
             <div className="lg:pt-3">
@@ -235,42 +244,45 @@ export function ProductReferencePage({
               </p>
               <h1
                 id="product-heading"
-                className="mt-4 text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.06em] sm:text-6xl xl:text-7xl"
+                className="mt-2 text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.06em] sm:mt-4 sm:text-6xl xl:text-7xl"
               >
                 {product.name}
               </h1>
-              <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-8 sm:text-xl">
+              <p className="text-muted-foreground mt-3 max-w-xl text-lg leading-8 sm:mt-6 sm:text-xl">
                 {presentation.heroValueStatement}
               </p>
 
               {content.price ? (
-                <p className="mt-8 text-3xl font-medium tracking-[-0.045em]">
+                <p className="mt-4 text-3xl font-medium tracking-[-0.045em] sm:mt-8">
                   {formatPrice(
                     content.price.amountMinor,
                     content.price.currency,
                   )}
                 </p>
               ) : null}
-              {content.launchDate ? (
-                <p className="text-muted-foreground mt-2 text-sm font-medium">
-                  Launching {content.launchDate.label}
-                </p>
-              ) : null}
-
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <p
-                  className="bg-primary text-primary-foreground inline-flex h-11 items-center justify-center rounded-md px-6 text-sm font-medium"
-                  role="status"
-                >
-                  Launching 15 August
-                </p>
+              <div className="mt-4 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+                {content.launchDate ? (
+                  <div
+                    className="border-factor-red/35 bg-warm inline-flex min-h-14 items-center gap-3 rounded-md border px-4 py-3 text-sm"
+                    role="status"
+                    aria-label={`Launch status: Launching ${content.launchDate.label}`}
+                  >
+                    <span
+                      className="bg-factor-red size-2 shrink-0 rounded-full"
+                      aria-hidden="true"
+                    />
+                    <span className="font-medium">
+                      Launching {content.launchDate.label}
+                    </span>
+                  </div>
+                ) : null}
                 <Button asChild variant="outline" size="lg" className="px-6">
                   <Link href="/compatibility">Check Vehicle Compatibility</Link>
                 </Button>
               </div>
 
-              <ul className="border-border mt-9 grid gap-3 border-t pt-6 text-sm sm:grid-cols-2">
-                {coreBenefitItems.map(({ icon: Icon, title }) => (
+              <ul className="border-border mt-6 grid gap-2 border-t pt-5 text-sm sm:mt-9 sm:grid-cols-2 sm:gap-3 sm:pt-6">
+                {heroTrustItems.map(({ icon: Icon, title }) => (
                   <li key={title} className="flex items-center gap-2.5">
                     <Icon
                       className="text-factor-red size-4"
@@ -331,14 +343,30 @@ export function ProductReferencePage({
           <p className="text-charcoal-foreground/72 max-w-md text-lg leading-8">
             The factory cargo area leaves an open section behind the rear seats.
           </p>
-          <div className="border-charcoal-foreground/20 grid min-h-52 place-items-center border-y py-10 sm:min-h-64">
-            <PanelTop
-              className="text-factor-red-contrast size-11"
+          <div
+            className="border-charcoal-foreground/20 relative min-h-52 overflow-hidden border-y py-10 sm:min-h-64"
+            role="img"
+            aria-label="Open gap behind rear seats."
+          >
+            <div
+              className="border-charcoal-foreground/30 absolute left-[14%] right-[14%] top-[28%] border-t"
               aria-hidden="true"
             />
-            <p className="text-charcoal-foreground/55 mt-4 max-w-xs text-center text-sm leading-6">
-              A restrained reference to the area owners asked to cover.
+            <div
+              className="border-charcoal-foreground/60 absolute left-[19%] right-[19%] top-[29%] h-16 rounded-t-md border-x border-t sm:h-20"
+              aria-hidden="true"
+            />
+            <div
+              className="border-factor-red absolute left-[19%] right-[19%] top-[62%] border-t-2"
+              aria-hidden="true"
+            />
+            <p className="text-factor-red-contrast absolute left-[19%] right-[19%] top-[66%] text-center text-sm font-medium leading-6">
+              Open gap behind rear seats.
             </p>
+            <div
+              className="border-charcoal-foreground/30 absolute bottom-[14%] left-[14%] right-[14%] border-t"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </ProductSection>
@@ -486,12 +514,13 @@ export function ProductReferencePage({
           </div>
           <div>
             <h3 className="text-2xl font-medium tracking-[-0.04em]">
-              Built to belong.
+              Verified for every VF7 variant.
             </h3>
-            <p className="text-muted-foreground mt-4 max-w-md leading-7">
-              Compatibility stays clear so you can confirm the product listed
-              for your car before it launches.
-            </p>
+            {compatibility?.variants?.length ? (
+              <p className="text-muted-foreground mt-4 max-w-md leading-7">
+                {compatibility.variants.join(' · ')}
+              </p>
+            ) : null}
           </div>
         </div>
       </ProductSection>

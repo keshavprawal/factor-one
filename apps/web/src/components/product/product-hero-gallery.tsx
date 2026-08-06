@@ -49,7 +49,7 @@ export function ProductHeroGallery({
   return (
     <section aria-label={`${productName} image gallery`}>
       <div
-        className="bg-warm group relative aspect-square touch-pan-y overflow-hidden rounded-lg"
+        className="bg-warm group relative aspect-[5/4] touch-pan-y overflow-hidden rounded-lg sm:aspect-square"
         onPointerDown={(event) => {
           pointerStartX.current = event.clientX;
           didSwipe.current = false;
