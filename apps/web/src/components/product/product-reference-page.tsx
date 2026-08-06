@@ -316,6 +316,94 @@ export function ProductReferencePage({
       </section>
 
       <section
+        id="problem-solution"
+        className="section-space scroll-mt-24"
+        aria-labelledby="problem-solution-heading"
+      >
+        <Container>
+          <h2 id="problem-solution-heading" className="sr-only">
+            Problem versus solution
+          </h2>
+          <div className="grid gap-5 lg:grid-cols-2 lg:gap-6">
+            <article className="bg-charcoal text-charcoal-foreground overflow-hidden rounded-lg">
+              <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8">
+                <p className="text-charcoal-foreground/65 text-xs font-semibold uppercase tracking-[0.14em]">
+                  Before
+                </p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
+                  The gap owners noticed.
+                </h2>
+                <p className="text-charcoal-foreground/72 mt-2 text-sm leading-6">
+                  Factory cargo area
+                </p>
+              </div>
+              <div
+                className="border-charcoal-foreground/20 relative aspect-[4/3] overflow-hidden border-y"
+                role="img"
+                aria-label="Open gap behind rear seats."
+              >
+                <div
+                  className="border-charcoal-foreground/30 absolute left-[14%] right-[14%] top-[28%] border-t"
+                  aria-hidden="true"
+                />
+                <div
+                  className="border-charcoal-foreground/60 absolute left-[19%] right-[19%] top-[29%] h-16 rounded-t-md border-x border-t sm:h-20"
+                  aria-hidden="true"
+                />
+                <div
+                  className="border-factor-red absolute left-[19%] right-[19%] top-[62%] border-t-2"
+                  aria-hidden="true"
+                />
+                <p className="text-factor-red-contrast absolute left-[19%] right-[19%] top-[66%] text-center text-sm font-medium leading-6">
+                  Open gap behind rear seats.
+                </p>
+                <div
+                  className="border-charcoal-foreground/30 absolute bottom-[14%] left-[14%] right-[14%] border-t"
+                  aria-hidden="true"
+                />
+              </div>
+              <p className="text-charcoal-foreground/72 px-5 py-5 text-sm leading-6 sm:px-7 sm:py-7">
+                An open section remains behind the rear seats.
+              </p>
+            </article>
+
+            <article className="border-border bg-warm overflow-hidden rounded-lg border">
+              <div className="px-5 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8">
+                <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]">
+                  Factor One
+                </p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.045em] sm:text-3xl">
+                  The coverage Factor One added.
+                </h2>
+                <p className="text-muted-foreground mt-2 text-sm leading-6">
+                  Factor One Parcel Tray
+                </p>
+              </div>
+              {heroMedia?.sourcePath ? (
+                <figure className="bg-warm relative aspect-[4/3] overflow-hidden border-y">
+                  <Image
+                    src={heroMedia.sourcePath}
+                    alt={heroMedia.altText}
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
+                    style={{ objectPosition: heroMedia.focalPoint }}
+                  />
+                  <figcaption className="bg-charcoal/85 text-charcoal-foreground absolute bottom-4 left-4 rounded-sm px-3 py-2 text-xs font-medium">
+                    {heroMedia.disclosure}
+                  </figcaption>
+                </figure>
+              ) : null}
+              <p className="text-muted-foreground px-5 py-5 text-sm leading-6 sm:px-7 sm:py-7">
+                Extended rear coverage creates a cleaner, more complete cargo
+                area.
+              </p>
+            </article>
+          </div>
+        </Container>
+      </section>
+
+      <section
         className="border-border bg-warm border-y py-7 sm:py-8"
         aria-label="Parcel Tray benefits"
       >
@@ -333,66 +421,6 @@ export function ProductReferencePage({
           </ul>
         </Container>
       </section>
-
-      <ProductSection
-        id="owners-noticed"
-        title="The gap owners noticed."
-        className="bg-charcoal text-charcoal-foreground"
-      >
-        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:items-end">
-          <p className="text-charcoal-foreground/72 max-w-md text-lg leading-8">
-            The factory cargo area leaves an open section behind the rear seats.
-          </p>
-          <div
-            className="border-charcoal-foreground/20 relative min-h-52 overflow-hidden border-y py-10 sm:min-h-64"
-            role="img"
-            aria-label="Open gap behind rear seats."
-          >
-            <div
-              className="border-charcoal-foreground/30 absolute left-[14%] right-[14%] top-[28%] border-t"
-              aria-hidden="true"
-            />
-            <div
-              className="border-charcoal-foreground/60 absolute left-[19%] right-[19%] top-[29%] h-16 rounded-t-md border-x border-t sm:h-20"
-              aria-hidden="true"
-            />
-            <div
-              className="border-factor-red absolute left-[19%] right-[19%] top-[62%] border-t-2"
-              aria-hidden="true"
-            />
-            <p className="text-factor-red-contrast absolute left-[19%] right-[19%] top-[66%] text-center text-sm font-medium leading-6">
-              Open gap behind rear seats.
-            </p>
-            <div
-              className="border-charcoal-foreground/30 absolute bottom-[14%] left-[14%] right-[14%] border-t"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-      </ProductSection>
-
-      <ProductSection id="coverage" title={presentation.solutionHeadline}>
-        <div className="mt-9 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-16">
-          <p className="text-muted-foreground max-w-xl text-lg leading-8">
-            {presentation.solutionSupportingLine}
-          </p>
-          {heroMedia?.sourcePath ? (
-            <figure className="bg-warm relative aspect-[4/3] overflow-hidden rounded-lg">
-              <Image
-                src={heroMedia.sourcePath}
-                alt={heroMedia.altText}
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-                style={{ objectPosition: heroMedia.focalPoint }}
-              />
-              <figcaption className="bg-charcoal/85 text-charcoal-foreground absolute bottom-4 left-4 rounded-sm px-3 py-2 text-xs font-medium">
-                {heroMedia.disclosure}
-              </figcaption>
-            </figure>
-          ) : null}
-        </div>
-      </ProductSection>
 
       <ProductSection id="features" title="Designed around the details.">
         <div className="border-border mt-9 grid gap-x-8 border-t sm:grid-cols-2 lg:grid-cols-3">

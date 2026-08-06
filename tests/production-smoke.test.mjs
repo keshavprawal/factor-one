@@ -252,9 +252,22 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /No Vehicle Modification/);
     assert.match(parcelTray, /12-Month Warranty/);
     assert.match(parcelTray, /Manufacturer dynamically tested/);
+    assert.match(parcelTray, /Problem versus solution/);
     assert.match(parcelTray, /The gap owners noticed/);
+    assert.match(parcelTray, /Before/);
+    assert.match(parcelTray, /Factory cargo area/);
+    assert.match(parcelTray, /An open section remains behind the rear seats\./);
     assert.match(parcelTray, /Open gap behind rear seats/);
     assert.match(parcelTray, /The coverage Factor One added/);
+    assert.match(parcelTray, /Factor One Parcel Tray/);
+    assert.match(
+      parcelTray,
+      /Extended rear coverage creates a cleaner, more complete cargo area\./,
+    );
+    assert.ok(
+      parcelTray.indexOf('The gap owners noticed.') <
+        parcelTray.indexOf('Parcel Tray benefits'),
+    );
     assert.match(parcelTray, /Questions, answered/);
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
