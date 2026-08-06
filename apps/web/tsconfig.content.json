@@ -17,6 +17,7 @@
     "src/config/navigation.ts",
     "src/config/ownership.ts",
     "src/config/product-media.ts",
+    "src/config/product-page-reference.ts",
     "src/config/product-pages.ts",
     "src/config/product-routes.ts",
     "src/config/products.ts",

@@ -240,12 +240,20 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.equal(parcelTrayResponse.status, 200);
     assert.match(parcelTray, /VF7 Parcel Tray/);
     assert.match(parcelTray, /₹2,999/);
-    assert.match(parcelTray, /Launch date:[\s\S]{0,100}15 August 2026/);
-    assert.match(parcelTray, /Verified/);
-    assert.match(parcelTray, /VinFast VF7 \(2025 onwards\)/);
-    assert.match(parcelTray, /Earth, Wind, Wind Infinity, Sky, Sky Infinity/);
+    assert.match(parcelTray, /Launching[\s\S]{0,100}15 August 2026/);
+    assert.match(parcelTray, /Launching 15 August/);
+    assert.match(parcelTray, /Verified compatibility/);
+    assert.match(parcelTray, /VinFast VF7[^<]{0,20}2025 onwards/);
+    assert.match(parcelTray, /Earth[^<]{0,20}Wind[^<]{0,20}Wind Infinity/);
     assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
+    assert.match(parcelTray, /Extended Rear Coverage/);
+    assert.match(parcelTray, /Manufacturer dynamically tested/);
+    assert.match(parcelTray, /The gap owners noticed/);
+    assert.match(parcelTray, /The coverage Factor One added/);
+    assert.match(parcelTray, /Questions, answered/);
+    assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
+    assert.match(parcelTray, /Prototype shown[^<]{0,50}Development evidence/);
     assert.match(parcelTray, /Development evidence · Prototype photography/);
     assert.match(
       parcelTray,
@@ -263,6 +271,8 @@ test('production routes, crawl controls and security headers are ready', async (
       /DENSE CARPETING|SOUND DAMPENING|FULL LOAD PRIVACY/,
     );
     assert.doesNotMatch(parcelTray, /Dimensions/);
+    assert.doesNotMatch(parcelTray, />Overview</);
+    assert.doesNotMatch(parcelTray, />The Problem</);
     assert.doesNotMatch(parcelTray, /noise dampening/i);
     assert.doesNotMatch(parcelTray, /load capacity/i);
     assert.match(parcelTray, /name="robots" content="noindex, nofollow"/);

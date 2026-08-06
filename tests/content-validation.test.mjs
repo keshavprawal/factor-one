@@ -44,6 +44,9 @@ const {
   getProductPath,
 } = require('../apps/web/.content-check/src/config/product-routes.js');
 const {
+  getProductPageReferencePresentation,
+} = require('../apps/web/.content-check/src/config/product-page-reference.js');
+const {
   compatibilityNavigation,
   companyNavigation,
   footerNavigation,
@@ -283,6 +286,20 @@ test('Parcel Tray projects its approved 12-month warranty without affecting othe
       'Covered against manufacturing defects in materials or workmanship for 12 months from delivery.',
   });
   assert.equal(getProductWarrantySummary(products[0]), null);
+});
+
+test('the Parcel Tray reference presentation is explicit and stays separate from product identity', () => {
+  const presentation = getProductPageReferencePresentation('parcel-tray');
+
+  assert.ok(presentation);
+  assert.equal(
+    presentation.heroValueStatement,
+    'Extended coverage behind the rear seats, designed specifically for the VinFast VF7.',
+  );
+  assert.equal(presentation.featureStory.length, 6);
+  assert.equal(presentation.installationSteps.length, 3);
+  assert.equal(presentation.faqs.length, 8);
+  assert.equal(getProductPageReferencePresentation('screen-guard'), null);
 });
 
 test('the VF7 Parcel Tray uses approved canonical content and verified compatibility', () => {
