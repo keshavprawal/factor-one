@@ -35,7 +35,7 @@ export type NavigationItem =
   | UnavailableNavigationItem;
 
 export interface FooterNavigationGroup {
-  items: readonly AvailableNavigationItem[];
+  items: readonly NavigationLeaf[];
   label: string;
 }
 
@@ -57,6 +57,12 @@ const vf7: AvailableNavigationItem = {
   href: '/vehicles/vf7',
   id: 'vinfast-vf7',
   label: 'VinFast VF7',
+};
+
+const vf6: UnavailableNavigationItem = {
+  id: 'vinfast-vf6',
+  label: 'VinFast VF6',
+  unavailable: true,
 };
 
 export const productDestinations = {
@@ -170,7 +176,7 @@ export const mobileNavigationSections: readonly NavigationSection[] = [
 
 export const footerNavigation: readonly FooterNavigationGroup[] = [
   {
-    items: [home, vf7],
+    items: [home, vf7, vf6],
     label: 'Explore',
   },
   {

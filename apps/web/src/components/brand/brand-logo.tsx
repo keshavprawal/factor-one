@@ -12,8 +12,8 @@ export function BrandLogo({ className, priority = false }: BrandLogoProps) {
     <Image
       src="/brand/factor-one-logo-horizontal.png"
       alt="Factor One logo"
-      width={1792}
-      height={696}
+      width={1600}
+      height={552}
       priority={priority}
       sizes="(min-width: 640px) 136px, 120px"
       className={cn('h-auto w-[7rem] sm:w-[8.5rem]', className)}

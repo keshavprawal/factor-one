@@ -328,6 +328,14 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /Ownership, kept honest\./);
     assert.match(parcelTray, /href="\/ownership\/warranty"/);
     assert.match(parcelTray, /href="\/ownership">Ownership<\/a>/);
+    assert.match(
+      parcelTray,
+      /href="https:\/\/www\.instagram\.com\/Factorone_\//,
+    );
+    assert.match(parcelTray, /mailto:contact@factorone\.in/);
+    assert.match(parcelTray, /href="https:\/\/wa\.me\/919829292629"/);
+    assert.match(parcelTray, /VinFast VF6/);
+    assert.match(parcelTray, /aria-disabled="true"[^>]*>VinFast VF6<\/span>/);
     const footer = parcelTray.slice(parcelTray.indexOf('<footer'));
     assert.ok(
       footer.indexOf('Limited Warranty') < footer.indexOf('Order Cancellation'),
@@ -347,7 +355,7 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /<footer[^>]*min-h-\[100svh\]/);
     assert.match(
       parcelTray,
-      /data-footer-ending="true"[^>]*>\s*Factor One\s*<\/p>\s*<\/footer>/,
+      /data-footer-ending="true"[^>]*>[\s\S]*<span>Factor<\/span>[\s\S]*<span>One<\/span>[\s\S]*<\/p>\s*<\/footer>/,
     );
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
