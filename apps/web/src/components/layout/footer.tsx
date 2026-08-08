@@ -6,10 +6,10 @@ import { footerNavigation } from '@/config/navigation';
 export function Footer() {
   return (
     <footer
-      className="bg-charcoal text-charcoal-foreground overflow-hidden"
+      className="bg-charcoal text-charcoal-foreground flex min-h-[100svh] flex-col overflow-hidden"
       aria-label="Factor One footer"
     >
-      <Container className="pb-10 pt-12 sm:pb-12 sm:pt-16">
+      <Container className="flex flex-1 flex-col justify-end pb-10 pt-12 sm:pb-12 sm:pt-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_repeat(3,minmax(0,0.85fr))] lg:gap-8">
           <div className="max-w-sm">
             <Wordmark as="p" size="footer" />
@@ -41,22 +41,15 @@ export function Footer() {
                   group.label
                 )}
               </h2>
-              <ul
-                className={
-                  group.label === 'Ownership'
-                    ? 'mt-3 grid grid-cols-2 gap-x-5'
-                    : 'mt-3'
-                }
-              >
-                {group.items
-                  .filter(
-                    (item) =>
-                      !(
-                        group.label === 'Ownership' &&
-                        item.href === '/ownership'
-                      ),
-                  )
-                  .map((item) => (
+              {(() => {
+                const items = group.items.filter(
+                  (item) =>
+                    !(
+                      group.label === 'Ownership' && item.href === '/ownership'
+                    ),
+                );
+                const renderItems = (columnItems: typeof items) =>
+                  columnItems.map((item) => (
                     <li key={item.id}>
                       <Link
                         href={item.href}
@@ -65,8 +58,17 @@ export function Footer() {
                         {item.label}
                       </Link>
                     </li>
-                  ))}
-              </ul>
+                  ));
+
+                return group.label === 'Ownership' ? (
+                  <div className="mt-3 grid gap-x-5 sm:grid-cols-2">
+                    <ul>{renderItems(items.slice(0, 4))}</ul>
+                    <ul>{renderItems(items.slice(4))}</ul>
+                  </div>
+                ) : (
+                  <ul className="mt-3">{renderItems(items)}</ul>
+                );
+              })()}
             </section>
           ))}
         </div>

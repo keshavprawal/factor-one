@@ -344,6 +344,7 @@ test('production routes, crawl controls and security headers are ready', async (
         parcelTray.indexOf('Questions, answered.'),
     );
     assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);
+    assert.match(parcelTray, /<footer[^>]*min-h-\[100svh\]/);
     assert.match(
       parcelTray,
       /data-footer-ending="true"[^>]*>\s*Factor One\s*<\/p>\s*<\/footer>/,
