@@ -767,9 +767,17 @@ test('ownership navigation stays centralized across the header and footer', () =
       '/ownership/returns',
       '/ownership/installation',
       '/ownership/contact',
-      '/ownership/privacy',
-      '/ownership/terms',
       '/ownership/faq',
     ],
+  );
+
+  const legalFooterGroup = footerNavigation.find(
+    (group) => group.label === 'Legal',
+  );
+
+  assert.ok(legalFooterGroup);
+  assert.deepEqual(
+    legalFooterGroup.items.map((item) => item.href),
+    ['/ownership/privacy', '/ownership/terms'],
   );
 });

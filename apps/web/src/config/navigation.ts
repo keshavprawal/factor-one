@@ -207,10 +207,15 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
         id: 'contact-support',
         label: 'Contact Support',
       },
-      { href: '/ownership/privacy', id: 'privacy', label: 'Privacy' },
-      { href: '/ownership/terms', id: 'terms', label: 'Terms' },
       { href: '/ownership/faq', id: 'ownership-faq', label: 'Ownership FAQ' },
     ],
     label: 'Ownership',
+  },
+  {
+    items: [
+      { href: '/ownership/privacy', id: 'privacy', label: 'Privacy' },
+      { href: '/ownership/terms', id: 'terms', label: 'Terms' },
+    ],
+    label: 'Legal',
   },
 ];

@@ -247,7 +247,7 @@ test('production routes, crawl controls and security headers are ready', async (
       /href="\/products\/parcel-tray"[^>]*>VF7 Parcel Tray<\/a>/,
     );
     assert.match(parcelTray, /alt="Factor One logo"/);
-    assert.match(parcelTray, /factor-one-logo-horizontal\.png/);
+    assert.match(parcelTray, /factor-one-logo-horizontal-transparent\.png/);
     assert.match(parcelTray, /VF7 Parcel Tray/);
     assert.match(parcelTray, /₹2,999/);
     assert.doesNotMatch(parcelTray, /₹2,999\.00/);
@@ -273,6 +273,13 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /12-Month Warranty/);
     assert.match(parcelTray, /Dynamic testing completed/);
     assert.match(parcelTray, /data-sticky-story="true"/);
+    assert.equal(
+      (parcelTray.match(/data-hero-product-information="true"/g) ?? []).length,
+      1,
+    );
+    assert.doesNotMatch(parcelTray, /aria-label="Product context"/);
+    assert.match(parcelTray, /data-story-state="problem"/);
+    assert.match(parcelTray, /data-story-state="solution"/);
     assert.match(parcelTray, /The gap owners noticed/);
     assert.match(parcelTray, /Before/);
     assert.match(parcelTray, /Factory cargo area/);
@@ -303,6 +310,9 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray,
       /The coverage Factor One added\.[\s\S]*VF7 scanned and modelled/,
     );
+    assert.match(parcelTray, /data-engineering-handoff="true"/);
+    assert.match(parcelTray, /data-sticky-solution-visual="true"/);
+    assert.match(parcelTray, /data-engineering-proof="true"/);
     for (const featureHeading of [
       'Extended Rear Coverage',
       'OEM Fit',
@@ -317,6 +327,12 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.doesNotMatch(parcelTray, /12-Month Factor One Warranty/);
     assert.match(parcelTray, /Questions, answered/);
     assert.match(parcelTray, /Product details/);
+    assert.equal(
+      (parcelTray.match(/id="specifications-heading"/g) ?? []).length,
+      1,
+    );
+    assert.match(parcelTray, /data-product-details-experience="true"/);
+    assert.match(parcelTray, /data-product-detail-media-stack="true"/);
     assert.doesNotMatch(parcelTray, /Product specifications/);
     assert.doesNotMatch(parcelTray, /<summary[^>]*>Compatibility</);
     assert.match(
@@ -332,7 +348,10 @@ test('production routes, crawl controls and security headers are ready', async (
       (parcelTray.match(/>View installation guidance<\/a>/g) ?? []).length,
       1,
     );
-    assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
+    assert.match(
+      parcelTray,
+      /Care:<\/span>[\s\S]{0,20}Clean using a soft, damp cloth\./,
+    );
     assert.doesNotMatch(parcelTray, /Position the tray/);
     assert.doesNotMatch(parcelTray, /Attach the two support strings/);
     assert.match(parcelTray, /Ownership, kept honest\./);
@@ -357,6 +376,13 @@ test('production routes, crawl controls and security headers are ready', async (
       footer.indexOf('Shipping') < footer.indexOf('Returns &amp; Refunds'),
     );
     assert.match(parcelTray, /By VinFast owners, for VinFast owners\./);
+    assert.doesNotMatch(
+      footer,
+      /Accessories for VinFast owners, shaped by the people who drive them/,
+    );
+    for (const group of ['Explore', 'Factor One', 'Ownership', 'Legal']) {
+      assert.match(footer, new RegExp(`>${group}<`));
+    }
     assert.ok(
       parcelTray.indexOf('Ownership, kept honest.') <
         parcelTray.indexOf('Questions, answered.'),
@@ -367,6 +393,10 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray,
       /data-footer-ending="true"[^>]*>[\s\S]*<span>Factor<\/span>[\s\S]*<span>One<\/span>[\s\S]*<\/p>\s*<\/footer>/,
     );
+    assert.equal(
+      (parcelTray.match(/data-footer-ending="true"/g) ?? []).length,
+      1,
+    );
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
     assert.match(parcelTray, /Prototype shown[^<]{0,50}Development evidence/);
@@ -375,7 +405,10 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray,
       /Prototype installed during product development\./,
     );
-    assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
+    assert.match(
+      parcelTray,
+      /Care:<\/span>[\s\S]{0,20}Clean using a soft, damp cloth\./,
+    );
     assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
     assert.match(parcelTray, /data-gallery-image-loaded="false"/);
     assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);

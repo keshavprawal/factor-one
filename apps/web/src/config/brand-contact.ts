@@ -15,7 +15,7 @@ export const brandContactLinks = [
     href: 'https://www.instagram.com/Factorone_/',
     icon: 'instagram',
     id: 'instagram',
-    label: 'Factorone_',
+    label: '@Factorone_',
     srLabel: 'Instagram, Factorone_',
   },
   {

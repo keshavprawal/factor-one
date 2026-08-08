@@ -10,7 +10,7 @@ export interface BrandLogoProps {
 export function BrandLogo({ className, priority = false }: BrandLogoProps) {
   return (
     <Image
-      src="/brand/factor-one-logo-horizontal.png"
+      src="/brand/factor-one-logo-horizontal-transparent.png"
       alt="Factor One logo"
       width={1600}
       height={552}

@@ -113,6 +113,35 @@
     display: none;
   }
 
+  .product-story-ramp {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--background)) 0%,
+      hsl(var(--warm)) 72%,
+      hsl(var(--graphite)) 100%
+    );
+  }
+
+  .engineering-story-ramp {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--graphite)) 0%,
+      hsl(var(--charcoal)) 88%
+    );
+  }
+
+  .story-progress-item {
+    color: hsl(var(--charcoal-foreground) / 0.34);
+  }
+
+  @supports (animation-timeline: view()) {
+    .story-progress-item {
+      animation: story-progress-highlight linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 52%;
+    }
+  }
+
   @keyframes menu-in {
     from {
       opacity: 0;
@@ -148,6 +177,17 @@
     }
   }
 
+  @keyframes story-progress-highlight {
+    from {
+      color: hsl(var(--charcoal-foreground) / 0.34);
+      transform: translateY(0.35rem);
+    }
+    to {
+      color: hsl(var(--charcoal-foreground));
+      transform: translateY(0);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .motion-safe-transition,
     .motion-safe-transition::before,
@@ -157,10 +197,13 @@
     .motion-dialog-in,
     .motion-dialog-in::backdrop,
     .animate-hero-fade,
-    .animate-hero-rise {
+    .animate-hero-rise,
+    .story-progress-item {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
+      color: hsl(var(--charcoal-foreground)) !important;
       scroll-behavior: auto !important;
+      transform: none !important;
       transition-duration: 0.01ms !important;
     }
   }

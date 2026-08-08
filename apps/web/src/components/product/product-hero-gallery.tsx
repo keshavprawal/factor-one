@@ -94,7 +94,7 @@ export function ProductHeroGallery({
           alt={activeMedia.altText}
           fill
           priority={activeIndex === 0}
-          sizes="(min-width: 1024px) 48vw, 100vw"
+          sizes="(min-width: 1280px) 68vw, 100vw"
           className="motion-media-transition object-cover transition-opacity"
           style={{ objectPosition: activeMedia.focalPoint }}
           onLoad={() => setLoadedMediaId(activeMedia.id)}

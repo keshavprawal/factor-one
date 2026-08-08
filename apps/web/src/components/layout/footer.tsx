@@ -17,15 +17,11 @@ export function Footer() {
       className="bg-charcoal text-charcoal-foreground flex min-h-[100svh] flex-col overflow-hidden"
       aria-label="Factor One footer"
     >
-      <Container className="flex flex-1 flex-col justify-end pb-10 pt-12 sm:pb-12 sm:pt-16">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_repeat(3,minmax(0,0.85fr))] lg:gap-8">
+      <Container className="flex flex-1 flex-col justify-end pb-8 pt-12 sm:pb-10 sm:pt-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.62fr)_minmax(0,0.75fr)_minmax(19rem,1.22fr)_minmax(0,0.55fr)] lg:gap-7 xl:gap-10">
           <div className="max-w-sm">
             <Wordmark as="p" size="footer" />
-            <p className="text-charcoal-foreground/62 mt-3 text-sm leading-6">
-              Accessories for VinFast owners, shaped by the people who drive
-              them.
-            </p>
-            <p className="text-charcoal-foreground mt-5 text-sm font-medium">
+            <p className="text-charcoal-foreground mt-4 text-sm font-medium">
               By VinFast owners, for VinFast owners.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
@@ -99,11 +95,11 @@ export function Footer() {
                   ));
 
                 return group.label === 'Ownership' ? (
-                  <div className="mt-3 grid items-start gap-x-5 sm:grid-cols-2">
-                    <ul className="min-w-0 text-left">
+                  <div className="mt-3 grid justify-items-start gap-x-6 sm:grid-cols-2">
+                    <ul className="w-full min-w-0 text-left">
                       {renderItems(items.slice(0, 4))}
                     </ul>
-                    <ul className="min-w-0 text-left">
+                    <ul className="w-full min-w-0 text-left">
                       {renderItems(items.slice(4))}
                     </ul>
                   </div>
@@ -124,7 +120,7 @@ export function Footer() {
 
       <p
         aria-label="Factor One"
-        className="flex translate-y-[0.06em] gap-[0.12em] whitespace-nowrap px-4 text-[clamp(5.5rem,18vw,17rem)] font-semibold leading-[0.72] tracking-[-0.045em] sm:gap-[0.16em] sm:px-6 lg:px-8"
+        className="mx-auto flex w-[94vw] translate-y-[0.075em] items-end justify-center gap-[0.12em] whitespace-nowrap text-[clamp(5.25rem,19.2vw,26rem)] font-semibold leading-[0.69] tracking-[-0.012em] sm:gap-[0.14em]"
         data-footer-ending="true"
       >
         <span>Factor</span>

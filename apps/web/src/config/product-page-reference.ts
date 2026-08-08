@@ -12,7 +12,13 @@ export interface ProductFaqPresentation {
   question: string;
 }
 
+export interface ProductDetailMediaPresentation {
+  mediaId: string;
+  specificationLabels: readonly string[];
+}
+
 export interface ProductPageReferencePresentation {
+  detailMediaStory: readonly ProductDetailMediaPresentation[];
   featureStory: readonly ProductFeaturePresentation[];
   faqs: readonly ProductFaqPresentation[];
   heroValueStatement: string;
@@ -29,6 +35,12 @@ export const productPageReferencePresentations: Partial<
   Record<ProductId, ProductPageReferencePresentation>
 > = {
   'parcel-tray': {
+    detailMediaStory: [
+      {
+        mediaId: 'parcel-tray-prototype-installed',
+        specificationLabels: ['Compatibility'],
+      },
+    ],
     heroValueStatement:
       'Extended coverage behind the rear seats, designed specifically for the VinFast VF7.',
     solutionHeadline: 'The coverage Factor One added.',
