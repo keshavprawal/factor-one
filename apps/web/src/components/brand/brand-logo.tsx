@@ -16,7 +16,7 @@ export function BrandLogo({ className, priority = false }: BrandLogoProps) {
       height={696}
       priority={priority}
       sizes="(min-width: 640px) 136px, 120px"
-      className={cn('h-auto w-[7.5rem] sm:w-[8.5rem]', className)}
+      className={cn('h-auto w-[7rem] sm:w-[8.5rem]', className)}
     />
   );
 }

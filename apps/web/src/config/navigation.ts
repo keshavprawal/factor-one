@@ -179,19 +179,18 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
   },
   {
     items: [
-      ownershipNavigation,
       {
         href: '/ownership/warranty',
         id: 'warranty',
         label: 'Limited Warranty',
       },
-      { href: '/ownership/returns', id: 'returns', label: 'Returns & Refunds' },
       {
         href: '/ownership/cancellation',
         id: 'cancellation',
         label: 'Order Cancellation',
       },
       { href: '/ownership/shipping', id: 'shipping', label: 'Shipping' },
+      { href: '/ownership/returns', id: 'returns', label: 'Returns & Refunds' },
       {
         href: '/ownership/installation',
         id: 'installation-guidance',

@@ -761,11 +761,10 @@ test('ownership navigation stays centralized across the header and footer', () =
   assert.deepEqual(
     ownershipFooterGroup.items.map((item) => item.href),
     [
-      '/ownership',
       '/ownership/warranty',
-      '/ownership/returns',
       '/ownership/cancellation',
       '/ownership/shipping',
+      '/ownership/returns',
       '/ownership/installation',
       '/ownership/contact',
       '/ownership/privacy',

@@ -271,7 +271,7 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /All VF7 Variants/);
     assert.match(parcelTray, /No Vehicle Modification/);
     assert.match(parcelTray, /12-Month Warranty/);
-    assert.match(parcelTray, /Manufacturer dynamically tested/);
+    assert.match(parcelTray, /Dynamic testing completed/);
     assert.match(parcelTray, /data-sticky-story="true"/);
     assert.match(parcelTray, /The gap owners noticed/);
     assert.match(parcelTray, /Before/);
@@ -286,7 +286,7 @@ test('production routes, crawl controls and security headers are ready', async (
     );
     assert.ok(
       parcelTray.indexOf('The gap owners noticed.') <
-        parcelTray.indexOf('Parcel Tray benefits'),
+        parcelTray.indexOf('Designed around the details.'),
     );
     assert.doesNotMatch(parcelTray, /id="engineering-proof"/);
     assert.match(
@@ -303,25 +303,44 @@ test('production routes, crawl controls and security headers are ready', async (
     }
     assert.doesNotMatch(parcelTray, /Vehicle-Specific Alignment/);
     assert.doesNotMatch(parcelTray, /Easy to Remove/);
-    assert.match(parcelTray, /data-warranty-emphasis="true"/);
-    assert.match(parcelTray, /12-Month Factor One Warranty/);
+    assert.doesNotMatch(parcelTray, /data-warranty-emphasis="true"/);
+    assert.doesNotMatch(parcelTray, /12-Month Factor One Warranty/);
     assert.match(parcelTray, /Questions, answered/);
     assert.match(parcelTray, /Product details/);
-    assert.match(parcelTray, /Product specifications/);
-    assert.match(parcelTray, />Compatibility</);
+    assert.doesNotMatch(parcelTray, /Product specifications/);
+    assert.doesNotMatch(parcelTray, /<summary[^>]*>Compatibility</);
     assert.match(
       parcelTray,
-      /Easy self-installation\. No drilling or vehicle modification required\./,
+      /<dt[^>]*>Compatibility<\/dt>[\s\S]*Earth[^<]{0,20}Wind Infinity/,
+    );
+    assert.match(
+      parcelTray,
+      /<dt[^>]*>Installation<\/dt>[\s\S]*Self-installation/,
     );
     assert.match(parcelTray, /View installation guidance/);
+    assert.equal(
+      (parcelTray.match(/>View installation guidance<\/a>/g) ?? []).length,
+      1,
+    );
     assert.match(parcelTray, /Care: Wipe clean with a soft, damp cloth\./);
     assert.doesNotMatch(parcelTray, /Position the tray/);
     assert.doesNotMatch(parcelTray, /Attach the two support strings/);
-    assert.match(parcelTray, /Ownership, kept clear\./);
+    assert.match(parcelTray, /Ownership, kept honest\./);
     assert.match(parcelTray, /href="\/ownership\/warranty"/);
+    assert.match(parcelTray, /href="\/ownership">Ownership<\/a>/);
+    const footer = parcelTray.slice(parcelTray.indexOf('<footer'));
+    assert.ok(
+      footer.indexOf('Limited Warranty') < footer.indexOf('Order Cancellation'),
+    );
+    assert.ok(
+      footer.indexOf('Order Cancellation') < footer.indexOf('Shipping'),
+    );
+    assert.ok(
+      footer.indexOf('Shipping') < footer.indexOf('Returns &amp; Refunds'),
+    );
     assert.match(parcelTray, /By VinFast owners, for VinFast owners\./);
     assert.ok(
-      parcelTray.indexOf('Ownership, kept clear.') <
+      parcelTray.indexOf('Ownership, kept honest.') <
         parcelTray.indexOf('Questions, answered.'),
     );
     assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);

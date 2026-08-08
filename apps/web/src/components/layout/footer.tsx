@@ -30,7 +30,16 @@ export function Footer() {
                 id={`footer-${group.label.toLowerCase()}`}
                 className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]"
               >
-                {group.label}
+                {group.label === 'Ownership' ? (
+                  <Link
+                    href="/ownership"
+                    className="focus-visible:ring-charcoal-foreground focus-visible:ring-offset-charcoal rounded-sm"
+                  >
+                    {group.label}
+                  </Link>
+                ) : (
+                  group.label
+                )}
               </h2>
               <ul
                 className={
@@ -39,16 +48,24 @@ export function Footer() {
                     : 'mt-3'
                 }
               >
-                {group.items.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href={item.href}
-                      className="motion-safe-transition text-charcoal-foreground/62 hover:text-charcoal-foreground focus-visible:ring-charcoal-foreground focus-visible:ring-offset-charcoal inline-flex min-h-11 min-w-11 items-center text-sm transition-[color,transform] active:translate-y-px"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                {group.items
+                  .filter(
+                    (item) =>
+                      !(
+                        group.label === 'Ownership' &&
+                        item.href === '/ownership'
+                      ),
+                  )
+                  .map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.href}
+                        className="motion-safe-transition text-charcoal-foreground/62 hover:text-charcoal-foreground focus-visible:ring-charcoal-foreground focus-visible:ring-offset-charcoal inline-flex min-h-11 min-w-11 items-center text-sm transition-[color,transform] active:translate-y-px"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </section>
           ))}

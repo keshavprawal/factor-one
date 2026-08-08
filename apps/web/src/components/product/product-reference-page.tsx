@@ -107,29 +107,6 @@ function ProductSection({
   );
 }
 
-const coreBenefitItems = [
-  {
-    icon: PanelTop,
-    title: 'Extended Coverage',
-    description: 'Covers the gap behind the rear seats',
-  },
-  {
-    icon: ScanLine,
-    title: 'Vehicle-Specific',
-    description: 'Listed for every supported VF7 variant',
-  },
-  {
-    icon: Wrench,
-    title: 'No Modification',
-    description: 'No drilling or cutting required',
-  },
-  {
-    icon: PackageCheck,
-    title: 'Self-Installation',
-    description: 'No additional mounting hardware',
-  },
-] as const;
-
 const heroTrustItems = [
   { icon: PanelTop, title: 'Extended Rear Coverage' },
   { icon: ScanLine, title: 'All VF7 Variants' },
@@ -180,10 +157,19 @@ export function ProductReferencePage({
         ...ownershipItems,
       ]
     : ownershipItems;
+  const compatibilityValue = compatibility?.variants?.length
+    ? `${compatibility.make} ${compatibility.model}${
+        compatibility.yearStart ? ` ${compatibility.yearStart} onwards` : ''
+      } — ${compatibility.variants.join(' · ')}`
+    : null;
   const specifications = addSpecification(
     addSpecification(
       addSpecification(
-        content.specifications,
+        addSpecification(
+          content.specifications,
+          'Compatibility',
+          compatibilityValue,
+        ),
         'Box contents',
         content.includedItems?.join(' and ') ?? null,
       ),
@@ -441,7 +427,7 @@ export function ProductReferencePage({
                     'VF7 scanned and modelled',
                     'CAD-developed',
                     'Prototype-fitted',
-                    'Manufacturer dynamically tested',
+                    'Dynamic testing completed',
                   ].map((item) => (
                     <li
                       key={item}
@@ -454,25 +440,6 @@ export function ProductReferencePage({
               </div>
             </div>
           </div>
-        </Container>
-      </section>
-
-      <section
-        className="border-border bg-background border-b py-6 sm:py-7"
-        aria-label="Parcel Tray benefits"
-      >
-        <Container>
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-6 lg:grid-cols-4 lg:gap-7">
-            {coreBenefitItems.map(({ icon: Icon, title, description }) => (
-              <li key={title} className="min-w-0">
-                <Icon className="text-factor-red size-5" aria-hidden="true" />
-                <h2 className="mt-3 text-sm font-semibold">{title}</h2>
-                <p className="text-muted-foreground mt-1 text-sm leading-5">
-                  {description}
-                </p>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 
@@ -494,28 +461,6 @@ export function ProductReferencePage({
             ),
           )}
         </div>
-        {warrantySummary ? (
-          <aside
-            className="border-factor-red mt-7 flex flex-col justify-between gap-4 border-l-2 py-2 pl-5 sm:flex-row sm:items-center"
-            data-warranty-emphasis="true"
-          >
-            <div>
-              <h3 className="text-xl font-semibold tracking-[-0.035em]">
-                12-Month Factor One Warranty
-              </h3>
-              <p className="text-muted-foreground mt-1 text-sm leading-6">
-                Covered against manufacturing defects in materials or
-                workmanship.
-              </p>
-            </div>
-            <Link
-              href="/ownership/warranty"
-              className="text-factor-red inline-flex min-h-11 shrink-0 items-center text-sm font-medium underline underline-offset-4"
-            >
-              Read the Warranty Policy
-            </Link>
-          </aside>
-        ) : null}
       </ProductSection>
 
       {lifestyleMedia?.sourcePath ? (
@@ -556,75 +501,40 @@ export function ProductReferencePage({
         title="Product details"
         className="bg-warm"
       >
-        <div className="mt-6 max-w-4xl">
+        <div className="mt-6 max-w-6xl">
           <div className="border-border divide-border divide-y border-y">
-            <details className="group" open>
-              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium">
-                Product specifications
-                <ChevronDown
-                  className="motion-safe-transition size-5 group-open:rotate-180"
-                  aria-hidden="true"
-                />
-              </summary>
-              <dl className="border-border border-t pb-2">
-                {specifications.map((item) => (
-                  <div
-                    key={item.label}
-                    className="border-border grid gap-1 border-b py-3 text-sm sm:grid-cols-2"
-                  >
-                    <dt className="font-medium">{item.label}</dt>
-                    <dd className="text-muted-foreground">
-                      {item.value}
-                      {item.unit ? ` ${item.unit}` : ''}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </details>
-            {compatibility?.variants?.length ? (
-              <details className="group">
-                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 text-lg font-medium">
-                  Compatibility
-                  <ChevronDown
-                    className="motion-safe-transition size-5 group-open:rotate-180"
-                    aria-hidden="true"
-                  />
-                </summary>
-                <div className="border-border border-t py-4 text-sm">
-                  <p className="font-medium">
-                    {compatibility.make} {compatibility.model}{' '}
-                    {compatibility.yearStart
-                      ? `${compatibility.yearStart} onwards`
-                      : ''}
-                  </p>
-                  <p className="text-muted-foreground mt-2 leading-6">
-                    {compatibility.variants.join(' · ')}
-                  </p>
+            <dl className="pb-2">
+              {specifications.map((item) => (
+                <div
+                  key={item.label}
+                  className="border-border grid gap-1 border-b py-3 text-sm sm:grid-cols-[minmax(10rem,0.75fr)_minmax(0,1.25fr)] sm:gap-6"
+                >
+                  <dt className="font-medium">{item.label}</dt>
+                  <dd className="text-muted-foreground">
+                    {item.value}
+                    {item.unit ? ` ${item.unit}` : ''}
+                    {item.label === 'Installation' ? (
+                      <Link
+                        href="/ownership/installation"
+                        className="text-factor-red focus-visible:ring-ring mt-2 inline-flex min-h-11 items-center font-medium underline underline-offset-4 sm:ml-4 sm:mt-0"
+                      >
+                        View installation guidance
+                      </Link>
+                    ) : null}
+                  </dd>
                 </div>
-              </details>
-            ) : null}
+              ))}
+            </dl>
           </div>
-          <div className="border-border mt-5 border-b pb-5">
-            <p className="text-sm font-medium">
-              Easy self-installation. No drilling or vehicle modification
-              required.
+          {content.careInstructions ? (
+            <p className="text-muted-foreground border-border mt-5 border-b pb-5 text-sm leading-6">
+              Care: Wipe clean with a soft, damp cloth.
             </p>
-            <Link
-              href="/ownership/installation"
-              className="text-factor-red focus-visible:ring-ring mt-3 inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
-            >
-              View installation guidance
-            </Link>
-            {content.careInstructions ? (
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                Care: Wipe clean with a soft, damp cloth.
-              </p>
-            ) : null}
-          </div>
+          ) : null}
         </div>
         <div className="border-border mt-8 border-t pt-7">
           <h3 className="text-2xl font-semibold tracking-[-0.045em]">
-            Ownership, kept clear.
+            Ownership, kept honest.
           </h3>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {visibleOwnershipItems.map(({ href, icon: Icon, title }) => (
