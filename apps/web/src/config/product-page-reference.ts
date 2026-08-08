@@ -37,8 +37,40 @@ export const productPageReferencePresentations: Partial<
   'parcel-tray': {
     detailMediaStory: [
       {
-        mediaId: 'parcel-tray-prototype-installed',
-        specificationLabels: ['Compatibility'],
+        mediaId: 'parcel-tray-prototype-rear-fit',
+        specificationLabels: [
+          'Compatibility',
+          'Fit type',
+          'Vehicle modification',
+        ],
+      },
+      {
+        mediaId: 'parcel-tray-prototype-angle-fit',
+        specificationLabels: ['Installation'],
+      },
+      {
+        mediaId: 'parcel-tray-cad-perspective-primary',
+        specificationLabels: ['Material', 'Finish'],
+      },
+      {
+        mediaId: 'parcel-tray-cad-top',
+        specificationLabels: [],
+      },
+      {
+        mediaId: 'parcel-tray-prototype-front-close',
+        specificationLabels: [],
+      },
+      {
+        mediaId: 'parcel-tray-prototype-full-rear',
+        specificationLabels: [],
+      },
+      {
+        mediaId: 'parcel-tray-prototype-top-fit',
+        specificationLabels: [],
+      },
+      {
+        mediaId: 'parcel-tray-cad-perspective-secondary',
+        specificationLabels: [],
       },
     ],
     heroValueStatement:

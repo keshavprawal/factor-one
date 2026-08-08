@@ -136,9 +136,20 @@ const parcelTrayNavigation: AvailableNavigationItem = {
   label: 'Parcel Tray',
 };
 
+const mudFlapsNavigation: AvailableNavigationItem = {
+  ...productDestinations.bumperMudGuard,
+  label: 'Mud Flaps',
+};
+
+const rearDoorMudFlapsNavigation: AvailableNavigationItem = {
+  ...productDestinations.rearDoorMudGuard,
+  label: 'Rear Door Mud Flaps',
+};
+
 export const productNavigation: readonly NavigationItem[] = [
   parcelTrayNavigation,
-  mudGuardNavigation,
+  mudFlapsNavigation,
+  rearDoorMudFlapsNavigation,
   productDestinations.screenGuard,
   productDestinations.doorVisor,
 ];

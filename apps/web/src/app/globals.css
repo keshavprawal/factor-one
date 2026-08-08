@@ -117,28 +117,77 @@
     background: linear-gradient(
       to bottom,
       hsl(var(--background)) 0%,
-      hsl(var(--warm)) 72%,
+      hsl(var(--warm)) 70%,
       hsl(var(--graphite)) 100%
     );
   }
 
-  .engineering-story-ramp {
+  .story-engineering-pane::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(100% - 100vw);
+    width: 100vw;
+    content: '';
     background: linear-gradient(
       to bottom,
       hsl(var(--graphite)) 0%,
-      hsl(var(--charcoal)) 88%
+      hsl(var(--charcoal)) 18%,
+      hsl(var(--charcoal)) 100%
     );
   }
 
-  .story-progress-item {
-    color: hsl(var(--charcoal-foreground) / 0.34);
+  .taillight-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(2.5rem, 7vw, 6rem) minmax(
+        0,
+        1fr
+      );
+    align-items: start;
+    width: 100%;
+    height: 0.55rem;
+    color: hsl(var(--factor-red) / 0.48);
+  }
+
+  .taillight-line-left,
+  .taillight-line-right {
+    height: 1px;
+    background: currentColor;
+  }
+
+  .taillight-line-center {
+    position: relative;
+    height: 0.55rem;
+  }
+
+  .taillight-line-center::before,
+  .taillight-line-center::after {
+    position: absolute;
+    top: 0;
+    width: 55%;
+    height: 1px;
+    content: '';
+    background: currentColor;
+  }
+
+  .taillight-line-center::before {
+    left: 0;
+    transform: rotate(7deg);
+    transform-origin: left center;
+  }
+
+  .taillight-line-center::after {
+    right: 0;
+    transform: rotate(-7deg);
+    transform-origin: right center;
   }
 
   @supports (animation-timeline: view()) {
-    .story-progress-item {
-      animation: story-progress-highlight linear both;
+    .taillight-line-illuminates {
+      animation: taillight-illuminate linear both;
       animation-timeline: view();
-      animation-range: entry 15% cover 52%;
+      animation-range: entry 5% cover 35%;
     }
   }
 
@@ -177,14 +226,14 @@
     }
   }
 
-  @keyframes story-progress-highlight {
+  @keyframes taillight-illuminate {
     from {
-      color: hsl(var(--charcoal-foreground) / 0.34);
-      transform: translateY(0.35rem);
+      color: hsl(var(--factor-red) / 0.38);
+      filter: drop-shadow(0 0 0 transparent);
     }
     to {
-      color: hsl(var(--charcoal-foreground));
-      transform: translateY(0);
+      color: hsl(var(--factor-red) / 0.82);
+      filter: drop-shadow(0 0 0.22rem hsl(var(--factor-red) / 0.18));
     }
   }
 
@@ -198,13 +247,18 @@
     .motion-dialog-in::backdrop,
     .animate-hero-fade,
     .animate-hero-rise,
-    .story-progress-item {
+    .taillight-line-illuminates {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       color: hsl(var(--charcoal-foreground)) !important;
       scroll-behavior: auto !important;
       transform: none !important;
       transition-duration: 0.01ms !important;
+    }
+
+    .taillight-line-illuminates {
+      color: hsl(var(--factor-red) / 0.72) !important;
+      filter: none !important;
     }
   }
 }

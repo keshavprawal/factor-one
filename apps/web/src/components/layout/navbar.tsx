@@ -11,6 +11,7 @@ import {
   type RefObject,
 } from 'react';
 import { BrandLogo } from '@/components/brand/brand-logo';
+import { TaillightLine } from '@/components/brand/taillight-line';
 import { Container } from '@/components/layout/container';
 import { ScrollLink } from '@/components/ui/scroll-link';
 import type {
@@ -344,7 +345,6 @@ export interface NavbarProps {
 }
 
 export function Navbar({
-  companyNavigation,
   garageNavigation,
   mobileNavigationSections,
   productNavigation,
@@ -531,13 +531,10 @@ export function Navbar({
 
         <nav
           aria-label="Primary navigation"
-          className="absolute left-1/2 hidden -translate-x-1/2 2xl:flex 2xl:items-center 2xl:gap-8"
+          className="absolute left-1/2 hidden -translate-x-1/2 xl:flex xl:items-center"
         >
-          <ul className="flex items-center gap-5">
+          <ul className="flex items-center gap-6">
             {productNavigation.map(renderDesktopItem)}
-          </ul>
-          <ul className="flex items-center gap-5">
-            {companyNavigation.map(renderDesktopItem)}
           </ul>
         </nav>
 
@@ -556,7 +553,7 @@ export function Navbar({
           <button
             ref={menuTriggerRef}
             type="button"
-            className={cn(iconButtonClassName, '2xl:hidden')}
+            className={iconButtonClassName}
             aria-label={
               isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'
             }
@@ -572,13 +569,14 @@ export function Navbar({
           </button>
         </div>
       </Container>
+      <TaillightLine className="pointer-events-none absolute inset-x-0 bottom-0 opacity-55" />
 
       <dialog
         ref={dialogRef}
         id="mobile-navigation"
         aria-labelledby="mobile-navigation-heading"
         aria-modal="true"
-        className="motion-dialog-in bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0 2xl:hidden"
+        className="motion-dialog-in bg-warm text-foreground border-border backdrop:bg-foreground/30 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border p-0"
         onCancel={(event) => {
           event.preventDefault();
           setIsMenuOpen(false);

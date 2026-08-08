@@ -45,20 +45,11 @@ function formatPrice(amountMinor: number, currency: string) {
   }).format(amountMinor / 100);
 }
 
-function getApprovedGalleryMedia(
+function getApprovedMedia(
   product: Product,
   galleryMedia: readonly ProductMediaAsset[],
 ) {
-  const allMedia = [
-    ...galleryMedia.filter(
-      (media) => media.intendedPlacement === 'product-detail',
-    ),
-    ...galleryMedia.filter(
-      (media) => media.intendedPlacement === 'product-gallery',
-    ),
-  ];
-
-  return allMedia.filter(
+  return galleryMedia.filter(
     (media, index, items) =>
       media.productId === product.id &&
       Boolean(media.sourcePath) &&
@@ -120,7 +111,12 @@ export function ProductReferencePage({
   product,
   warrantySummary,
 }: ProductReferencePageProps) {
-  const media = getApprovedGalleryMedia(product, galleryMedia);
+  const approvedMedia = getApprovedMedia(product, galleryMedia);
+  const media = approvedMedia.filter(
+    (item) =>
+      item.intendedPlacement === 'product-detail' ||
+      item.intendedPlacement === 'product-gallery',
+  );
   const heroMedia = media[0];
   const lifestyleMedia =
     media.find((item) => item.id.includes('lifestyle')) ?? media[1] ?? null;
@@ -168,7 +164,7 @@ export function ProductReferencePage({
   );
   const detailMedia = presentation.detailMediaStory.flatMap(
     ({ mediaId, specificationLabels }): ProductDetailMediaEntry[] => {
-      const asset = media.find((item) => item.id === mediaId);
+      const asset = approvedMedia.find((item) => item.id === mediaId);
 
       return asset
         ? [
@@ -246,18 +242,21 @@ export function ProductReferencePage({
                       </span>
                     </div>
                   ) : null}
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="h-14 w-full rounded-md px-4"
+                  <div
                     data-hero-control="matched"
                     data-compatibility-control="true"
                   >
-                    <Link href="/compatibility">
-                      Check Vehicle Compatibility
-                    </Link>
-                  </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="h-14 w-full rounded-md px-4"
+                    >
+                      <Link href="/compatibility">
+                        Check Vehicle Compatibility
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
 
                 <ul className="border-border mt-6 grid gap-2 border-t pt-5 text-sm sm:mt-9 sm:grid-cols-2 sm:gap-3 sm:pt-6 xl:grid-cols-1 2xl:grid-cols-2">
@@ -338,102 +337,70 @@ export function ProductReferencePage({
             </article>
 
             <article
-              className="mt-20 xl:col-start-1 xl:row-start-3 xl:flex xl:min-h-[88svh] xl:flex-col xl:justify-center xl:pb-24 xl:pt-16"
+              className="relative z-10 mt-20 xl:col-start-1 xl:row-span-2 xl:row-start-3 xl:mt-0 xl:self-stretch"
               data-story-state="solution"
+              data-sticky-solution-visual="true"
             >
-              <div className="max-w-3xl">
-                <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]">
-                  Factor One
-                </p>
-                <h2 className="mt-3 text-balance text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
-                  {presentation.solutionHeadline}
-                </h2>
-                <p className="text-muted-foreground mt-3 text-sm">
-                  Factor One Parcel Tray
+              <div className="xl:bg-charcoal xl:text-charcoal-foreground xl:sticky xl:top-24 xl:flex xl:min-h-[calc(100svh-7rem)] xl:flex-col xl:justify-center xl:px-8 xl:py-12">
+                <div className="max-w-3xl">
+                  <p className="text-factor-red text-xs font-semibold uppercase tracking-[0.14em]">
+                    Factor One
+                  </p>
+                  <h2 className="mt-3 text-balance text-4xl font-semibold tracking-[-0.055em] sm:text-5xl">
+                    {presentation.solutionHeadline}
+                  </h2>
+                  <p className="text-muted-foreground xl:text-charcoal-foreground/64 mt-3 text-sm">
+                    Factor One Parcel Tray
+                  </p>
+                </div>
+                {heroMedia?.sourcePath ? (
+                  <figure className="bg-warm relative mt-7 aspect-[16/10] overflow-hidden sm:aspect-[16/9] xl:aspect-[16/10]">
+                    <Image
+                      src={heroMedia.sourcePath}
+                      alt={heroMedia.altText}
+                      fill
+                      sizes="(min-width: 1280px) 68vw, 100vw"
+                      className="object-cover"
+                      style={{ objectPosition: heroMedia.focalPoint }}
+                    />
+                    <figcaption className="bg-charcoal/88 text-charcoal-foreground absolute bottom-3 left-3 rounded-sm px-3 py-2 text-xs font-medium">
+                      {heroMedia.disclosure}
+                    </figcaption>
+                  </figure>
+                ) : null}
+                <p className="text-muted-foreground xl:text-charcoal-foreground/64 mt-4 max-w-xl text-sm leading-6">
+                  {presentation.solutionSupportingLine}
                 </p>
               </div>
-              {heroMedia?.sourcePath ? (
-                <figure className="bg-warm relative mt-8 aspect-[16/9] overflow-hidden">
-                  <Image
-                    src={heroMedia.sourcePath}
-                    alt={heroMedia.altText}
-                    fill
-                    sizes="(min-width: 1280px) 68vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: heroMedia.focalPoint }}
-                  />
-                  <figcaption className="bg-charcoal/88 text-charcoal-foreground absolute bottom-3 left-3 rounded-sm px-3 py-2 text-xs font-medium">
-                    {heroMedia.disclosure}
-                  </figcaption>
-                </figure>
-              ) : null}
-              <p className="text-muted-foreground mt-4 max-w-xl text-sm leading-6">
-                {presentation.solutionSupportingLine}
-              </p>
             </article>
-          </div>
-        </Container>
-      </section>
 
-      <section
-        id="product-story"
-        className="engineering-story-ramp text-charcoal-foreground scroll-mt-24 pb-16 pt-32 sm:pb-24 sm:pt-40 xl:pb-28 xl:pt-48"
-        aria-labelledby="product-story-heading"
-        data-engineering-handoff="true"
-      >
-        <Container>
-          <h2 id="product-story-heading" className="sr-only">
-            How Factor One developed the Parcel Tray
-          </h2>
-          <div className="grid gap-12 xl:grid-cols-[minmax(0,2.15fr)_minmax(20rem,1fr)] xl:gap-x-14 2xl:gap-x-20">
-            {heroMedia?.sourcePath ? (
-              <div className="xl:sticky xl:top-24 xl:self-start">
-                <figure
-                  className="relative aspect-[16/10] overflow-hidden"
-                  data-sticky-solution-visual="true"
-                >
-                  <Image
-                    src={heroMedia.sourcePath}
-                    alt={heroMedia.altText}
-                    fill
-                    sizes="(min-width: 1280px) 68vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: heroMedia.focalPoint }}
-                  />
-                  <div
-                    className="from-charcoal/55 absolute inset-0 bg-gradient-to-t via-transparent to-transparent"
-                    aria-hidden="true"
-                  />
-                  <figcaption className="bg-charcoal/88 absolute bottom-4 left-4 rounded-sm px-3 py-2 text-xs font-medium">
-                    {heroMedia.disclosure}
-                  </figcaption>
-                </figure>
-              </div>
-            ) : null}
-
-            <div className="xl:min-h-[165svh]" data-engineering-proof="true">
+            <article
+              className="story-engineering-pane text-charcoal-foreground relative isolate mt-16 flex min-h-[38rem] flex-col justify-center py-20 xl:col-start-2 xl:row-start-4 xl:mt-0 xl:min-h-[82svh] xl:py-24"
+              data-engineering-handoff="true"
+              data-engineering-proof="true"
+            >
               <p className="text-factor-red-contrast text-xs font-semibold uppercase tracking-[0.16em]">
                 Engineering proof
               </p>
-              <p className="mt-5 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.05em] sm:text-4xl xl:text-5xl">
+              <h2 className="mt-5 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.05em] sm:text-4xl xl:text-[2.65rem]">
                 Developed from the vehicle, not guessed from measurements.
-              </p>
-              <ol className="mt-10" aria-label="Engineering proof">
+              </h2>
+              <ol className="mt-9 space-y-1" aria-label="Engineering proof">
                 {engineeringProofPoints.map((item, index) => (
                   <li
                     key={item}
-                    className="story-progress-item flex min-h-28 items-center gap-4 py-5 xl:min-h-[32svh]"
+                    className="engineering-proof-item border-charcoal-foreground/16 flex items-center gap-4 border-t py-5"
                   >
                     <span className="text-factor-red-contrast text-xs font-semibold tracking-[0.14em]">
                       0{index + 1}
                     </span>
-                    <span className="text-xl font-medium tracking-[-0.03em] sm:text-2xl">
+                    <span className="text-lg font-medium tracking-[-0.03em] xl:text-xl">
                       {item}
                     </span>
                   </li>
                 ))}
               </ol>
-            </div>
+            </article>
           </div>
         </Container>
       </section>
@@ -500,7 +467,7 @@ export function ProductReferencePage({
 
       <section
         id="specifications"
-        className="bg-graphite text-graphite-foreground scroll-mt-24 py-12 sm:py-16 xl:py-20"
+        className="bg-warm scroll-mt-24 py-12 sm:py-16 xl:py-20"
         aria-labelledby="specifications-heading"
       >
         <Container>
@@ -516,7 +483,7 @@ export function ProductReferencePage({
             specifications={specifications}
           />
 
-          <div className="border-graphite-foreground/14 mt-12 border-t pt-8">
+          <div className="border-border mt-12 border-t pt-8">
             <h3 className="text-2xl font-semibold tracking-[-0.045em]">
               Ownership, kept honest.
             </h3>
@@ -525,27 +492,21 @@ export function ProductReferencePage({
                 <Link
                   key={href}
                   href={href}
-                  className="motion-safe-transition border-graphite-foreground/14 hover:border-graphite-foreground/35 focus-visible:border-factor-red flex min-h-20 items-center gap-3 rounded-md border p-4 transition-colors"
+                  className="motion-safe-transition border-border hover:border-foreground/35 focus-visible:border-factor-red flex min-h-20 items-center gap-3 rounded-md border p-4 transition-colors"
                 >
-                  <Icon
-                    className="text-factor-red-contrast size-5"
-                    aria-hidden="true"
-                  />
+                  <Icon className="text-factor-red size-5" aria-hidden="true" />
                   <span className="text-sm font-medium">{title}</span>
                 </Link>
               ))}
             </div>
           </div>
-          <div className="border-graphite-foreground/14 mt-8 max-w-4xl border-t pt-7">
+          <div className="border-border mt-8 max-w-4xl border-t pt-7">
             <h3 className="text-2xl font-semibold tracking-[-0.045em]">
               Questions, answered.
             </h3>
             <div className="mt-3">
               {visibleFaqs.map(({ answer, id, question }) => (
-                <details
-                  key={id}
-                  className="border-graphite-foreground/14 group border-b"
-                >
+                <details key={id} className="border-border group border-b">
                   <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-3 text-base font-medium">
                     {question}
                     <ChevronDown
@@ -553,7 +514,7 @@ export function ProductReferencePage({
                       aria-hidden="true"
                     />
                   </summary>
-                  <p className="text-graphite-foreground/65 max-w-3xl pb-4 text-sm leading-6">
+                  <p className="text-muted-foreground max-w-3xl pb-4 text-sm leading-6">
                     {answer}
                   </p>
                 </details>
@@ -568,19 +529,14 @@ export function ProductReferencePage({
         aria-label="Return to product"
         data-product-final-cta="true"
       >
-        <Container className="flex flex-col gap-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:py-12">
+        <Container className="flex flex-col gap-5 py-9 sm:flex-row sm:items-center sm:justify-between sm:py-10">
           <div>
             <p className="text-factor-red-contrast text-xs font-semibold uppercase tracking-[0.16em]">
-              VinFast VF7
+              Still thinking about it?
             </p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.045em]">
               {product.name}
             </p>
-            {content.price ? (
-              <p className="text-charcoal-foreground/65 mt-1 text-sm">
-                {formatPrice(content.price.amountMinor, content.price.currency)}
-              </p>
-            ) : null}
           </div>
           <Button
             asChild

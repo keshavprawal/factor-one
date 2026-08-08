@@ -51,7 +51,7 @@ export function ProductHeroGallery({
   return (
     <section aria-label={`${productName} image gallery`}>
       <div
-        className="bg-warm group relative aspect-[5/4] touch-pan-y overflow-hidden rounded-lg sm:aspect-square"
+        className="bg-warm group relative aspect-[5/4] touch-pan-y overflow-hidden rounded-lg sm:aspect-square xl:aspect-[16/10]"
         aria-busy={!isActiveImageLoaded}
         onPointerDown={(event) => {
           pointerStartX.current = event.clientX;

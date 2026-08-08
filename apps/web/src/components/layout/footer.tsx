@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Instagram, Mail, MessageCircle } from 'lucide-react';
 import { Wordmark } from '@/components/brand/wordmark';
+import { TaillightLine } from '@/components/brand/taillight-line';
 import { Container } from '@/components/layout/container';
 import { brandContactLinks } from '@/config/brand-contact';
 import { footerNavigation } from '@/config/navigation';
@@ -14,10 +15,10 @@ const contactIcons = {
 export function Footer() {
   return (
     <footer
-      className="bg-charcoal text-charcoal-foreground flex min-h-[100svh] flex-col overflow-hidden"
+      className="bg-charcoal text-charcoal-foreground flex flex-col overflow-hidden"
       aria-label="Factor One footer"
     >
-      <Container className="flex flex-1 flex-col justify-end pb-8 pt-12 sm:pb-10 sm:pt-16">
+      <Container className="flex flex-col pb-7 pt-12 sm:pb-9 sm:pt-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.62fr)_minmax(0,0.75fr)_minmax(19rem,1.22fr)_minmax(0,0.55fr)] lg:gap-7 xl:gap-10">
           <div className="max-w-sm">
             <Wordmark as="p" size="footer" />
@@ -111,16 +112,17 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-charcoal-foreground/15 mt-10 border-t pt-5">
+        <div className="mt-9 pt-4">
           <p className="text-charcoal-foreground/50 text-xs sm:text-sm">
             © {new Date().getFullYear()} Factor One. All rights reserved.
           </p>
         </div>
+        <TaillightLine illuminates className="mt-8" />
       </Container>
 
       <p
         aria-label="Factor One"
-        className="mx-auto flex w-[94vw] translate-y-[0.075em] items-end justify-center gap-[0.12em] whitespace-nowrap text-[clamp(5.25rem,19.2vw,26rem)] font-semibold leading-[0.69] tracking-[-0.012em] sm:gap-[0.14em]"
+        className="mx-auto flex w-[94vw] translate-y-[0.025em] items-end justify-center gap-[0.12em] whitespace-nowrap text-[clamp(5.25rem,19.2vw,26rem)] font-semibold leading-[0.78] tracking-[-0.012em] sm:gap-[0.14em]"
         data-footer-ending="true"
       >
         <span>Factor</span>

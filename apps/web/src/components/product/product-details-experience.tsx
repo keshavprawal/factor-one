@@ -82,7 +82,7 @@ export function ProductDetailsExperience({
       data-product-details-experience="true"
     >
       <div className={cn(media.length === 0 && 'max-w-3xl')}>
-        <dl className="divide-graphite-foreground/14 border-graphite-foreground/14 divide-y border-y">
+        <dl className="divide-border border-border divide-y border-y">
           {specifications.map((item) => {
             const mediaId = mediaBySpecification.get(item.label);
 
@@ -105,13 +105,13 @@ export function ProductDetailsExperience({
                 onMouseEnter={() => mediaId && setActiveMediaId(mediaId)}
               >
                 <dt className="font-medium">{item.label}</dt>
-                <dd className="text-graphite-foreground/65 mt-1 leading-6">
+                <dd className="text-muted-foreground mt-1 leading-6">
                   {item.value}
                   {item.unit ? ` ${item.unit}` : ''}
                   {item.label === 'Installation' ? (
                     <Link
                       href="/ownership/installation"
-                      className="text-factor-red-contrast focus-visible:ring-graphite-foreground focus-visible:ring-offset-graphite mt-2 inline-flex min-h-11 items-center font-medium underline underline-offset-4 sm:ml-4 sm:mt-0"
+                      className="text-factor-red focus-visible:ring-foreground focus-visible:ring-offset-warm mt-2 inline-flex min-h-11 items-center font-medium underline underline-offset-4 sm:ml-4 sm:mt-0"
                     >
                       View installation guidance
                     </Link>
@@ -119,7 +119,7 @@ export function ProductDetailsExperience({
                   {mediaId && media.length > 1 ? (
                     <button
                       type="button"
-                      className="text-factor-red-contrast focus-visible:ring-graphite-foreground focus-visible:ring-offset-graphite mt-2 flex min-h-11 items-center font-medium underline underline-offset-4"
+                      className="text-factor-red focus-visible:ring-foreground focus-visible:ring-offset-warm mt-2 flex min-h-11 items-center font-medium underline underline-offset-4"
                       onClick={() => setActiveMediaId(mediaId)}
                       onFocus={() => setActiveMediaId(mediaId)}
                     >
@@ -133,8 +133,8 @@ export function ProductDetailsExperience({
         </dl>
 
         {careInstructions ? (
-          <p className="text-graphite-foreground/65 border-graphite-foreground/14 border-b py-5 text-sm leading-6">
-            <span className="text-graphite-foreground font-medium">Care:</span>{' '}
+          <p className="text-muted-foreground border-border border-b py-5 text-sm leading-6">
+            <span className="text-foreground font-medium">Care:</span>{' '}
             {careInstructions}
           </p>
         ) : null}
@@ -162,12 +162,12 @@ export function ProductDetailsExperience({
                 <figure
                   key={asset.id}
                   className={cn(
-                    'bg-charcoal motion-media-transition absolute inset-[4%_7%] overflow-hidden rounded-md transition-[transform,opacity]',
+                    'bg-background motion-media-transition border-border absolute inset-[4%_7%] overflow-hidden rounded-md border transition-[transform,opacity]',
                     isActive && 'z-30 translate-x-0 opacity-100',
                     isNext &&
-                      'z-20 translate-x-[9%] translate-y-[3%] scale-[0.96] opacity-60',
+                      'opacity-48 z-20 translate-x-[9%] translate-y-[3%] scale-[0.96]',
                     isPrevious &&
-                      'z-10 -translate-x-[7%] translate-y-[5%] scale-[0.94] opacity-35',
+                      'opacity-28 z-10 -translate-x-[7%] translate-y-[5%] scale-[0.94]',
                     !isActive && !isNext && !isPrevious && 'opacity-0',
                   )}
                   aria-hidden={!isActive}
@@ -178,7 +178,11 @@ export function ProductDetailsExperience({
                     alt={isActive ? asset.altText : ''}
                     fill
                     sizes="(min-width: 1280px) 58vw, 100vw"
-                    className="object-cover"
+                    className={cn(
+                      'object-cover',
+                      asset.intendedPlacement === 'product-specification' &&
+                        'object-contain',
+                    )}
                     style={{ objectPosition: asset.focalPoint }}
                   />
                   {isActive ? (
@@ -203,8 +207,8 @@ export function ProductDetailsExperience({
                   className={cn(
                     'inline-flex size-11 items-center justify-center rounded-full',
                     index === activeIndex
-                      ? 'text-factor-red-contrast'
-                      : 'text-graphite-foreground/35',
+                      ? 'text-factor-red'
+                      : 'text-foreground/35',
                   )}
                   aria-current={index === activeIndex ? 'true' : undefined}
                   aria-label={`Show product detail image ${index + 1}`}

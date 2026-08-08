@@ -388,7 +388,8 @@ test('production routes, crawl controls and security headers are ready', async (
         parcelTray.indexOf('Questions, answered.'),
     );
     assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);
-    assert.match(parcelTray, /<footer[^>]*min-h-\[100svh\]/);
+    assert.doesNotMatch(parcelTray, /<footer[^>]*min-h-\[100svh\]/);
+    assert.match(parcelTray, /taillight-line-illuminates/);
     assert.match(
       parcelTray,
       /data-footer-ending="true"[^>]*>[\s\S]*<span>Factor<\/span>[\s\S]*<span>One<\/span>[\s\S]*<\/p>\s*<\/footer>/,
@@ -399,12 +400,7 @@ test('production routes, crawl controls and security headers are ready', async (
     );
     assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
-    assert.match(parcelTray, /Prototype shown[^<]{0,50}Development evidence/);
     assert.match(parcelTray, /Development evidence · Prototype photography/);
-    assert.match(
-      parcelTray,
-      /Prototype installed during product development\./,
-    );
     assert.match(
       parcelTray,
       /Care:<\/span>[\s\S]{0,20}Clean using a soft, damp cloth\./,
@@ -412,12 +408,30 @@ test('production routes, crawl controls and security headers are ready', async (
     assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
     assert.match(parcelTray, /data-gallery-image-loaded="false"/);
     assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);
-    assert.match(parcelTray, /parcel-tray-prototype-installed\.jpg/);
+    assert.doesNotMatch(parcelTray, /parcel-tray-prototype-installed\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-rear-fit-04\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-angle-fit-05\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-perspective-01\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-top-02\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-front-close-01\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-full-rear-02\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-top-fit-03\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-perspective-03\.jpg/);
+    assert.equal(
+      (parcelTray.match(/data-engineering-proof="true"/g) ?? []).length,
+      1,
+    );
+    assert.match(parcelTray, /Still thinking about it\?/);
+    const finalCta = parcelTray.match(
+      /<section[^>]*data-product-final-cta="true"[^>]*>[\s\S]*?<\/section>/,
+    )?.[0];
+    assert.ok(finalCta);
+    assert.doesNotMatch(finalCta, /₹2,999/);
     assert.doesNotMatch(
       parcelTray,
       /DENSE CARPETING|SOUND DAMPENING|FULL LOAD PRIVACY/,
     );
-    assert.doesNotMatch(parcelTray, /Dimensions/);
+    assert.doesNotMatch(parcelTray, /<dt[^>]*>Dimensions<\/dt>/);
     assert.doesNotMatch(parcelTray, />Overview</);
     assert.doesNotMatch(parcelTray, />The Problem</);
     assert.doesNotMatch(parcelTray, /noise dampening/i);
