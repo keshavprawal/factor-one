@@ -13,6 +13,7 @@ export type ProductMediaPlacement =
   | 'vehicle-featured'
   | 'product-gallery'
   | 'product-detail'
+  | 'product-specification'
   | 'installation';
 
 export type ProductMediaRightsStatus =
@@ -29,7 +30,7 @@ export type ProductMediaLifecycleStatus = 'missing' | 'temporary' | 'final';
 export interface ProductMediaAsset {
   altText: string;
   approvalStatus: ProductMediaApprovalStatus;
-  aspectRatio: '1:1' | '4:3' | '16:9';
+  aspectRatio: '1:1' | '3:4' | '4:3' | '16:9';
   caption?: string;
   credit: string | null;
   disclosure?: string;
@@ -279,7 +280,7 @@ export const productMediaManifest = [
   {
     id: 'parcel-tray-prototype-installed',
     productId: 'parcel-tray',
-    intendedPlacement: 'product-gallery',
+    intendedPlacement: 'product-specification',
     viewport: 'all',
     sourcePath:
       '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
@@ -290,6 +291,165 @@ export const productMediaManifest = [
     credit: 'Factor One',
     caption: 'Prototype installed during product development.',
     disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-front-close',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-prototype-front-close-01.jpg',
+    aspectRatio: '4:3',
+    altText:
+      'Front close view of a prototype parcel tray fitted in a VinFast VF7 cargo area.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype fitted during product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-full-rear',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-prototype-full-rear-02.jpg',
+    aspectRatio: '3:4',
+    altText:
+      'Full rear view of a prototype parcel tray fitted in a VinFast VF7 during development.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype fitted during product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-top-fit',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-prototype-top-fit-03.jpg',
+    aspectRatio: '3:4',
+    altText:
+      'Top view of the prototype parcel tray shape fitted in a VinFast VF7 cargo area.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype fitted during product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-rear-fit',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-prototype-rear-fit-04.jpg',
+    aspectRatio: '3:4',
+    altText:
+      'Rear fit view showing a prototype parcel tray positioned in a VinFast VF7 cargo area.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype used to assess fit during product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-prototype-angle-fit',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-prototype-angle-fit-05.jpg',
+    aspectRatio: '3:4',
+    altText:
+      'Angled view of a prototype parcel tray installed in a VinFast VF7 cargo area.',
+    sourceName: 'Factor One founder photography',
+    credit: 'Factor One',
+    caption: 'Prototype installation view from product development.',
+    disclosure: 'Development evidence · Prototype photography',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-cad-perspective-primary',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-cad-perspective-01.jpg',
+    aspectRatio: '16:9',
+    altText: 'CAD perspective view of the VF7 Parcel Tray development model.',
+    sourceName: 'Factor One CAD development media',
+    credit: 'Factor One',
+    caption: 'CAD development reference.',
+    disclosure: 'Engineering reference · CAD development view',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-cad-top',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath: '/images/products/parcel-tray/vf7-parcel-tray-cad-top-02.jpg',
+    aspectRatio: '16:9',
+    altText:
+      'Top CAD reference view showing the VF7 Parcel Tray development shape without dimensions.',
+    sourceName: 'Factor One CAD development media',
+    credit: 'Factor One',
+    caption:
+      'Dimensional-reference media; numerical dimensions remain pending.',
+    disclosure: 'Engineering reference · Dimensions pending',
+    evidenceOnly: true,
+    rightsStatus: 'owned',
+    approvalStatus: 'approved',
+    lifecycleStatus: 'temporary',
+    focalPoint: 'center',
+  },
+  {
+    id: 'parcel-tray-cad-perspective-secondary',
+    productId: 'parcel-tray',
+    intendedPlacement: 'product-specification',
+    viewport: 'all',
+    sourcePath:
+      '/images/products/parcel-tray/vf7-parcel-tray-cad-perspective-03.jpg',
+    aspectRatio: '16:9',
+    altText:
+      'Alternate CAD perspective of the VF7 Parcel Tray development model.',
+    sourceName: 'Factor One CAD development media',
+    credit: 'Factor One',
+    caption: 'CAD development reference.',
+    disclosure: 'Engineering reference · CAD development view',
     evidenceOnly: true,
     rightsStatus: 'owned',
     approvalStatus: 'approved',

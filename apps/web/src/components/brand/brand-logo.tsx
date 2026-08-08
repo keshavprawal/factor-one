@@ -1,0 +1,22 @@
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+
+export interface BrandLogoProps {
+  className?: string;
+  priority?: boolean;
+}
+
+/** Approved horizontal Factor One symbol-and-wordmark lockup. */
+export function BrandLogo({ className, priority = false }: BrandLogoProps) {
+  return (
+    <Image
+      src="/brand/factor-one-logo-horizontal-transparent.png"
+      alt="Factor One logo"
+      width={1600}
+      height={552}
+      priority={priority}
+      sizes="(min-width: 640px) 136px, 120px"
+      className={cn('h-auto w-[7rem] sm:w-[8.5rem]', className)}
+    />
+  );
+}

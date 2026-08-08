@@ -44,11 +44,15 @@ const {
   getProductPath,
 } = require('../apps/web/.content-check/src/config/product-routes.js');
 const {
+  getProductPageReferencePresentation,
+} = require('../apps/web/.content-check/src/config/product-page-reference.js');
+const {
   compatibilityNavigation,
   companyNavigation,
   footerNavigation,
   garageNavigation,
   ownershipNavigation,
+  productNavigation,
 } = require('../apps/web/.content-check/src/config/navigation.js');
 const {
   getIndexableOwnershipPolicyPaths,
@@ -76,12 +80,8 @@ const {
 } = require('../apps/web/.content-check/src/features/garage/garage-state.js');
 
 const localMediaExists = (sourcePath) =>
-  [
-    '/images/essentials/screen-protector.jpg',
-    '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
-    '/images/products/parcel-tray/parcel-tray-temporary-lifestyle.png',
-    '/images/products/parcel-tray/parcel-tray-prototype-installed.jpg',
-  ].includes(sourcePath);
+  sourcePath === '/images/essentials/screen-protector.jpg' ||
+  sourcePath?.startsWith('/images/products/parcel-tray/');
 
 test('draft content is structurally valid and exposes launch warnings', () => {
   const issues = validateProductContent(products, productMediaManifest, {
@@ -285,6 +285,45 @@ test('Parcel Tray projects its approved 12-month warranty without affecting othe
   assert.equal(getProductWarrantySummary(products[0]), null);
 });
 
+test('the Parcel Tray reference presentation is explicit and stays separate from product identity', () => {
+  const presentation = getProductPageReferencePresentation('parcel-tray');
+
+  assert.ok(presentation);
+  assert.equal(
+    presentation.heroValueStatement,
+    'Extended coverage behind the rear seats, designed specifically for the VinFast VF7.',
+  );
+  assert.deepEqual(
+    presentation.featureStory.map((feature) => feature.title),
+    [
+      'Extended Rear Coverage',
+      'OEM Fit',
+      'Tailgate and Rear-Seat Clearance',
+      'Rigorously Tested',
+    ],
+  );
+  assert.equal('installationSteps' in presentation, false);
+  assert.equal(presentation.faqs.length, 8);
+  assert.equal(getProductPageReferencePresentation('screen-guard'), null);
+});
+
+test('product navigation uses the product-family label without changing canonical identity', () => {
+  assert.deepEqual(
+    productNavigation.map((item) => item.label),
+    [
+      'Parcel Tray',
+      'Mud Flaps',
+      'Rear Door Mud Flaps',
+      'Screen Guard',
+      'Door Visor',
+    ],
+  );
+  assert.equal(
+    products.find((product) => product.id === 'parcel-tray')?.name,
+    'VF7 Parcel Tray',
+  );
+});
+
 test('the VF7 Parcel Tray uses approved canonical content and verified compatibility', () => {
   const parcelTray = products.find((product) => product.id === 'parcel-tray');
 
@@ -365,9 +404,14 @@ test('Parcel Tray media uses approved temporary visuals and disclosed prototype 
     parcelTrayDetail.desktopImage,
     '/images/products/parcel-tray/parcel-tray-temporary-hero.png',
   );
-  assert.deepEqual(
-    parcelTrayEvidence.map((media) => media.lifecycleStatus),
-    ['temporary'],
+  assert.equal(
+    parcelTrayEvidence.every(
+      (media) =>
+        media.lifecycleStatus === 'temporary' &&
+        media.rightsStatus === 'owned' &&
+        media.approvalStatus === 'approved',
+    ),
+    true,
   );
   assert.equal(parcelTrayEvidence[0]?.id, 'parcel-tray-prototype-installed');
   assert.equal(
@@ -384,7 +428,7 @@ test('Parcel Tray media uses approved temporary visuals and disclosed prototype 
   );
   assert.equal(
     getApprovedProductMedia('parcel-tray', 'product-gallery').length,
-    2,
+    1,
   );
   assert.equal(
     getApprovedProductMedia('parcel-tray', 'product-gallery').some(
@@ -400,7 +444,22 @@ test('Parcel Tray media uses approved temporary visuals and disclosed prototype 
     getProductPageContent(
       products.find((product) => product.id === 'parcel-tray'),
     ).careInstructions,
-    'Clean using a soft, damp cloth. Use a mild automotive interior cleaner only when required. Avoid abrasive pads, harsh chemicals and strong solvents. Dry before reinstalling, and inspect the support strings periodically for wear or damage.',
+    'Clean using a soft, damp cloth.',
+  );
+  assert.deepEqual(
+    getProductPageReferencePresentation('parcel-tray')?.detailMediaStory.map(
+      ({ mediaId }) => mediaId,
+    ),
+    [
+      'parcel-tray-prototype-rear-fit',
+      'parcel-tray-prototype-angle-fit',
+      'parcel-tray-cad-perspective-primary',
+      'parcel-tray-cad-top',
+      'parcel-tray-prototype-front-close',
+      'parcel-tray-prototype-full-rear',
+      'parcel-tray-prototype-top-fit',
+      'parcel-tray-cad-perspective-secondary',
+    ],
   );
   assert.equal(
     parcelTrayEvidence.some(
@@ -727,16 +786,23 @@ test('ownership navigation stays centralized across the header and footer', () =
   assert.deepEqual(
     ownershipFooterGroup.items.map((item) => item.href),
     [
-      '/ownership',
       '/ownership/warranty',
-      '/ownership/returns',
       '/ownership/cancellation',
       '/ownership/shipping',
+      '/ownership/returns',
       '/ownership/installation',
       '/ownership/contact',
-      '/ownership/privacy',
-      '/ownership/terms',
       '/ownership/faq',
     ],
+  );
+
+  const legalFooterGroup = footerNavigation.find(
+    (group) => group.label === 'Legal',
+  );
+
+  assert.ok(legalFooterGroup);
+  assert.deepEqual(
+    legalFooterGroup.items.map((item) => item.href),
+    ['/ownership/privacy', '/ownership/terms'],
   );
 });

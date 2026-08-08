@@ -238,31 +238,202 @@ test('production routes, crawl controls and security headers are ready', async (
     const parcelTray = await parcelTrayResponse.text();
 
     assert.equal(parcelTrayResponse.status, 200);
+    assert.match(
+      parcelTray,
+      /href="\/products\/parcel-tray"[^>]*>Parcel Tray<\/a>/,
+    );
+    assert.doesNotMatch(
+      parcelTray,
+      /href="\/products\/parcel-tray"[^>]*>VF7 Parcel Tray<\/a>/,
+    );
+    assert.match(parcelTray, /alt="Factor One logo"/);
+    assert.match(parcelTray, /factor-one-logo-horizontal-transparent\.png/);
     assert.match(parcelTray, /VF7 Parcel Tray/);
     assert.match(parcelTray, /₹2,999/);
-    assert.match(parcelTray, /Launch date:[\s\S]{0,100}15 August 2026/);
-    assert.match(parcelTray, /Verified/);
-    assert.match(parcelTray, /VinFast VF7 \(2025 onwards\)/);
-    assert.match(parcelTray, /Earth, Wind, Wind Infinity, Sky, Sky Infinity/);
-    assert.match(parcelTray, /12-Month Limited Manufacturer Warranty/);
+    assert.doesNotMatch(parcelTray, /₹2,999\.00/);
+    assert.match(parcelTray, /Launching[\s\S]{0,100}15 August 2026/);
+    assert.match(parcelTray, /Launch status: Launching 15 August 2026/);
+    assert.match(parcelTray, /data-launch-status="true"/);
+    assert.match(parcelTray, /data-compatibility-control="true"/);
+    assert.equal(
+      (parcelTray.match(/data-hero-control="matched"/g) ?? []).length,
+      2,
+    );
+    assert.doesNotMatch(
+      parcelTray,
+      /data-launch-status="true"[^>]*(href=|tabindex=)/,
+    );
+    assert.doesNotMatch(parcelTray, /Made for your VF7\./);
+    assert.doesNotMatch(parcelTray, /Installs without modifying the vehicle\./);
+    assert.match(parcelTray, /VinFast VF7[^<]{0,20}2025 onwards/);
+    assert.match(parcelTray, /Earth[^<]{0,20}Wind[^<]{0,20}Wind Infinity/);
+    assert.match(parcelTray, /Extended Rear Coverage/);
+    assert.match(parcelTray, /All VF7 Variants/);
+    assert.match(parcelTray, /No Vehicle Modification/);
+    assert.match(parcelTray, /12-Month Warranty/);
+    assert.match(parcelTray, /Dynamic testing completed/);
+    assert.match(parcelTray, /data-sticky-story="true"/);
+    assert.equal(
+      (parcelTray.match(/data-hero-product-information="true"/g) ?? []).length,
+      1,
+    );
+    assert.doesNotMatch(parcelTray, /aria-label="Product context"/);
+    assert.match(parcelTray, /data-story-state="problem"/);
+    assert.match(parcelTray, /data-story-state="solution"/);
+    assert.match(parcelTray, /The gap owners noticed/);
+    assert.match(parcelTray, /Before/);
+    assert.match(parcelTray, /Factory cargo area/);
+    assert.match(parcelTray, /An open section remains behind the rear seats\./);
+    assert.match(parcelTray, /Open gap behind rear seats/);
+    assert.match(parcelTray, /The coverage Factor One added/);
+    assert.match(parcelTray, /Factor One Parcel Tray/);
+    assert.match(
+      parcelTray,
+      /Extended rear coverage creates a cleaner, more complete cargo area\./,
+    );
+    assert.ok(
+      parcelTray.indexOf('The gap owners noticed.') <
+        parcelTray.indexOf('Designed around the details.'),
+    );
+    assert.match(
+      parcelTray,
+      /<h2[^>]*id="features-heading"[^>]*>Designed around the details\.<\/h2>/,
+    );
+    assert.match(parcelTray, /data-image-led-features="true"/);
+    assert.match(
+      parcelTray,
+      /data-image-led-features="true"[\s\S]*Built for everyday ownership\./,
+    );
+    assert.doesNotMatch(parcelTray, /id="lifestyle-heading"/);
+    assert.doesNotMatch(parcelTray, /id="engineering-proof"/);
+    assert.match(
+      parcelTray,
+      /The coverage Factor One added\.[\s\S]*VF7 scanned and modelled/,
+    );
+    assert.match(parcelTray, /data-engineering-handoff="true"/);
+    assert.match(parcelTray, /data-sticky-solution-visual="true"/);
+    assert.match(parcelTray, /data-engineering-proof="true"/);
+    for (const featureHeading of [
+      'Extended Rear Coverage',
+      'OEM Fit',
+      'Tailgate and Rear-Seat Clearance',
+      'Rigorously Tested',
+    ]) {
+      assert.match(parcelTray, new RegExp(featureHeading));
+    }
+    assert.doesNotMatch(parcelTray, /Vehicle-Specific Alignment/);
+    assert.doesNotMatch(parcelTray, /Easy to Remove/);
+    assert.doesNotMatch(parcelTray, /data-warranty-emphasis="true"/);
+    assert.doesNotMatch(parcelTray, /12-Month Factor One Warranty/);
+    assert.match(parcelTray, /Questions, answered/);
+    assert.match(parcelTray, /Product details/);
+    assert.equal(
+      (parcelTray.match(/id="specifications-heading"/g) ?? []).length,
+      1,
+    );
+    assert.match(parcelTray, /data-product-details-experience="true"/);
+    assert.match(parcelTray, /data-product-detail-media-stack="true"/);
+    assert.doesNotMatch(parcelTray, /Product specifications/);
+    assert.doesNotMatch(parcelTray, /<summary[^>]*>Compatibility</);
+    assert.match(
+      parcelTray,
+      /<dt[^>]*>Compatibility<\/dt>[\s\S]*Earth[^<]{0,20}Wind Infinity/,
+    );
+    assert.match(
+      parcelTray,
+      /<dt[^>]*>Installation<\/dt>[\s\S]*Self-installation/,
+    );
+    assert.match(parcelTray, /View installation guidance/);
+    assert.equal(
+      (parcelTray.match(/>View installation guidance<\/a>/g) ?? []).length,
+      1,
+    );
+    assert.match(
+      parcelTray,
+      /Care:<\/span>[\s\S]{0,20}Clean using a soft, damp cloth\./,
+    );
+    assert.doesNotMatch(parcelTray, /Position the tray/);
+    assert.doesNotMatch(parcelTray, /Attach the two support strings/);
+    assert.match(parcelTray, /Ownership, kept honest\./);
+    assert.match(parcelTray, /href="\/ownership\/warranty"/);
+    assert.match(parcelTray, /href="\/ownership">Ownership<\/a>/);
+    assert.match(
+      parcelTray,
+      /href="https:\/\/www\.instagram\.com\/Factorone_\//,
+    );
+    assert.match(parcelTray, /mailto:contact@factorone\.in/);
+    assert.match(parcelTray, /href="https:\/\/wa\.me\/919829292629"/);
+    assert.match(parcelTray, /VinFast VF6/);
+    assert.match(parcelTray, /aria-disabled="true"[^>]*>VinFast VF6<\/span>/);
+    const footer = parcelTray.slice(parcelTray.indexOf('<footer'));
+    assert.ok(
+      footer.indexOf('Limited Warranty') < footer.indexOf('Order Cancellation'),
+    );
+    assert.ok(
+      footer.indexOf('Order Cancellation') < footer.indexOf('Shipping'),
+    );
+    assert.ok(
+      footer.indexOf('Shipping') < footer.indexOf('Returns &amp; Refunds'),
+    );
+    assert.match(parcelTray, /By VinFast owners, for VinFast owners\./);
+    assert.doesNotMatch(
+      footer,
+      /Accessories for VinFast owners, shaped by the people who drive them/,
+    );
+    for (const group of ['Explore', 'Factor One', 'Ownership', 'Legal']) {
+      assert.match(footer, new RegExp(`>${group}<`));
+    }
+    assert.ok(
+      parcelTray.indexOf('Ownership, kept honest.') <
+        parcelTray.indexOf('Questions, answered.'),
+    );
+    assert.ok((parcelTray.match(/<footer\b/g) ?? []).length === 1);
+    assert.doesNotMatch(parcelTray, /<footer[^>]*min-h-\[100svh\]/);
+    assert.match(parcelTray, /taillight-line-illuminates/);
+    assert.match(
+      parcelTray,
+      /data-footer-ending="true"[^>]*>[\s\S]*<span>Factor<\/span>[\s\S]*<span>One<\/span>[\s\S]*<\/p>\s*<\/footer>/,
+    );
+    assert.equal(
+      (parcelTray.match(/data-footer-ending="true"/g) ?? []).length,
+      1,
+    );
+    assert.match(parcelTray, /Does installation require drilling/);
     assert.match(parcelTray, /Representative visualisation/);
     assert.match(parcelTray, /Development evidence · Prototype photography/);
     assert.match(
       parcelTray,
-      /Prototype installed during product development\./,
-    );
-    assert.match(
-      parcelTray,
-      /Clean using a soft, damp cloth\. Use a mild automotive interior cleaner only when required\./,
+      /Care:<\/span>[\s\S]{0,20}Clean using a soft, damp cloth\./,
     );
     assert.match(parcelTray, /parcel-tray-temporary-hero\.png/);
+    assert.match(parcelTray, /data-gallery-image-loaded="false"/);
     assert.match(parcelTray, /parcel-tray-temporary-lifestyle\.png/);
-    assert.match(parcelTray, /parcel-tray-prototype-installed\.jpg/);
+    assert.doesNotMatch(parcelTray, /parcel-tray-prototype-installed\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-rear-fit-04\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-angle-fit-05\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-perspective-01\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-top-02\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-front-close-01\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-full-rear-02\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-prototype-top-fit-03\.jpg/);
+    assert.match(parcelTray, /vf7-parcel-tray-cad-perspective-03\.jpg/);
+    assert.equal(
+      (parcelTray.match(/data-engineering-proof="true"/g) ?? []).length,
+      1,
+    );
+    assert.match(parcelTray, /Still thinking about it\?/);
+    const finalCta = parcelTray.match(
+      /<section[^>]*data-product-final-cta="true"[^>]*>[\s\S]*?<\/section>/,
+    )?.[0];
+    assert.ok(finalCta);
+    assert.doesNotMatch(finalCta, /₹2,999/);
     assert.doesNotMatch(
       parcelTray,
       /DENSE CARPETING|SOUND DAMPENING|FULL LOAD PRIVACY/,
     );
-    assert.doesNotMatch(parcelTray, /Dimensions/);
+    assert.doesNotMatch(parcelTray, /<dt[^>]*>Dimensions<\/dt>/);
+    assert.doesNotMatch(parcelTray, />Overview</);
+    assert.doesNotMatch(parcelTray, />The Problem</);
     assert.doesNotMatch(parcelTray, /noise dampening/i);
     assert.doesNotMatch(parcelTray, /load capacity/i);
     assert.match(parcelTray, /name="robots" content="noindex, nofollow"/);

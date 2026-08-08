@@ -35,7 +35,7 @@ export type NavigationItem =
   | UnavailableNavigationItem;
 
 export interface FooterNavigationGroup {
-  items: readonly AvailableNavigationItem[];
+  items: readonly NavigationLeaf[];
   label: string;
 }
 
@@ -57,6 +57,12 @@ const vf7: AvailableNavigationItem = {
   href: '/vehicles/vf7',
   id: 'vinfast-vf7',
   label: 'VinFast VF7',
+};
+
+const vf6: UnavailableNavigationItem = {
+  id: 'vinfast-vf6',
+  label: 'VinFast VF6',
+  unavailable: true,
 };
 
 export const productDestinations = {
@@ -125,9 +131,25 @@ export const mudGuardNavigation: GroupedNavigationItem = {
   ],
 };
 
+const parcelTrayNavigation: AvailableNavigationItem = {
+  ...productDestinations.parcelTray,
+  label: 'Parcel Tray',
+};
+
+const mudFlapsNavigation: AvailableNavigationItem = {
+  ...productDestinations.bumperMudGuard,
+  label: 'Mud Flaps',
+};
+
+const rearDoorMudFlapsNavigation: AvailableNavigationItem = {
+  ...productDestinations.rearDoorMudGuard,
+  label: 'Rear Door Mud Flaps',
+};
+
 export const productNavigation: readonly NavigationItem[] = [
-  productDestinations.parcelTray,
-  mudGuardNavigation,
+  parcelTrayNavigation,
+  mudFlapsNavigation,
+  rearDoorMudFlapsNavigation,
   productDestinations.screenGuard,
   productDestinations.doorVisor,
 ];
@@ -165,7 +187,7 @@ export const mobileNavigationSections: readonly NavigationSection[] = [
 
 export const footerNavigation: readonly FooterNavigationGroup[] = [
   {
-    items: [home, vf7],
+    items: [home, vf7, vf6],
     label: 'Explore',
   },
   {
@@ -174,19 +196,18 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
   },
   {
     items: [
-      ownershipNavigation,
       {
         href: '/ownership/warranty',
         id: 'warranty',
         label: 'Limited Warranty',
       },
-      { href: '/ownership/returns', id: 'returns', label: 'Returns & Refunds' },
       {
         href: '/ownership/cancellation',
         id: 'cancellation',
         label: 'Order Cancellation',
       },
       { href: '/ownership/shipping', id: 'shipping', label: 'Shipping' },
+      { href: '/ownership/returns', id: 'returns', label: 'Returns & Refunds' },
       {
         href: '/ownership/installation',
         id: 'installation-guidance',
@@ -197,10 +218,15 @@ export const footerNavigation: readonly FooterNavigationGroup[] = [
         id: 'contact-support',
         label: 'Contact Support',
       },
-      { href: '/ownership/privacy', id: 'privacy', label: 'Privacy' },
-      { href: '/ownership/terms', id: 'terms', label: 'Terms' },
       { href: '/ownership/faq', id: 'ownership-faq', label: 'Ownership FAQ' },
     ],
     label: 'Ownership',
+  },
+  {
+    items: [
+      { href: '/ownership/privacy', id: 'privacy', label: 'Privacy' },
+      { href: '/ownership/terms', id: 'terms', label: 'Terms' },
+    ],
+    label: 'Legal',
   },
 ];
