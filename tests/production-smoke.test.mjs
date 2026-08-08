@@ -288,6 +288,16 @@ test('production routes, crawl controls and security headers are ready', async (
       parcelTray.indexOf('The gap owners noticed.') <
         parcelTray.indexOf('Designed around the details.'),
     );
+    assert.match(
+      parcelTray,
+      /<h2[^>]*id="features-heading"[^>]*>Designed around the details\.<\/h2>/,
+    );
+    assert.match(parcelTray, /data-image-led-features="true"/);
+    assert.match(
+      parcelTray,
+      /data-image-led-features="true"[\s\S]*Built for everyday ownership\./,
+    );
+    assert.doesNotMatch(parcelTray, /id="lifestyle-heading"/);
     assert.doesNotMatch(parcelTray, /id="engineering-proof"/);
     assert.match(
       parcelTray,

@@ -443,30 +443,12 @@ export function ProductReferencePage({
         </Container>
       </section>
 
-      <ProductSection id="features" title="Designed around the details.">
-        <div className="border-border mt-7 grid gap-x-7 border-t sm:grid-cols-2 lg:grid-cols-4">
-          {presentation.featureStory.map(
-            ({ description, id, title }, index) => (
-              <article key={id} className="border-border border-b py-6">
-                <p className="text-factor-red text-xs font-semibold tracking-[0.14em]">
-                  0{index + 1}
-                </p>
-                <h3 className="mt-4 text-xl font-medium tracking-[-0.035em]">
-                  {title}
-                </h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-6">
-                  {description}
-                </p>
-              </article>
-            ),
-          )}
-        </div>
-      </ProductSection>
-
       {lifestyleMedia?.sourcePath ? (
         <section
-          className="bg-charcoal text-charcoal-foreground"
-          aria-labelledby="lifestyle-heading"
+          id="features"
+          className="bg-charcoal text-charcoal-foreground scroll-mt-24"
+          aria-labelledby="features-heading"
+          data-image-led-features="true"
         >
           <div className="relative min-h-[28rem] overflow-hidden sm:min-h-[34rem]">
             <Image
@@ -486,13 +468,38 @@ export function ProductReferencePage({
                 {lifestyleMedia.disclosure}
               </p>
               <h2
-                id="lifestyle-heading"
+                id="features-heading"
                 className="mt-5 max-w-xl text-balance text-4xl font-semibold tracking-[-0.055em] sm:text-5xl"
               >
-                Built for everyday ownership.
+                Designed around the details.
               </h2>
+              <p className="text-charcoal-foreground/80 mt-3 text-base font-medium sm:text-lg">
+                Built for everyday ownership.
+              </p>
             </Container>
           </div>
+          <Container>
+            <div className="border-charcoal-foreground/18 grid border-t sm:grid-cols-2 lg:grid-cols-4">
+              {presentation.featureStory.map(
+                ({ description, id, title }, index) => (
+                  <article
+                    key={id}
+                    className="border-charcoal-foreground/18 border-b py-6 first:pl-0 last:pr-0 sm:px-5 lg:border-b-0 lg:border-l first:lg:border-l-0"
+                  >
+                    <p className="text-factor-red text-xs font-semibold tracking-[0.14em]">
+                      0{index + 1}
+                    </p>
+                    <h3 className="mt-3 text-lg font-medium tracking-[-0.03em]">
+                      {title}
+                    </h3>
+                    <p className="text-charcoal-foreground/70 mt-2 text-sm leading-6">
+                      {description}
+                    </p>
+                  </article>
+                ),
+              )}
+            </div>
+          </Container>
         </section>
       ) : null}
 
